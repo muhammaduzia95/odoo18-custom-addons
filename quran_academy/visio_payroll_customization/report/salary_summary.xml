@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="salary_summary_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    /* Urdu font definition */
+                    @font-face {
+                    font-family: "Jameel";
+                    src: url('/visio_payroll_customization/static/font/jameel.ttf') format("woff");
+                    font-weight: normal;
+                    font-style: normal;
+                    }
+                    body {
+                    font-family: "Jameel";
+                    }
+                    .page-break {
+                    page-break-after: always;
+                    }
+                </style>
+                <div class="page">
+                    <t t-foreach="departments.values()" t-as="first_child_dep">
+                        <div class="page-break">
+                            <div style="text-align: center; font-weight: bold;">
+
+
+                                <table style="width:100%; border-color:white; background-color: white;" border="0">
+                                    <tr style=" border-color:white;">
+                                        <!-- left: logo -->
+                                        <td style="width:60px; background-color: white;">
+                                            <img t-att-src="'/visio_payroll_customization/static/img/bg.png'"
+                                                 style="height:100px; width:75px;" alt="Logo"/>
+                                        </td>
+
+                                        <!-- center: title -->
+                                        <td style="text-align:center; background-color: white;">
+                                            <h2 style="font-family: 'Jameel'">مرکزی انجمن خدام القرآن لاہور</h2>
+                                        </td>
+
+                                        <!-- right: blank spacer same width as logo -->
+                                        <td style="width:60px; background-color: white;"></td>
+                                    </tr>
+                                </table>
+
+
+                                <!--<h2 style="font-family: 'Jameel'">مرکزی انجمن خدام القرآن لاہور</h2>-->
+                                <h2>Salary Summary Report -
+                                    <t t-esc="month"/>
+                                </h2>
+                            </div>
+
+                            <h3 t-esc="first_child_dep['name']"/>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bg-secondary">
+                                        <th style="font-weight:bold;">Department</th>
+                                        <th style="font-weight:bold;">Gross Pay</th>
+                                        <th style="font-weight:bold;">Total Deduction</th>
+                                        <th style="font-weight:bold;">Net Pay</th>
+                                        <th style="font-weight:bold;">Employer's EOBI</th>
+                                        <th style="font-weight:bold;">Employee's EOBI</th>
+                                        <th style="font-weight:bold;">Advance Salary</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="first_child_dep['sub_departments'].values()" t-as="sub_dep">
+                                        <tr>
+                                            <td t-esc="sub_dep['name']"/>
+                                            <td t-esc="'{:.2f}'.format(abs(sub_dep['total_gross']))"/>
+                                            <td t-esc="sub_dep['total_deduction']"/>
+                                            <td t-esc="'{:.2f}'.format(abs(sub_dep['total_net']))"/>
+                                            <td t-esc="sub_dep['emp_eobi']"/>
+                                            <td t-esc="sub_dep['eobi_worker']"/>
+                                            <td t-esc="sub_dep['adv_salary']"/>
+                                        </tr>
+                                    </t>
+                                    <!-- First Child Dept Total -->
+                                    <tr class="bg-secondary" style="font-weight:bold;">
+                                        <td>Total for
+                                            <t t-esc="first_child_dep['name']"/>
+                                        </td>
+                                        <td t-esc="'{:.2f}'.format(abs(first_child_dep['total_gross']))"/>
+                                        <td t-esc="first_child_dep['total_deduction']"/>
+                                        <td t-esc="'{:.2f}'.format(abs(first_child_dep['total_net']))"/>
+                                        <td t-esc="first_child_dep['emp_eobi']"/>
+                                        <td t-esc="first_child_dep['eobi_worker']"/>
+                                        <td t-esc="first_child_dep['adv_salary']"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="container text-center english-text" style="margin-top:100px;">
+                                <div class="row justify-content-between">
+                                    <div class="col-auto border-top pt-2 fw-bold text-primary"
+                                         style="font-size:20px;">
+                                        Prepared by :
+                                    </div>
+                                    <div class="col-auto border-top pt-2 fw-bold text-primary"
+                                         style="font-size:20px;">
+                                        Checked and found correct by
+                                    </div>
+                                    <div class="col-auto border-top pt-2 fw-bold text-primary"
+                                         style="font-size:20px;">
+                                        Sanctioned / approved by
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

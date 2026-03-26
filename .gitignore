@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# Env
+.env
+env/
+venv/
+
+# Secrets
+**/credentials/*.json
+
+# Odoo core
+community_18/
+enterprise_18/
+
+# Config files
+*.conf

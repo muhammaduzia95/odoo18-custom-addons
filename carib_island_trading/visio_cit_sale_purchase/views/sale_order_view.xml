@@ -1,0 +1,225 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\carib_island_trading\visio_cit_sale_purchase\views\sale_order_view.xml-->
+<odoo>
+
+    <record id="view_order_form_inherit_so_logistics_ff" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.so.logistics.freight.forwarder</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="visio_cit_sale_customization.view_order_form_inherit_validate"/>
+        <field name="arch" type="xml">
+
+            <!--  Changing the field's string and making it Visible  -->
+            <xpath expr="//field[@name='logistics_company_so']" position="attributes">
+                <attribute name="invisible">0</attribute>
+                <attribute name="string">Freight Forwarder</attribute>
+            </xpath>
+
+            <!--  Adding new fields  -->
+            <xpath expr="//field[@name='charge_to_customer_so']" position="after">
+                <field name="driver_so"/>
+                <field name="third_party_logistics_so"/>
+                <field name="logistics_stage"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!--  Adding the button in the view  -->
+    <record id="view_order_form_inherit_next_prev" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.next.previous.buttons</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- buttons in the header -->
+            <xpath expr="//form/header" position="inside">
+
+                <button name="action_previous_stage_so"
+                        type="object"
+                        string="Previous"
+                        class="btn-primary"/>
+
+                <button name="action_next_stage_so"
+                        type="object"
+                        string="Next"
+                        class="btn-primary"/>
+
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_confirm'][1]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_preview_sale_order']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_cancel']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_draft']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_unlock']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/t/button[@name='action_lock']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='payment_action_capture']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@id='create_invoice']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@id='create_invoice_percentage']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='payment_action_void']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_quotation_send'][1]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_quotation_send'][2]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_quotation_send'][3]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_quotation_send'][4]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//header/field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+<!--            <xpath expr="//header" position="before">-->
+<!--                <div>-->
+<!--                    <field name="state" widget="statusbar" readonly="0" style="border: 2px solid green;"-->
+<!--                           class="bg-success" options="{'clickable': '1'}"/>-->
+<!--                </div>-->
+<!--            </xpath>-->
+
+            <!--            <xpath expr="//field[@name='state']" position="attributes">-->
+            <!--                <attribute name="readonly">0</attribute>-->
+            <!--                <attribute name="options">{'clickable': '1'}</attribute>-->
+            <!--                <attribute name="widget">statusbar</attribute>-->
+            <!--                <attribute name="statusbar_visible"></attribute>-->
+            <!--            </xpath>-->
+
+        </field>
+    </record>
+
+    <!--  MAIN VIEW  -->
+    <record id="view_order_form_inherit_col_three" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.col.three</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="visio_cit_sale_customization.view_order_form_inherit_validate"/>
+        <field name="arch" type="xml">
+
+            <!-- Logistics Details -->
+            <xpath expr="//notebook/page[@name='logistics_details']" position="replace">
+
+                <page string="Logistics Details">
+                    <group col="3">
+                        <group>
+                            <button name="action_accept_logistics_details"
+                                    type="object"
+                                    string="Add line"
+                                    class="oe_highlight"
+                            />
+                            <field name="logistics_company_so" string="Freight Forwarder" invisible="0" readonly="1"/>
+                            <field name="so_logistics_company" invisible="1" readonly="1"/>
+                            <field name="packing_request_so" readonly="1"/>
+                            <field name="notes_cit_so" readonly="1"/>
+                            <field name="pickup_address_so" placeholder="Enter pickup location..." readonly="1"/>
+                            <field name="delivery_address_so" placeholder="Enter delivery location..." readonly="1"/>
+                            <field name="incoterms_cit_so" readonly="1"/>
+                            <field name="weight_cit_so" readonly="1"/>
+                            <field name="booking_number_cit_so" readonly="1"/>
+                            <field name="bol_status_so" readonly="1"/>
+                            <field name="shipment_status_so" readonly="1"/>
+                            <field name="charge_to_customer_so" readonly="1"/>
+                            <field name="driver_so" readonly="1"/>
+                            <field name="third_party_logistics_so" readonly="1"/>
+                            <field name="document_attachment_so" widget="many2many_binary" readonly="1"/>
+                        </group>
+
+                        <group>
+
+                            <button name="action_accept_logistics_details_col2"
+                                    type="object"
+                                    string="Add line"
+                                    class="oe_highlight"/>
+
+                            <field name="logistics_company_so_col" string="Trucking Company" readonly="1"/>
+                            <field name="driver_so_col" readonly="1"/>
+                            <field name="truck_type_so" readonly="1"/>
+
+                            <field name="pickup_address_so_col" readonly="1"/>
+                            <field name="pickup_contact_name_so" readonly="1"/>
+                            <field name="pickup_contact_number_so" readonly="1"/>
+                            <field name="pickup_email_so" readonly="1"/>
+                            <field name="pickup_time_scheduled_so" readonly="1"/>
+                            <field name="pickup_notes_so" colspan="2" readonly="1"/>
+
+                            <field name="delivery_address_so_col" readonly="1"/>
+                            <field name="total_cartons_so" readonly="1"/>
+                            <field name="total_palettes_so" readonly="1"/>
+                            <field name="weight_cit_so_col" readonly="1"/>
+                            <field name="goods_description_so" colspan="2" readonly="1"/>
+                            <field name="delivery_notes_so" colspan="2" readonly="1"/>
+
+
+                            <field name="delivery_doc_upload_so"
+                                   widget="many2many_binary"
+                                   string="Delivery Documentation"
+                                   readonly="1"/>
+                            <div style="font-size:12px; line-height:14px; color:#6D707A; margin-top:4px; margin-bottom:4px;">
+                                <span style="display:block;">(Delivery receipt (signed POD), Photos of delivered goods,
+                                    Driver invoice, Any damaged photos)
+                                </span>
+                            </div>
+
+                            <field name="additional_notes_so" colspan="2" readonly="1"/>
+                            <field name="billed_to_customer_so" readonly="1"/>
+                            <field name="charge_to_customer_so_col" readonly="1"/>
+                            <field name="third_party_logistics_so_col" readonly="1"/>
+
+                        </group>
+
+                        <group>
+                            <div style="background:#eef5ff; padding:12px; border-radius:6px; margin-bottom:10px;">
+                                 <span style="font-weight: bold;">Logistics Stage</span>
+                                <field name="logistics_stage"
+                                       readonly="1"
+                                       style="color:#black;"/>
+                            </div>
+
+                        </group>
+
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>

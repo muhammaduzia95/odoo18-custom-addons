@@ -1,0 +1,67 @@
+<odoo>
+    <record id="purchase_order_form_inherit_line_list" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.line.list</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Before product field -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="before">
+<!--                <field name="default_code" string="Item Code"/>-->
+<!--                <field name="barcode" string="UPC"/>-->
+<!--                <field name="categ_id" string="Brand"/>-->
+            </xpath>
+
+            <!-- After product field -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="after">
+                <field name="size" string="Size"/>
+            </xpath>
+
+            <!-- Change string of price_unit in invoice line -->
+            <xpath expr="//field[@name='order_line']//field[@name='price_unit']" position="attributes">
+                <attribute name="string">CS Price</attribute>
+            </xpath>
+
+            <!-- Change string of quantity in invoice line -->
+            <xpath expr="//field[@name='order_line']//field[@name='product_qty']" position="attributes">
+                <attribute name="string">CS Order</attribute>
+            </xpath>
+
+            <!-- Per Unit field added in invoice line -->
+            <xpath expr="//field[@name='order_line']//field[@name='price_unit']" position="before">
+                <field name="per_unit"/>
+            </xpath>
+
+            <!-- Units Quantity field added in invoice line -->
+            <xpath expr="//field[@name='order_line']//field[@name='product_qty']" position="after">
+                <field name="units_quantity"/>
+            </xpath>
+
+            <!-- Add Per-Unit Price fields added in invoice line -->
+            <xpath expr="//field[@name='order_line']//field[@name='price_unit']" position="after">
+                <field name="price_per_unit"/>
+            </xpath>
+
+
+            <!-- Total for CS Order (product_qty) -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_qty']" position="attributes">
+                <attribute name="string">CS Order</attribute> <!-- keep your label -->
+                <attribute name="sum">Total CS</attribute>
+            </xpath>
+
+            <!-- Ensure currency is present (needed for monetary totals) -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']" position="before">
+                <field name="currency_id" invisible="1"/>
+            </xpath>
+
+            <!-- Total for Subtotal/Amount -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']" position="attributes">
+                <attribute name="widget">monetary</attribute>
+                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+                <attribute name="sum">Total Amount</attribute>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>

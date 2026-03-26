@@ -1,0 +1,17 @@
+<odoo>
+    <record id="module_category_quran_academy_payroll" model="ir.module.category">
+        <field name="name">Quran Academy Payroll</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="group_disable_extra_pages" model="res.groups">
+        <field name="name">Display Extra Pages</field>
+        <field name="category_id" ref="module_category_quran_academy_payroll"/>
+    </record>
+
+    <record id="group_employee_eobi" model="res.groups">
+        <field name="name">View EOBI Info</field>
+        <field name="category_id" ref="module_category_quran_academy_payroll"/>
+        <field name="comment">The user will be able to view EOBI.</field>
+    </record>
+</odoo>

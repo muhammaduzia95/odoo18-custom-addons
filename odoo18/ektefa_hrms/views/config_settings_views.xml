@@ -1,0 +1,225 @@
+<odoo>
+
+    <!-- Ektefa HRMS Form View For Conf Settings-->
+    <record id="res_config_settings_view_form_ektefa_payroll" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ektefa.payroll
+        </field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form"
+                   position="inside">
+                    <app data-string="Ektefa HRMS" string="Ektefa HRMS" name="ektefa_hrms" groups="ektefa_hrms.group_ektefa_user">
+
+                        <block title="Ektefa HRMS - اكتفاء نظام الموارد البشرية" id="ektefa_hrms_setting" name="ektefa_hrms_setting_container" >
+                            <setting class="col-lg-7" string="Ektefa API Details - بيانات الربط البرمجي" company_dependent="1">
+                                <field name="enable_ektefa_integration"/>
+                                <div class="content-group" invisible="not enable_ektefa_integration">
+                                    <div class="mt16">
+                                        <div>
+                                            <span>Enter EKTEFA API details to configure.</span>
+                                        </div>
+                                        <div>
+                                            <span>.الرجاء ادخال بيانات الربط البرمجي من صفحة  إدارة API في نظام اكتفاء</span>
+                                        </div>
+                                        <br/>
+                                        <div>
+                                            <label for="ektefa_api_key" string="API Key - مفتاح API" class="col-6 o_light_label"/>
+                                            <field name="ektefa_api_key" required="enable_ektefa_integration"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content-group" invisible="not enable_ektefa_integration">
+                                    <div class="mt16">
+                                        <div>
+                                            <label for="ektefa_secret" string="Authorization Secret - سر" class="col-6 o_light_label"/>
+                                            <field name="ektefa_secret" password="True" required="enable_ektefa_integration"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </setting>
+
+                            <group/>
+                            <group/>
+                            <setting  string="Ektefa Company ID - حدد الشركة" invisible="not enable_ektefa_integration">
+                                <div class="row mt8">
+                                    <div>
+                                        <label for="ektefa_company_id" string="Company ID - رمز الشركة" class="col-lg-6 o_light_label"/>
+                                        <field name="ektefa_company_id" required="enable_ektefa_integration"/>
+                                    </div>
+                                </div>
+                            </setting>
+
+                            <setting  string="Auto Journal Entry Post - الترحيل التلقائي للقيود" invisible="not enable_ektefa_integration">
+                                <field name="enable_ektefa_journal_posts" invisible="not enable_ektefa_integration"/>
+                                <div class="content-group" invisible="not enable_ektefa_integration">
+                                    <div class="mt16">
+                                        <div>
+                                            <span>Enable Automatic Journal Entry Posting from Ektefa APIs.</span>
+                                        </div>
+                                        <div>
+                                            <span>.تفعيل الترحيل التلقائي للقيود مباشرة فور ورودها من نظام اكتفاء</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </setting>
+                        </block>
+
+                        <block title="Ektefa Journal - دفتر اكتفاء" id="ektefa_jpurnal_account" invisible="not enable_ektefa_integration">
+                            <setting  string="Post Ektefa entries in - يتم إضافة القيود في">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_journal_id" class="col-lg-6 o_light_label" string="Ektefa Journal - حدد دفتر اكتفاء" />
+                                            <field name="ektefa_journal_id" required="enable_ektefa_integration"/>
+                                        </div>
+                                    </div>
+                            </setting>
+                        </block>
+
+                        <block title="Ektefa Payrun Accounts - اعدادات قيود الرواتب" id="ektefa_payrun_accounts" invisible="not enable_ektefa_integration">
+                            <setting class="col-lg-7"  string="Salaries Basic + Accommodation - حساب قيد الراتب الأساسي + بدل السكن" >
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_salaries_basic_accommodation_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_salaries_basic_accommodation_credit_account"/>
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_salaries_basic_accommodation_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_salaries_basic_accommodation_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                            <setting  string="Allowances - حساب قيد بقية البدلات">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_allowances_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_allowances_credit_account" />
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_allowances_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_allowances_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                            <setting  string="Additions - حساب قيد الإضافات">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_additions_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_additions_credit_account" />
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_additions_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_additions_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                            <group/>
+                            <group/>
+                            <setting  string="Deductions - حساب قيد الحسميات">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_deductions_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_deductions_credit_account" />
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_deductions_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_deductions_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                            <setting  string="Deductions Gosi - حساب قيد حسميات التأمينات على الموظف">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_deductions_gosi_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_deductions_gosi_credit_account" />
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_deductions_gosi_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_deductions_gosi_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                        </block>
+
+<!--                        <block title="Ektefa Payrun Credit Accounts" id="ektefa_deductions_accounts" invisible="not enable_ektefa_integration">-->
+<!--                            <setting  string="Deductions - حساب قيد الحسميات">-->
+<!--                                    <div class="content-group">-->
+<!--                                        <div class="row mt8">-->
+<!--                                            <label for="ektefa_deductions_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>-->
+<!--                                            <field name="ektefa_deductions_credit_account" />-->
+<!--                                        </div>-->
+<!--                                        <div class="row mt8">-->
+<!--                                            <label for="ektefa_deductions_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>-->
+<!--                                            <field name="ektefa_deductions_debit_account" />-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                            </setting>-->
+<!--                            <setting  string="Deductions Gosi - حساب قيد حسميات التأمينات على الموظف">-->
+<!--                                    <div class="content-group">-->
+<!--                                        <div class="row mt8">-->
+<!--                                            <label for="ektefa_deductions_gosi_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>-->
+<!--                                            <field name="ektefa_deductions_gosi_credit_account" />-->
+<!--                                        </div>-->
+<!--                                        <div class="row mt8">-->
+<!--                                            <label for="ektefa_deductions_gosi_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>-->
+<!--                                            <field name="ektefa_deductions_gosi_debit_account" />-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                            </setting>-->
+<!--                        </block>-->
+
+                        <block title="Ektefa End of Service Accounts - اعدادات قيود نهاية الخدمة" id="ektefa_eos_accounts" invisible="not enable_ektefa_integration">
+                            <setting  string="EOS Accounts - حسابات نهاية الخدمة" class="col-lg-12">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_eos_net_total_debit_account" string="Net Total - حساب قيد صافي المستلم" class="col-lg-5 o_light_label"/>
+                                            <field name="ektefa_eos_net_total_debit_account"/>
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_eos_net_total_debit_account_2" string="Deductions - حساب قيد الحسميات من نهاية الخدمة" class="col-lg-5 o_light_label"/>
+                                            <field name="ektefa_eos_net_total_debit_account_2" />
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_eos_net_total_credit_account" string="Allowance - حساب قيد استحقاق نهاية الخدمة" class="col-lg-5 o_light_label"/>
+                                            <field name="ektefa_eos_net_total_credit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                        </block>
+
+                        <block title="Ektefa Loans Accounts - اعدادات قيد السلف" id="ektefa_loans_accounts" invisible="not enable_ektefa_integration">
+                            <setting  string="Loans - السلف"  class="col-lg-6">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_loans_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_loans_credit_account"/>
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_loans_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_loans_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                        </block>
+
+                        <block title="Ektefa Loans Settlement Accounts - اعدادات قيد اقفال السلفة للموظف" id="ektefa_loans_settlement_accounts" invisible="not enable_ektefa_integration">
+                            <setting  string="Loans Settlement - سداد السلفه للموظف"  class="col-lg-6">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="ektefa_loans_settlement_credit_account" string="Credit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_loans_settlement_credit_account"/>
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="ektefa_loans_settlement_debit_account" string="Debit Account" class="col-lg-4 o_light_label"/>
+                                            <field name="ektefa_loans_settlement_debit_account" />
+                                        </div>
+                                    </div>
+                            </setting>
+                        </block>
+
+                    </app>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

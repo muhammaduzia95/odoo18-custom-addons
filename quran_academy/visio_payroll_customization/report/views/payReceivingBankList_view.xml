@@ -1,0 +1,69 @@
+<odoo>
+
+    <!-- Tree View - Pay Receiving Bank List QA -->
+    <record id="view_pay_receiving_bank_list_tree_qa" model="ir.ui.view">
+        <field name="name">pay.receiving.bank.list.tree.qa</field>
+        <field name="type">list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id"/>
+                <field name="net_payable"/>
+            </list>
+        </field>
+    </record>
+
+    <!--  Groups & Filters  -->
+    <record id="view_pay_receiving_bank_list_search_qa" model="ir.ui.view">
+        <field name="name">pay.receiving.bank.list.search.qa</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Filters -->
+                <filter string="Done"
+                        name="filter_done"
+                        domain="[('state', '=', 'done')]"/>
+                <separator/>
+
+                <filter string="Month"
+                        name="filter_by_month"
+                        date="date_from"/>
+                <separator/>
+
+                <filter string="Not Paid in Cash"
+                        name="filter_cash"
+                        domain="[('paid_by', '!=', 'cash')]"/>
+                <separator/>
+
+                <!-- Group By -->
+                <filter string="First Child Department"
+                        name="group_by_first_child_department"
+                        context="{'group_by': 'first_child_dep'}"/>
+                <filter string="Paid By"
+                        name="group_by_paid_by"
+                        context="{'group_by': 'paid_by'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!--  Action  -->
+    <record id="action_pay_receiving_bank_list_qa" model="ir.actions.act_window">
+        <field name="name">Pay Receiving Bank List</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="visio_payroll_customization.view_pay_receiving_bank_list_tree_qa"/>
+        <field name="search_view_id" ref="visio_payroll_customization.view_pay_receiving_bank_list_search_qa"/>
+        <field name="context">
+            {
+            "search_default_filter_done": 1,
+            "search_default_filter_by_month": 1,
+            "search_default_filter_cash": 1,
+
+            "search_default_group_by_first_child_department": 1,
+            "search_default_group_by_paid_by": 1
+            }
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,61 @@
+<odoo>
+    <record id="view_api_log_list" model="ir.ui.view">
+        <field name="name">ektefa.api.log.list</field>
+        <field name="model">ektefa.api.log</field>
+        <field name="arch" type="xml">
+            <list
+                    edit="0" create="0" sample="1" delete="0"
+                    decoration-danger="status == 'error'"
+                    decoration-success="status == 'success'"
+                    decoration-warning="status == 'warning'"
+            >
+                <field name="name"/>
+                <field name="request_timestamp"/>
+                <field name="response_timestamp"/>
+                <field name="company_id"/>
+                <field name="status" widget="badge"
+                       decoration-danger="status == 'error'"
+                       decoration-success="status == 'success'"
+                       decoration-warning="status == 'warning'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_api_log_form" model="ir.ui.view">
+        <field name="name">ektefa.api.log.form</field>
+        <field name="model">ektefa.api.log</field>
+        <field name="arch" type="xml">
+            <form  edit="0" create="0" delete="0">
+                <sheet>
+                    <widget name="web_ribbon" title="Error" bg_color="text-bg-danger" invisible="status != 'error'"/>
+                    <widget name="web_ribbon" title="Success" bg_color="text-bg-success" invisible="status != 'success'"/>
+                    <widget name="web_ribbon" title="Warning" bg_color="text-bg-warning" invisible="status != 'warning'"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="request_timestamp"/>
+                            <field name="status" widget="badge"
+                                   decoration-danger="status == 'error'"
+                                   decoration-success="status == 'success'"
+                                   decoration-warning="status == 'warning'" invisible="1"/>
+                            <field name="response_timestamp"/>
+                            <field name="error_message" invisible="not error_message"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="api_request_data" string="Request Data">
+                            <field name="request_data" widget="text"/>
+                        </page>
+                        <page name="api_response_data" string="Response Data">
+                            <field name="response_data" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

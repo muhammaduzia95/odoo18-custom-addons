@@ -1,0 +1,53 @@
+<!--quran_academy\visio_payroll_customization\report\yearly_gross_salary_statement_worker.xml-->
+<odoo>
+    <!-- wizard form -->
+    <record id="view_yearly_gross_salary_wizard_form" model="ir.ui.view">
+        <field name="name">yearly.gross.salary.wizard.form</field>
+        <field name="model">yearly.gross.salary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Period">
+                <group>
+                    <field name="year" invisible="1"/>
+                    <field name="month_from"/>
+                    <field name="month_to"/>
+                </group>
+                <footer>
+                    <button string="Print Report"
+                            type="object"
+                            name="action_print_report"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- action to open wizard -->
+    <record id="action_yearly_gross_salary_wizard" model="ir.actions.act_window">
+        <field name="name">Yearly Gross Salary Report</field>
+        <field name="res_model">yearly.gross.salary.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_yearly_gross_salary_statement_worker"
+              name="Yearly Gross Salary Statement Worker"
+              parent="visio_payroll_customization.menu_payroll_reporting"
+              sequence="120"
+              action="action_yearly_gross_salary_wizard"/>
+    <!--    &lt;!&ndash; Action that points straight to the HTTP route &ndash;&gt;-->
+    <!--    <record id="action_yearly_gross_salary_statement_worker"-->
+    <!--            model="ir.actions.act_url">-->
+    <!--        <field name="name">Yearly Gross Salary Statement Worker</field>-->
+    <!--        <field name="type">ir.actions.act_url</field>-->
+    <!--        <field name="url">/yearly_gross_salary_statement_worker/export</field>-->
+    <!--        <field name="target">new</field>-->
+    <!--    </record>-->
+
+    <!--    &lt;!&ndash; Menu item &ndash;&gt;-->
+    <!--    <menuitem id="menu_yearly_gross_salary_statement_worker"-->
+    <!--              name="Yearly Gross Salary Statement Worker"-->
+    <!--              parent="visio_payroll_customization.menu_payroll_reporting"-->
+    <!--              sequence="120"-->
+    <!--              action="action_yearly_gross_salary_statement_worker"/>-->
+</odoo>

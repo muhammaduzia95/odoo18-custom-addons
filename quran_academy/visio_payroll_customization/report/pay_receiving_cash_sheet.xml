@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pay_cash_sheet_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    @font-face {
+                    font-family: "Jameel";
+                    src: url('/visio_payroll_customization/static/font/jameel.ttf') format("woff");
+                    font-weight: normal;
+                    font-style: normal;
+                    }
+                    body { font-family: "Jameel"; }
+                    th, td { border: 1px solid black; line-height: 1.0; }
+                    table { border: 1px solid black; }
+                    .payslip-block { page-break-inside: avoid; margin-bottom:40px; }
+                </style>
+
+                <div class="page" style="font-family: 'Jameel';">
+                    <t t-set="record_number" t-value="1"/>
+                    <!-- counter to insert a break after every two blocks -->
+                    <t t-set="idx" t-value="0"/>
+
+                    <!-- ✅ Build departments in same sequential order as cash list -->
+                    <t t-set="departments" t-value="[]"/>
+                    <t t-foreach="docs" t-as="slip">
+                        <t t-if="slip.first_child_dep and slip.first_child_dep not in departments">
+                            <t t-set="departments" t-value="departments + [slip.first_child_dep]"/>
+                        </t>
+                    </t>
+
+                    <t t-foreach="departments" t-as="department">
+
+
+                        <!-- ✅ Build unique employee list inside department -->
+                        <t t-set="employees" t-value="[]"/>
+                        <t t-foreach="docs.filtered(lambda p: p.first_child_dep == department)" t-as="payslip">
+                            <t t-if="payslip.employee_id.id not in employees">
+                                <t t-set="employees" t-value="employees + [payslip.employee_id.id]"/>
+                                <t t-set="idx" t-value="idx + 1"/>
+
+
+                                <!-- existing payslip block -->
+                                <table style="width:100%; border:none; border-collapse:collapse; background:#fff;">
+                                    <tr style=" border-color:white;">
+                                        <td style="border:none; width:60px; background:#fff;">
+                                            <img t-att-src="'/visio_payroll_customization/static/img/bg.png'"
+                                                 style="height:100px; width:75px;" alt="Logo"/>
+                                        </td>
+                                        <td style="border:none; text-align:center; background:#fff;">
+                                            <h2 style="margin-bottom:8px;margin-top:15px;text-align:center;font-family: 'Jameel';">
+                                                مرکزی انجمن خدام القرآن لاہور
+                                            </h2>
+                                        </td>
+                                        <td style="border:none; width:60px; background:#fff;"></td>
+                                    </tr>
+                                </table>
+
+
+                                <div class="payslip-block">
+                                    <!-- department & month -->
+                                    <div style="text-align:center;font-weight:bold; margin-top:25px;">
+                                        <h3 style="color:#000080;">
+                                            <t t-esc="payslip.employee_id.department_id.name"/>
+                                        </h3>
+                                        <h4 style="font-weight:bold;margin-bottom:10px;">
+                                            <t t-esc="month"/>
+                                        </h4>
+                                        <h4 style="font-size:18px; margin-top:5px; margin-bottom:1px;">
+                                            #
+                                            <t t-esc="record_number"/>
+                                        </h4>
+                                    </div>
+
+                                    <!-- W-Code / Name / Designation -->
+                                    <div class="row border-bottom mb-3">
+                                        <div class="col-6" style="text-align:left;">
+                                            <p style="margin-bottom:2px;font-size:18px;">
+                                                <strong>W Code:</strong>
+                                                <t t-esc="payslip.worker_code"/>
+                                            </p>
+                                            <p style="margin-bottom:2px;font-size:18px;">
+                                                <strong>Name:</strong>
+                                                <t t-esc="payslip.employee_id.name"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-6" style="text-align:right;">
+                                            <p style="margin-bottom:2px;font-size:18px;">
+                                                <strong>Designation:</strong>
+                                                <t t-esc="payslip.employee_id.job_title"/>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Salary Detail & Deductions tables -->
+                                    <div class="row justify-content-between">
+                                        <!-- Salary Detail -->
+                                        <div class="col-4">
+                                            <p class="text-center"
+                                               style="font-weight:bold;font-size:23px;text-decoration:underline;">
+                                                Salary Detail
+                                            </p>
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td>Rate P Month</td>
+                                                    <td t-esc="payslip.rate_per_month"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Other Duty</td>
+                                                    <td t-esc="payslip.other_duty"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Over Time</td>
+                                                    <td t-esc="'{:.2f}'.format(payslip.over_time_value)"/>
+                                                    <td>/</td>
+                                                    <td style="width:60px;text-align:right;" t-esc="payslip.over_time"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Without Pay</td>
+                                                    <td t-esc="'{:.2f}'.format(payslip.wo_pay_value)"/>
+                                                    <td>/</td>
+                                                    <td style="width:60px;text-align:right;" t-esc="payslip.wo_pay"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Arrear / Night Allow</td>
+                                                    <td t-esc="payslip.ext_arrear_night"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Medical</td>
+                                                    <td t-esc="payslip.medical"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Leave Encash</td>
+                                                    <td t-esc="'{:.2f}'.format(payslip.leave_in_cash_value)"/>
+                                                    <td>/</td>
+                                                    <td style="width:60px;text-align:right;"
+                                                        t-esc="payslip.leave_in_cash"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Attendance Star</td>
+                                                    <td t-esc="'{:.2f}'.format(payslip.attendance_star_value)"/>
+                                                    <td>/</td>
+                                                    <td style="width:60px;text-align:right;"
+                                                        t-esc="payslip.attendance_star"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Other Deduction</td>
+                                                    <td t-esc="payslip.other_deduction"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Special Allowance</td>
+                                                    <td t-esc="payslip.special_allowance_qa"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Gross Total</strong>
+                                                    </td>
+                                                    <td t-esc="payslip.gross_total"/>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- Deductions -->
+                                        <div class="col-4">
+                                            <p class="text-center"
+                                               style="font-weight:bold;font-size:23px;text-decoration:underline;">
+                                                Deductions
+                                            </p>
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td>Loan Recovery</td>
+                                                    <td t-esc="payslip.loan_recovery"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Rent</td>
+                                                    <td t-esc="payslip.h_rent"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Advance Salary</td>
+                                                    <td t-esc="payslip.adv_salary"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Income Tax</td>
+                                                    <td t-esc="payslip.income_tax"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Provident Fund</td>
+                                                    <td t-esc="payslip.prov_fund"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Emp. EOBI+ Arrear</td>
+                                                    <td t-esc="payslip.eobi_worker"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mess Bill</td>
+                                                    <td t-esc="payslip.tel_bill"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Electricity / Gas Bill</td>
+                                                    <td t-esc="payslip.elec_gas_bill"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vehicle Charges</td>
+                                                    <td t-esc="payslip.veh_charges"/>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Total Deductions</strong>
+                                                    </td>
+                                                    <td t-esc="payslip.total_deduction"/>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Net payable -->
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="payslip.currency_id.amount_to_text(payslip.net_payable)"/>
+                                            </td>
+                                            <td style="width:20.5%;">
+                                                <strong>Net Payable</strong>
+                                            </td>
+                                            <td style="width:14.5%;" class="text-right">
+                                                <strong t-esc="payslip.net_payable"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="d-flex" style="margin-bottom:-10px; margin-top:-13px;">
+                                        <div style="width:65%;"></div>
+                                        <div style="width:35%;" class="d-flex justify-content-between">
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td style="width:59%;">
+                                                        <strong>EOBI</strong>
+                                                    </td>
+                                                    <td style="width:41%;" class="text-right">
+                                                        <strong t-esc="payslip.emp_eobi"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Remarks & signature -->
+                                    <div class="row justify-content-between" style="margin-top:10px;">
+                                        <div class="col-auto">
+                                            <p style="font-weight:bold;font-size:20px;">Remarks</p>
+                                        </div>
+                                        <div class="col-auto text-right">
+                                            <p style="font-weight:bold;color:#000080;font-size:20px;">
+                                                Receiver's Signature : _______________
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- increment counter -->
+                                    <t t-set="record_number" t-value="record_number + 1"/>
+                                </div>
+
+
+                                <!-- page break after every 2 records -->
+                                <t t-if="(idx % 2) == 0 and (idx != len(employees))">
+                                    <div style="page-break-after:always;"></div>
+                                </t>
+
+                            </t>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,92 @@
+<!--carib_island_trading\visio_cit_email_templates\data\email_template_new_customer.xml-->
+<odoo>
+    <data noupdate="0">
+
+        <record id="email_template_tanisha_new_customer" model="mail.template">
+            <field name="name">Sales: Formal Order to Tanisha (New Customer)</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">{{ object.name }} - Proforma Invoice &amp; Order Details</field>
+            <field name="email_from">{{ object.company_id.email_formatted or '' }}</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="description">Formal sales order email to new customer Tanisha</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p>
+                        Dear Tanisha,
+                        <br/>
+                        <br/>
+                        Please find attached the formal order documents and proforma invoice for your review.
+                    </p>
+
+                    <ul>
+                        <li>
+                            <strong>Sales Order Number:</strong>
+                            <t t-out="object.name or 'N/A'"/>
+                        </li>
+                        <t t-set="invoice" t-value="object.invoice_ids and object.invoice_ids[0]"/>
+                        <li>
+                            <strong>Invoice Number:</strong>
+                            <t t-out="invoice.name if invoice else 'N/A'"/>
+                        </li>
+                    </ul>
+
+                    <p>
+                        As a new customer, we’ve also attached relevant onboarding documents to help you get started.
+                    </p>
+
+                    <p>
+                        Please don’t hesitate to contact us if you have any questions.
+                    </p>
+
+                    <p>
+                        Best regards,
+                        <br/>
+                        Sales Team
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <record id="email_template_tanisha_invoice_new_customer" model="mail.template">
+            <field name="name">Invoice: Formal Invoice to Tanisha (New Customer)</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="subject">Formal Invoice - {{ object.name or 'No Ref' }}</field>
+            <field name="email_from">{{ object.company_id.email_formatted or '' }}</field>
+            <field name="email_to">{{ object.partner_id.email or '' }}</field>
+
+            <field name="description">Used to send an invoice to Tanisha for new customers.</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="font-size: 13px; margin: 0; padding: 0;">
+                        Dear Tanisha,
+                        <br/>
+                        <br/>
+                        Please find attached the formal invoice for your reference:
+                        <ul style="margin: 0; padding-left: 16px;">
+                            <li>
+                                <strong>Invoice Number:</strong>
+                                <t t-out="object.name or 'N/A'"/>
+                            </li>
+                            <li>
+                                <strong>Customer:</strong>
+                                <t t-out="object.partner_id.name or 'N/A'"/>
+                            </li>
+                        </ul>
+                        <br/>
+                        Regards,
+                        <br/>
+                        Accounts Team
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>
+
+

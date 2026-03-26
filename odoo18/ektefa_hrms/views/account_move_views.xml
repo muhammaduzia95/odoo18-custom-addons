@@ -1,0 +1,17 @@
+<odoo>
+<data>
+    <!-- Account Move Form -->
+    <record id="view_move_form_ektefa_payroll" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.ektefa.payroll</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <div/>
+                <field name="ektefa_employee_id" readonly="1" invisible="not ektefa_employee_id or move_type != 'entry'"/>
+                <field name="ektefa_employee_name" readonly="1" invisible="not ektefa_employee_name or move_type != 'entry'"/>
+            </xpath>
+        </field>
+    </record>
+</data>
+</odoo>

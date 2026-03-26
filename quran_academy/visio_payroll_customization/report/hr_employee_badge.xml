@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_employee_badge" inherit_id="hr.print_employee_badge">
+        <xpath expr="//t[@t-call='web.basic_layout']" position="replace">
+<!--            <t t-call="web.external_layout">-->
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="employee">
+                        <!--Main Row-->
+                        <div class="d-flex">
+                            <!-- front side-->
+                            <div style="width: 260pt; height: 175pt; border: 1px solid black; margin:5px; padding: 2px;">
+                                <!-- Company Logo -->
+                                <img t-att-src="'/visio_payroll_customization/static/description/logo/logo.png'"
+                                     style="max-height: 100px; width: 100%;" alt="Company Logo"/>
+
+                                <!-- Main Table Layout -->
+                                <table class="table-borderless"
+                                       style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                                    <tr>
+                                        <!-- Employee Details Table (Left Side) -->
+                                        <td style="width: 70%; vertical-align: top;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td style="text-align:right;">
+                                                        <strong>Name:</strong>
+                                                    </td>
+                                                    <td style="padding-left:8px;">
+                                                        <t t-out="employee.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:right;">
+                                                        <strong>Father's Name:</strong>
+                                                    </td>
+                                                    <td style="padding-left:8px;">
+                                                        <t t-out="employee.father_name or 'N/A'"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:right;">
+                                                        <strong>Designation:</strong>
+                                                    </td>
+                                                    <td style="padding-left:8px;">
+                                                        <t t-out="employee.job_title"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:right;">
+                                                        <strong>Date of App:</strong>
+                                                    </td>
+                                                    <td style="padding-left:8px;">
+                                                        <t t-out="employee.date_of_app.strftime('%d-%b-%y')"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:right;">
+                                                        <strong>Card Validity:</strong>
+                                                    </td>
+                                                    <td style="padding-left:8px;">
+                                                        <t t-out="employee.card_validity_date.strftime('%d-%b-%y')"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                        <!-- Employee Image (Right Side) -->
+                                        <td style="width: 30%; text-align: center; vertical-align: top;">
+                                            <div>
+                                                <img t-att-src="image_data_uri(employee.avatar_1920)"
+                                                     style="max-height: 60pt; max-width: 70pt;"
+                                                     alt="Employee Image"/>
+                                            </div>
+                                            <!-- Worker Code -->
+                                            <div style="font-size:10px;  margin-top: 5px;">
+                                                <t t-out="employee.employee_sequence or 'N/A'"/>
+                                            </div>
+                                            <!-- Issuing Authority -->
+                                            <div style="font-size: 10px; font-weight: bold; border-top:1px dashed black; margin-right:3px;
+                                        margin-left:3px;  margin-top: 22px;">
+                                                Issuing Authority
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- back side-->
+                            <div style="position: relative; width: 260pt; height: 175pt; border: 1px solid black; margin:5px; padding: 10px; overflow: hidden;">
+                                <!-- Blurred Background -->
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                                        background-image: url('/visio_payroll_customization/static/description/logo/bg.png');
+                                        background-size: 100% 100%;
+                                        background-repeat: no-repeat;
+                                        filter: blur(5px);
+                                        opacity:0.3">
+                                </div>
+                                <!-- Top row-->
+                                <div class="d-flex"
+                                     style="font-size:11px; width: 100%;">
+                                    <div>
+                                        <t t-out="employee.employee_sequence or 'N/A'"/>
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center text-center"
+                                         style="margin-left:40px;">
+                                        <span>NIC:</span>
+                                        <span style="border:1px solid black; padding:3px;">
+                                            <t t-out="employee.identification_id or 'N/A'"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-borderless" style="font-size: 11px; margin-top:15px;">
+                                    <!-- Address Row -->
+                                    <tr>
+                                        <td rowspan="" style="font-weight: bold; text-align:right;">Address:</td>
+                                        <td style="text-decoration-style: dashed;">
+                                            <span style="border-bottom:1px dashed black;">
+                                                <t t-out="employee.private_street or 'N/A'"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <!-- Phone Number Row -->
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td colspan="" style="text-align: right; font-weight: bold;">
+                                            Phone No :
+                                            <span style="font-weight: normal; margin-left:5px; border-bottom:1px dashed black;">
+                                                <t t-out="employee.work_phone or 'N/A'"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <!-- Date of Birth & Blood Group -->
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold; ">
+                                            <div class="d-flex justify-content-between">
+                                                <div>Date of Birth:
+                                                    <span style="font-weight: normal; margin-left:5px; border-bottom:1px dashed black;">
+                                                        <t t-out="employee.birthday.strftime('%d-%b-%y') or 'N/A'"/>
+                                                    </span>
+                                                </div>
+                                                <div>Blood Group:
+                                                    <span style="font-weight: normal; margin-left:5px; border-bottom:1px dashed black;">
+                                                        <t t-out="employee.blood_group or 'N/A'"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Marks of Identification -->
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Marks of Identification:
+                                            <span style="font-weight: normal; margin-left:5px; border-bottom:1px dashed black;">
+                                                <t t-out="employee.marks_of_indity or 'N/A'"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

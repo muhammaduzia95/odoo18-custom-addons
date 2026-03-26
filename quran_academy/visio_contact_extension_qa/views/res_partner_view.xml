@@ -1,0 +1,297 @@
+<!--quran_academy\visio_contact_extension_qa\views\res_partner_view.xml-->
+<odoo>
+    <record id="view_partner_form_inherit_qa" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.qa</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet/group" position="before">
+                <group>
+                    <field name="is_member" readonly="1" default="True"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="attributes">
+                <attribute name="string">Mobile/Whatsapp</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="string">Tell No</attribute>
+            </xpath>
+            <!--            <xpath expr="//group/group[2]/field[@name='phone']" position="after">-->
+            <!--                <field name="telno_off" string="Tell No Off" widget="phone"/>-->
+            <!--                <field name="ref_name" string="Ref Name / Mobile No." widget="phone"/>-->
+            <!--            </xpath>-->
+
+            <!-- Change the placeholders of Street 1 and Street 2 -->
+            <xpath expr="//div[@class='o_address_format']/field[@name='street']"
+                   position="attributes">
+                <attribute name="placeholder">House / Block</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='o_address_format']/field[@name='street2']"
+                   position="attributes">
+                <attribute name="placeholder">Area</attribute>
+            </xpath>
+
+            <!--  Adding Street 3 field in the view  -->
+            <xpath expr="//div[@class='o_address_format']/field[@name='street2']" position="after">
+                <field name="street3_qa" placeholder="City" class="o_address_street"
+                       readonly="type == 'contact' and parent_id"/>
+            </xpath>
+
+            <!-- Adding new field City, by replacing it -->
+            <xpath expr="//div[@class='o_address_format']/field[@name='city']"
+                   position="replace">
+                <field name="city_qacademy"
+                       placeholder="District"
+                       class="o_address_city"/>
+            </xpath>
+
+            <!-- Adding new field State, by replacing it -->
+            <xpath expr="//div[@class='o_address_format']/field[@name='state_id']"
+                   position="replace">
+                <field name="state_qacademy"
+                       placeholder="Province"
+                       class="o_address_state"/>
+            </xpath>
+
+            <!-- Adding new field Country, by replacing it-->
+            <xpath expr="//div[@class='o_address_format']/div[@name='partner_address_country']"
+                   position="replace">
+                <field name="country_qacademy"
+                       placeholder="Country"
+                       class="o_address_country"/>
+            </xpath>
+
+            <!--  Adding buttons in the header  -->
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="%(visio_contact_extension_qa.action_transaction_create)d"
+                            type="action"
+                            string="Create Transaction"
+                            class="btn-primary"
+                            context="{'default_tran_members': id}"
+                            groups="visio_contact_extension_qa.group_hide_button_tran"/>
+
+                    <button name="print_khabarname_label"
+                            type="object"
+                            string="Lable KhabarName"
+                            class="btn-secondary"
+                            groups="visio_contact_extension_qa.group_hide_button_kn"/>
+
+                </header>
+            </xpath>
+
+            <!--  Adding custom fields in the header section, on left side -->
+            <xpath expr="//sheet/group/group[1]" position="inside">
+                <field name="ac_numnber_qa"/>
+                <field name="acno_qa"/>
+                <field name="gender_qa"/>
+                <field name="trans_date_qa" readonly="0"/>
+                <field name="rec_no_qa" readonly="0"/>
+                <field name="paid_by_qa"/>
+                <field name="special"/>
+                <field name="urdu_lable" widget="boolean_toggle"/>
+                <field name="urdu_name"/>
+                <field name="urdu_address"/>
+                <field name="urdu_address1"/>
+                <field name="urdu_address2"/>
+            </xpath>
+
+            <!--  Adding custom fields in the header section, on right side -->
+            <xpath expr="//sheet/group/group[2]" position="inside">
+                <field name="telno_off"/>
+                <field name="ref_name"/>
+                <field name="ref_mobile_qa"/>
+                <field name="whatsapp_status_qa"/>
+                <field name="date_of_pay"/>
+                <field name="mem_date"/>
+                <field name="ftcontb" readonly="0"/>
+                <field name="mlcontb" readonly="0"/>
+                <field name="ch_rcpt_no"/>
+                <field name="show_records_qa"/>
+                <field name="employee_qa" widget="boolean_toggle"/>
+                <field name="label_hold_yn" widget="boolean_toggle"/>
+                <field name="by_hand_qa" widget="boolean_toggle"/>
+                <field name="mablagh" help="مبلغ"/>
+                <field name="basorat" help="بصورت"/>
+                <field name="baabat" help="بابت"/>
+            </xpath>
+
+
+            <!--  Adding "group" to the fields/pages that we don't want to show-->
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='title']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='function']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//field[@name='image_1920']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="groups">base.group_user,!visio_contact_extension_qa.group_hide_tabs_qa</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!-- We are adding our custom groups/filters for the search, in contacts -->
+    <record id="view_partner_search_inherit_contact_type" model="ir.ui.view">
+        <field name="name">res.partner.search.inherit.contact_type</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+
+            <!-- Adding selection groups -->
+            <xpath expr="//group[@name='group_by']" position="inside">
+
+                <filter name="group_by_contact_type"
+                        string="Contact Type"
+                        context="{'group_by': 'show_records_qa'}"
+                />
+
+                <filter name="group_by_contact_type"
+                        string="Special"
+                        context="{'group_by': 'special'}"
+                />
+
+                <filter name="group_by_contact_type"
+                        string="Gender"
+                        context="{'group_by': 'gender_qa'}"
+                />
+
+                <filter name="group_by_contact_type"
+                        string="Date of Pay"
+                        context="{'group_by': 'date_of_pay'}"
+                />
+
+                <filter name="group_by_contact_type"
+                        string="Member Date"
+                        context="{'group_by': 'mem_date'}"
+                />
+
+            </xpath>
+
+            <!-- Adding boolean filters -->
+            <xpath expr="//filter[@name='inactive']" position="after">
+
+                <separator/>
+                <filter name="filter_urdu_label"
+                        string="Urdu Label"
+                        domain="[('urdu_lable', '=', True)]"/>
+                <separator/>
+
+                <filter name="filter_employee"
+                        string="Employee"
+                        domain="[('employee_qa', '=', True)]"/>
+
+                <filter name="filter_member"
+                        string="Is Member"
+                        domain="[('is_member', '=', True)]"/>
+
+                <separator/>
+
+                <filter name="filter_label_hold"
+                        string="Label Hold"
+                        domain="[('label_hold_yn', '=', True)]"/>
+                <separator/>
+
+                <filter name="filter_by_hand"
+                        string="By Hand"
+                        domain="[('by_hand_qa', '=', True)]"/>
+
+            </xpath>
+
+            <!-- Adding char as search -->
+            <xpath expr="//field[@name='name']" position="after">
+
+                <!-- number-type fields -->
+                <field name="ac_numnber_qa" string="A/C Number"
+                       filter_domain="[('ac_numnber_qa', 'ilike', self)]"/>
+                <field name="acno_qa" string="ACNO"
+                       filter_domain="[('acno_qa', 'ilike', self)]"/>
+                <field name="rec_no_qa" string="Receipt No."
+                       filter_domain="[('rec_no_qa', 'ilike', self)]"/>
+
+                <!-- text fields -->
+                <field name="paid_by_qa" string="Paid By"
+                       filter_domain="[('paid_by_qa', 'ilike', self)]"/>
+                <field name="urdu_name" string="Urdu Name"
+                       filter_domain="[('urdu_name', 'ilike', self)]"/>
+                <field name="urdu_address" string="Urdu Address"
+                       filter_domain="[('urdu_address', 'ilike', self)]"/>
+
+                <!-- amount / misc fields -->
+                <field name="mablagh" string="Mablagh"
+                       filter_domain="[('mablagh', 'ilike', self)]"/>
+                <field name="basorat" string="Basorat"
+                       filter_domain="[('basorat', 'ilike', self)]"/>
+                <field name="baabat" string="Baabat"
+                       filter_domain="[('baabat',  'ilike', self)]"/>
+
+                <!-- gender quick search (M / F / O) -->
+                <field name="gender_qa" string="Gender"
+                       filter_domain="[('gender_qa', 'ilike', self)]"/>
+
+            </xpath>
+
+            <!-- Remove the Tag field -->
+            <xpath expr="//field[@name='category_id']" position="replace"/>
+
+            <!-- Remove the Salesperson filter in group_by -->
+            <xpath expr="//filter[@name='salesperson']" position="replace"/>
+
+            <!-- Remove the Related Company filter in group_by -->
+            <xpath expr="//filter[@name='group_company']" position="replace"/>
+
+            <!-- Replace the Country (odoo) with our Country field in group_by -->
+            <xpath expr="//filter[@name='group_country']" position="replace">
+                <filter name="group_country_qacademy"
+                        string="Country"
+                        context="{'group_by': 'country_qacademy'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="path">contacts</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_is_company': True , 'search_default_filter_member':1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Contact in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your contacts.
+            </p>
+        </field>
+    </record>
+
+</odoo>

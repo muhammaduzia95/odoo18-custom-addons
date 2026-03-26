@@ -1,0 +1,85 @@
+<!--quran_academy\visio_payroll_customization\views\payrollSheet_view.xml-->
+<odoo>
+
+    <!-- Tree View - Payroll Sheet QA -->
+    <record id="view_payroll_sheet_tree_qa" model="ir.ui.view">
+        <field name="name">payroll.sheet.tree.qa</field>
+        <field name="type">list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Payroll Sheet" create="false" expand="1">
+                <field name="worker_code" string="W Code"/>
+                <field name="employee_job_title" string="Designation"/>
+                <field name="contract_id" string="Name"/>
+                <field name="rate_per_month" string="Rate PM" sum="total"/>
+                <field name="other_duty" string="Oth Duty" sum="total"/>
+                <field name="over_time" string="Over Time"/>
+                <field name="wo_pay" string="W/O Pay"/>
+                <field name="ext_arrear_night" string="Ar / Night" sum="total"/>
+                <field name="other_deduction" string="Other Deduction" sum="total"/>
+                <field name="special_allowance_qa" string="Special Allow" sum="total"/>
+                <field name="medical" string="Medical" sum="total"/>
+                <field name="leave_encash" string="L. Encash" sum="total"/>
+                <field name="attendance_star" string="Star" sum="total"/>
+                <field name="gross_total" string="G. Total" sum="total"/>
+                <field name="loan_recovery" string="Loan Recovery" sum="total"/>
+                <field name="adv_salary" string="Advance" sum="total"/>
+                <field name="prov_fund" string="Pr. Fund" sum="total"/>
+                <field name="income_tax" string="I. Tax" sum="total"/>
+                <field name="veh_charges" string="Veh Ch" sum="total"/>
+                <field name="tel_bill" string="Mess Bill" sum="total"/>
+                <field name="h_rent" string="H. Rent" sum="total"/>
+                <field name="elec_gas_bill" string="Elec Bill" sum="total"/>
+                <field name="eobi_worker" string="W. EOBI" sum="total"/>
+                <field name="eobi_worker_diff" string="Arrear" sum="total"/>
+                <field name="total_deduction" string="Tot Ded" sum="total"/>
+                <field name="net_payable" string="Net Pay" sum="total"/>
+                <field name="emp_eobi" string="Emp. EOBI" sum="total"/>
+                <field name="eobi_emp_diff" string="Arrear" sum="total"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_payroll_sheet_search_qa" model="ir.ui.view">
+        <field name="name">payroll.sheet.search.qa</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Current Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter string="First Child Department"
+                        name="group_by_first_child_department"
+                        context="{'group_by': 'first_child_dep'}"/>
+                <separator/>
+                <filter string="Department" name="group_by_department"
+                        context="{'group_by': 'department_name'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_payroll_sheet_qa" model="ir.actions.act_window">
+        <field name="name">Payroll Sheet</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="visio_payroll_customization.view_payroll_sheet_tree_qa"/>
+        <field name="search_view_id" ref="visio_payroll_customization.view_payroll_sheet_search_qa"/>
+        <field name="context">
+            {
+            "search_default_filter_by_month": 1,
+            "search_default_filter_done": 1,
+            "search_default_group_by_first_child_department": 1
+            "search_default_group_by_department": 1
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No payroll sheet records found.
+            </p>
+        </field>
+    </record>
+
+</odoo>

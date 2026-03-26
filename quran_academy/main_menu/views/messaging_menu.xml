@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.MessagingMenu" t-inherit-mode="extension">
+        <xpath expr="//*[@t-name='mail.MessagingMenu']" position="replace">
+        </xpath>
+    </t>
+
+    <!--    <t t-name="mail.Discuss" t-inherit="mail.Discuss" t-inherit-mode="extension" owl="1">-->
+<!--        <xpath expr="//MessagingMenu" position="replace"> </xpath>-->
+<!--    </t>-->
+<!--    <t t-name="mail.MessagingMenu" t-inherit="mail.MessagingMenu" t-inherit-mode="extension" owl="1">-->
+<!--        <xpath expr="//a[hasclass('o_MessagingMenu_toggler')]" position="replace"> </xpath>-->
+<!--    </t>-->
+
+</templates>

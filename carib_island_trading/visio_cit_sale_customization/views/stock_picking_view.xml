@@ -1,0 +1,29 @@
+<!--carib_island_trading\visio_cit_sale_customization\views\stock_picking_view.xml-->
+<odoo>
+    <record id="inherited_stock_picking_form_change_label" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.pcs.order</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="string">Pcs Order</attribute>
+            </xpath>
+
+            <!-- Inject fields before product_id in move_ids_without_package list view -->
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='product_id']" position="before">
+<!--                <field name="barcode"/>-->
+<!--                <field name="size"/>-->
+<!--                <field name="region_cit" string="Region"/>-->
+<!--                <field name="hs_code_cit" string="H.S Code"/>-->
+            </xpath>
+
+            <!-- Inject fields before product_id in move_ids_without_package list view -->
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='product_id']" position="after">
+                <field name="cs_order_cit" string="CS Order"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
+

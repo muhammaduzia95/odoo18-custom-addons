@@ -1,0 +1,292 @@
+<odoo>
+    <record id="view_employee_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_title']" position="before">
+                <h2>
+                    <field name="name_urdu" placeholder="Employee's Urdu Name" style="font-size: min(4vw, 2rem);"/>
+                </h2>
+            </xpath>
+            <xpath expr="//page[@name='public']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="department_sequence" string="Department Code" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_id']" position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+                <attribute name="string">Designation</attribute>
+            </xpath>
+            <xpath expr="//field[@name='category_ids']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='work_phone']" position="attributes">
+                <attribute name="widget"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='mobile_phone']" position="attributes">
+                <attribute name="widget">char</attribute>
+            </xpath>
+            <xpath expr="//field[@name='work_email']" position="before">
+                <field name="employee_sequence" string="Worker Code" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='mobile_phone']" position="after">
+                <field name="eobi_num" string="EOBI_NO" required="eobi"/>
+                <field name="date_exit_eobi" string="Date Exit EOBI"/>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="after">
+                <field name="date_of_app" string="Date of App."/>
+                <field name="date_leaving" string="Date of leaving"/>
+                <field name="id_card" string="ID Card" widget="boolean_toggle"/>
+                <field name="eobi" string="EOBI" widget="boolean_toggle"/>
+                <field name="leave_encash" string="Leave Encash 2/3" widget="boolean_toggle"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='personal_information']" position="after">
+                <page name="salary_info" string="Salary Information">
+                    <group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group>
+                            <field name="wage" />
+                            <field name="other_duty"/>
+                            <field name="medical" />
+                            <field name="special_allowance_qa" />
+                            <field name="total_other_ded"/>
+                            <field name="loan_recovery" groups="hr.group_hr_manager"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//notebook//page[@name='personal_information']//field[@name='gender']" position="after">
+                <field name="blood_group" string="Blood Group"/>
+                <field name="marks_of_indity" string="Marks of Indity"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='personal_information']//field[@name='private_phone']" position="after">
+                <field name="father_name" string="Father's Name"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='personal_information']//field[@name='bank_account_id']"
+                   position="after">
+                <field name="acc_num" string="Account NO"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='personal_information']//field[@name='identification_id']"
+                   position="after">
+                <field name="nicno" string="NICNO"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='hr_settings']//field[@name='pin']"
+                   position="after">
+                <field name="card_date" string="Card Date"/>
+                <field name="card_validity_date" string="Card Validity Date"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='hr_settings']//field[@name='barcode']"
+                   position="attributes">
+                <attribute name="string">Card ID</attribute>
+            </xpath>
+            <xpath expr="//header/button[@groups='hr.group_hr_user']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']/group/group[4]" position="replace">
+                <group string="Education">
+                    <field name="certificate"/>
+                    <field name="study_field"/>
+                    <field name="study_school"/>
+                    <separator name="has_work_permit" string="Work Permit" groups="hr.group_hr_manager"/>
+                    <field name="visa_no" groups="hr.group_hr_manager"/>
+                    <field name="permit_no" groups="hr.group_hr_manager"/>
+                    <field name="visa_expire" groups="hr.group_hr_manager"/>
+                    <field name="work_permit_expiration_date" groups="hr.group_hr_manager"/>
+                    <field name="work_permit_name" invisible="1" groups="hr.group_hr_manager"/>
+                    <field name="has_work_permit" widget="work_permit_upload" filename="work_permit_name"
+                           groups="hr.group_hr_manager"/>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']//field[@name='pin']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']//group[@name='active_group']" position="replace">
+                <group string="Status" name="active_group">
+                    <field name="employee_type"/>
+                    <label for="user_id" groups="hr.group_hr_manager"/>
+                    <div class="o_row" groups="hr.group_hr_manager">
+                        <field name="user_id" string="Related User" help=""
+                               domain="[('company_ids', 'in', company_id), ('share', '=', False)]"
+                               context="{'default_create_employee_id': id}" widget="many2one_avatar_user"/>
+                        <button string="Create User" class="btn btn-link" type="object" name="action_create_user"
+                                invisible="user_id"/>
+                    </div>
+                </group>
+            </xpath>
+            <!--            <xpath expr="//div[@name='button_box']/button[@name='action_time_off_dashboard']" position="attributes">-->
+            <!--                <attribute name="groups">hr.group_hr_manager</attribute>-->
+            <!--            </xpath>-->
+            <xpath expr="//page[@name='personal_information']//field[@name='identification_id']" position="attributes">
+                <attribute name="string">CNIC</attribute>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']//field[@name='ssnid']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']//field[@name='passport_id']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']//field[@name='private_car_plate']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']//div[@name='div_km_home_work']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="widget"></attribute>
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="widget"></attribute>
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='country_of_birth']" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_resume_page_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.resume.page.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_skills.hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='skills_resume']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_search_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.search.options</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search//field[@name='name']" position="after">
+                <field name="employee_sequence" filter_domain="[('employee_sequence', '=', self)]" string="Worker Code"/>
+                <field name="department_sequence" string="Department Code"/>
+                <field name="eobi_num" string="EOBI"/>
+            </xpath>
+            <xpath expr="//filter[@name='my_department']" position="after">
+                <separator/>
+                <filter name="id_card_filter" string="ID Card" domain="[('id_card', '=', True)]"/>
+                <filter name="eobi_filter" string="EOBI" domain="[('eobi', '=', True)]"/>
+                <separator/>
+                <filter string="Exit EOBI Date" name="filter_exit_eobi_date" date="date_exit_eobi"/>
+                <filter string="Leaving Date" name="filter_date_leaving" date="date_leaving"/>
+            </xpath>
+
+            <xpath expr="//search" position="inside">
+                <group expand="1" string="Group By">
+                    <filter name="group_by_exit_eobi_date" string="Exit EOBI Date"
+                            context="{'group_by': 'date_exit_eobi'}"/>
+                    <filter name="group_by_leaving_date" string="Leaving Date" context="{'group_by': 'date_leaving'}"/>
+                </group>
+            </xpath>
+            <xpath expr="//group/filter[2]" position="after">
+                <filter name="group_by_department_code" string="Department Code"
+                        context="{'group_by': 'department_sequence'}"/>
+            </xpath>
+            <xpath expr="//field[@name='private_car_plate']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employees_list__inherit" model="ir.ui.view">
+        <field name="name">hr.employee.list.view.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="employee_sequence" string="Worker Code"/>
+            </xpath>
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="name_urdu" string="Name Urdu" optional="hide"/>
+                <field name="date_of_app" string="Date of App." optional="hide"/>
+                <field name="card_date" string="Card Date" optional="hide"/>
+                <field name="blood_group" string="Blood Group" optional="hide"/>
+                <field name="father_name" string="Father's Name" optional="hide"/>
+                <field name="nicno" string="NICNO" optional="hide"/>
+                <field name="marks_of_indity" string="Marks of Indity" optional="hide"/>
+                <field name="card_validity_date" string="Card Validity Date" optional="hide"/>
+                <field name="eobi_num" string="EOBI_NO" optional="hide"/>
+                <field name="date_exit_eobi" string="Date Exit EOBI" optional="hide"/>
+                <field name="date_leaving" string="Date of Leaving" optional="hide"/>
+                <field name="id_card" string="ID Card" optional="hide"/>
+                <field name="eobi" string="EOBI" optional="hide"/>
+                <field name="department_sequence" string="Department Sequence" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_kanban_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.kanban.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field class="float-end" name="employee_sequence" string="Worker Code"/>
+                <div>
+                    <field name="name_urdu" string="Name Urdu"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_skills_search_inherit" model="ir.ui.view">
+        <field name="name">hr.skills.search.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_skills.hr_employee_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_skill_ids']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='resume_line_ids']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_button_timeoff" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_holidays.view_employee_form_leave_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']/button[@name='action_time_off_dashboard']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_button_contacts" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form_smartbutton_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']/button[@name='action_related_contacts']" position="attributes">
+                <attribute name="groups">hr.group_hr_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_create_contracts" model="ir.actions.server">
+        <field name="name">Create Contracts</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_create_contracts()</field>
+    </record>
+
+</odoo>

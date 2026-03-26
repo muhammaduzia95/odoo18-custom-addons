@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_create_transaction_wizard,access.create.transaction.wizard,model_create_transaction_wizard,,1,1,1,1
+access_monthly_due_pdf_wizard,access.monthly.due.pdf.wizard,model_monthly_due_pdf_wizard,,1,1,1,1
+access_elections_wizard,elections.wizard,model_elections_wizard,,1,1,1,1
+access_lables_list_wizard,lables.list.wizard,model_lables_list_wizard,base.group_user,1,1,1,1

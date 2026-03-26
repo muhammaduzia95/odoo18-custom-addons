@@ -1,0 +1,241 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\carib_island_trading\visio_cit_sale_purchase\views\purchase_order_view.xml-->
+<odoo>
+
+    <!-- Inherited the existing view  -->
+    <record id="purchase_order_form_logistics_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.logistics.inherit.freight.forwarder</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="visio_cit_purchase_request.purchase_order_form_logistics"/>
+        <field name="arch" type="xml">
+
+            <!--  Changing the Sting of a field  -->
+            <xpath expr="//field[@name='logistics_company_id']" position="attributes">
+                <attribute name="string">Freight Forwarder</attribute>
+            </xpath>
+
+            <!--  Adding new fields  -->
+            <xpath expr="//field[@name='charge_to_customer']" position="after">
+                <field name="driver"/>
+                <field name="third_party_logistics"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!--  Adding the buttons in the view  -->
+    <record id="purchase_order_form_inherit_next_prev" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.next.previous.buttons</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/header" position="inside">
+
+                <!-- Previous button -->
+                <button name="action_previous_stage_po"
+                        type="object"
+                        string="Previous"
+                        class="btn-primary"/>
+
+                <!-- Next button -->
+                <button name="action_next_stage_po"
+                        type="object"
+                        string="Next"
+                        class="btn-primary"/>
+
+            </xpath>
+
+            <xpath expr="//form/header/field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_rfq_send'][1]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_rfq_send'][2]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_rfq_send'][3]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_create_invoice'][1]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='action_create_invoice'][2]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='button_confirm'][1]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='button_confirm'][2]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='print_quotation'][1]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='print_quotation'][2]" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='button_cancel']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='button_draft']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+
+            <xpath expr="//form/header/button[@name='button_done']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='button_unlock']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <xpath expr="//form/header/button[@name='confirm_reminder_mail']" position="attributes">
+                <attribute name="class">btn-primary</attribute>
+            </xpath>
+
+            <!--            <xpath expr="//form/header" position="before">-->
+            <!--                <div class="">-->
+            <!--                    <field name="state" widget="statusbar"-->
+            <!--                           statusbar_visible="draft,sent,purchase,cancel,to approve,done" readonly="1"-->
+            <!--                           style="border: 2px solid green;" class="bg-success"/>-->
+            <!--                </div>-->
+            <!--            </xpath>-->
+
+            <!-- Make the state field editable -->
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute name="options">{'clickable': '1'}</attribute>
+                <attribute name="widget">statusbar</attribute>
+                <attribute name="statusbar_visible">sent,cancel,draft,to approve,purchase,done</attribute>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <!--GRAND VIEW PO-->
+    <record id="inherit_purchase_order_logistics_clean" model="ir.ui.view">
+        <field name="name">inherit.purchase.order.logistics.clean</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="visio_cit_purchase_request.purchase_order_form_logistics"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page[@name='logistics']" position="replace">
+
+                <page string="Logistics">
+                    <field name="logistics_ids" mode="list,form">
+                        <list editable="bottom">
+                            <field name="shipping_method_id"/>
+                            <field name="sub_shipping_id" domain="[('shipping_method_id','=',shipping_method_id)]"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="company_email_cit" optional="hide"/>
+                            <field name="origin_custom_clearance" optional="hide"/>
+                            <field name="pickup_address_port" optional="hide"/>
+                            <field name="delivery_address_port" optional="hide"/>
+                            <field name="destination_customs_clearance" optional="hide"/>
+                            <field name="price_quoted_ff" optional="hide"/>
+                            <field name="container_size_sea" optional="hide"/>
+                            <field name="transit_time_cit" optional="hide"/>
+                            <field name="quote_validation_date" optional="hide"/>
+                            <field name="price"/>
+                            <!--<field name="charge_to_customer"/>-->
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='logistics_details']" position="replace">
+                <page string="Logistics Details">
+                    <group col="3">
+                        <group>
+                            <field name="logistics_company_id" string="Freight Forwarder" invisible="0"/>
+                            <field name="logistics_company_main" invisible="1"/>
+                            <field name="packing_request"/>
+                            <field name="notes_cit"/>
+                            <field name="pickup_address" placeholder="Enter pickup location..."/>
+                            <field name="delivery_address" placeholder="Enter delivery location..."/>
+                            <field name="incoterms_cit"/>
+                            <field name="weight_cit"/>
+                            <field name="booking_number_cit"/>
+                            <field name="bol_status"/>
+                            <field name="shipment_status"/>
+                            <field name="charge_to_customer"/>
+                            <field name="driver"/>
+                            <field name="third_party_logistics"/>
+                            <field name="document_attachment_ids" widget="many2many_binary"/>
+                        </group>
+
+                        <group>
+                            <field name="logistics_company_col" string="Trucking Company"/>
+                            <field name="driver_col"/>
+                            <field name="truck_type_po"/>
+
+                            <field name="pickup_address_col"/>
+                            <field name="pickup_contact_name_po"/>
+                            <field name="pickup_contact_number_po"/>
+                            <field name="pickup_email_po"/>
+                            <field name="pickup_time_scheduled_po"/>
+                            <field name="pickup_notes_po" colspan="2"/>
+
+                            <field name="delivery_address_col"/>
+                            <field name="total_cartons_po"/>
+                            <field name="total_palettes_po"/>
+                            <field name="weight_cit_col"/>
+                            <field name="goods_description_po" colspan="2"/>
+                            <field name="delivery_notes_po" colspan="2"/>
+
+                            <field name="delivery_doc_upload" widget="many2many_binary"
+                                   string="Delivery Documentation"/>
+                            <div style="font-size:12px; line-height:14px; color:black; margin-top:4px; margin-bottom:4px;">
+                                <span style="display:block;">(Delivery receipt (signed POD), Photos of delivered goods,
+                                    Driver invoice, Any damaged photos)
+                                </span>
+                            </div>
+
+
+                            <field name="additional_notes_po" colspan="2"/>
+
+                            <field name="billed_to_customer_po"/>
+                            <field name="charge_to_customer_col"/>
+                            <field name="third_party_logistics_col"/>
+                        </group>
+
+                        <group>
+                            <div style="font-weight: bold; background:#eef5ff; padding:12px; border-radius:6px; margin-bottom:10px;">
+                                <span>Logistics Stage</span>
+                                <field name="logistics_stage_po"
+                                       style="font-weight:bolder; color:#black;"/>
+                            </div>
+                            <field name="freight_cost"/>
+                            <field name="delivery_cost"/>
+                            <field name="delivery_charged"/>
+                            <field name="tpl_cost"/>
+                        </group>
+
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Removing the existing field -->
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>

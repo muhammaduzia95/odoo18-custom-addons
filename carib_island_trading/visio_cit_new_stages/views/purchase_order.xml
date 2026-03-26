@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_purchase_order_form_inherit_stage" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.stage</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="before">
+                <div>
+                    <!--                    <field name="stage_id"-->
+                    <!--                           widget="statusbar"-->
+                    <!--                           statusbar_visible="sent,cancel,draft,purchase,done"-->
+                    <!--                           options="{'clickable': '1', 'fold_field': 'fold'}"/>-->
+                    <field name="stage_id"
+                           widget="statusbar"
+                           options="{'clickable': '1', 'fold_field': 'fold'}"/>
+
+
+                </div>
+            </xpath>
+
+<!--            <xpath expr="//sheet" position="inside">-->
+<!--                <field name="confirm_done" invisible="1"/>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//button[@name='button_confirm'][2]" position="attributes">-->
+<!--                <attribute name="invisible">confirm_done</attribute>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//button[@name='button_confirm'][1]" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+
+        </field>
+    </record>
+</odoo>

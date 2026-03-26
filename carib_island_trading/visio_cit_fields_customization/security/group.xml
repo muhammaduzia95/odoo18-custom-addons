@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_hide_analytic_distribution" model="res.groups">
+        <field name="name">Show: Analytic Distribution on SO Lines</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+</odoo>

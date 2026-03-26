@@ -1,0 +1,56 @@
+<odoo>
+    <record id="view_wpay_this_month" model="ir.ui.view">
+        <field name="name">wpay.this.month.list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Without Pay This Month" create="false" class="equal-spaced-tree">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="worker_code"/>
+                <field name="employee_id"/>
+                <field name="employee_job_title"/>
+                <field name="rate_per_month" />
+                <field name="wo_pay" string="WO-Pay Days" sum="total" widget="total"/>
+                <field name="wo_pay_value" string="WO-Pay Amount" sum="total" widget="total"/>
+                <field name="net_payable" sum="total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_wpay_this_month_search" model="ir.ui.view">
+        <field name="name">Without Pay This Month Search</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_wpay_this_month" model="ir.actions.act_window">
+        <field name="name">Without Pay This Month</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_id" ref="view_wpay_this_month"/>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_wpay_this_month_search"/>
+        <field name="context">{ 'search_default_filter_by_month': 1  , 'search_default_filter_done': 1,
+            'export_filename': 'Without Pay This Month'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Records.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_wpay_this_month"
+            name="Without Pay This Month"
+            sequence="60"
+            parent="menu_payroll_reporting"
+            action="action_wpay_this_month"
+    />
+</odoo>

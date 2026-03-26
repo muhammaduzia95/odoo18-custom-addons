@@ -1,0 +1,52 @@
+<!-- quran_academy/visio_payroll_customization/views/menus.xml -->
+<odoo>
+    <menuitem
+        id="menu_pdf_report_views_qa"
+        name="PDF Report Views"
+        parent="om_hr_payroll.menu_hr_payroll_root"
+        sequence="60"
+    />
+
+    <menuitem
+        id="menu_pay_receiving_bank_list_qa"
+        name="Pay Receiving Bank List"
+        parent="menu_pdf_report_views_qa"
+        action="visio_payroll_customization.action_pay_receiving_bank_list_qa"
+        sequence="1"
+    />
+    <menuitem
+        id="menu_pay_receiving_cash_list_qa"
+        name="Pay Receiving Cash List"
+        parent="menu_pdf_report_views_qa"
+        action="visio_payroll_customization.action_pay_receiving_cash_list_qa"
+        sequence="2"
+    />
+    <menuitem
+        id="menu_salary_summary_qa"
+        name="Salary Summary"
+        parent="menu_pdf_report_views_qa"
+        action="visio_payroll_customization.action_salary_summary"
+        sequence="3"
+    />
+    <menuitem
+        id="menu_pay_receiving_bank_sheet_qa"
+        name="Pay Receiving Bank Sheet"
+        parent="menu_pdf_report_views_qa"
+        action="visio_payroll_customization.action_pay_receiving_bank_sheet_qa"
+        sequence="4"
+    />
+    <menuitem
+        id="menu_pay_receiving_cash_sheet_qa"
+        name="Pay Receiving Cash Sheet"
+        parent="menu_pdf_report_views_qa"
+        action="visio_payroll_customization.action_pay_receiving_cash_sheet_qa"
+        sequence="5"
+    />
+    <menuitem
+        id="menu_payroll_sheet_qa"
+        name="Payroll Sheet"
+        parent="menu_pdf_report_views_qa"
+        action="visio_payroll_customization.action_payroll_sheet_qa"
+        sequence="6"
+    />
+</odoo>

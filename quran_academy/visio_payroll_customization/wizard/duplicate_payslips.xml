@@ -1,0 +1,37 @@
+<!--quran_academy\visio_payroll_customization\wizard\duplicate_payslips.xml-->
+<odoo>
+    <record id="view_duplicate_payslips_wizard" model="ir.ui.view">
+        <field name="name">duplicate.payslips.wizard.form</field>
+        <field name="model">duplicate.payslips.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Duplicate Payslips">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="new_date_from"/>
+                    </group>
+                </group>
+                <footer>
+                    <!--                    <button name="action_duplicate_payslips" type="object" string="Duplicate" class="btn-primary"/>-->
+                    <button name="action_duplicate_payslips"
+                            type="object"
+                            string="Duplicate"
+                            class="btn-primary"
+                            confirm="Warning ‑ Are you sure? These changes are hard to undo."/>
+
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_duplicate_payslips_wizard" model="ir.actions.act_window">
+        <field name="name">Duplicate Payslips</field>
+        <field name="res_model">duplicate.payslips.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

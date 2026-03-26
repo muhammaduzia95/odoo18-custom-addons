@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_ektefa_payrun,access.ektefa.payrun,model_ektefa_payrun,,1,1,1,1
+access_ektefa_payrun_debit_line,access.ektefa.payrun.debit.line,model_ektefa_payrun_debit_line,,1,1,1,1
+access_ektefa_payrun_credit_line,access.ektefa.payrun.credit.line,model_ektefa_payrun_credit_line,,1,1,1,1
+
+access_ektefa_end_of_service,access.ektefa.end.of.service,model_ektefa_end_of_service,,1,1,1,1
+access_ektefa_eos_debit_line,access.ektefa.eos.debit.line,model_ektefa_eos_debit_line,,1,1,1,1
+access_ektefa_eos_credit_line,access.ektefa.eos.credit.line.line,model_ektefa_eos_credit_line,,1,1,1,1
+
+access_ektefa_loans,access.ektefa.loans,model_ektefa_loans,,1,1,1,1
+access_ektefa_loans_settlement,access.ektefa.loans.settlement,model_ektefa_loans_settlement,,1,1,1,1
+
+access_ektefa_payroll_sync,access.ektefa.payroll.sync,model_ektefa_payroll_sync,,1,1,1,1
+
+access_ektefa_api_log,access.ektefa.api.log,model_ektefa_api_log,,1,1,1,1

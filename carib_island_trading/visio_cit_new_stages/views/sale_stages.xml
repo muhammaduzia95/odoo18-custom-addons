@@ -1,0 +1,30 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\carib_island_trading\visio_cit_new_stages\views\sale_stages.xml-->
+<odoo>
+    <!-- Tree View -->
+    <record id="view_sale_stages_tree" model="ir.ui.view">
+        <field name="name">sale.stages.tree</field>
+        <field name="model">sale.stages</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="sequence"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sale_stages" model="ir.actions.act_window">
+        <field name="name">Sale Stages</field>
+        <field name="res_model">sale.stages</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_sale_stages_tree"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_sale_stages"
+              name="Sale Stages"
+              parent="sale.menu_sale_config"
+              action="action_sale_stages"
+              sequence="1"/>
+</odoo>

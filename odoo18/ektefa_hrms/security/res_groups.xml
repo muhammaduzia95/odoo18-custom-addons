@@ -1,0 +1,29 @@
+<odoo>
+    <!-- Ektefa HRMS Category -->
+    <record model="ir.module.category" id="module_category_ektefa_payroll">
+        <field name="name">Ektefa HRMS</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- Ektefa HRMS Group -->
+    <record id="group_ektefa_user" model="res.groups">
+        <field name="name">Ektefa: Enable HRMS Configuration</field>
+        <field name="category_id" ref="ektefa_hrms.module_category_ektefa_payroll"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <!-- Ektefa  API Records Group -->
+    <record id="group_ektefa_api_records" model="res.groups">
+        <field name="name">Ektefa: Enable API Records Menu</field>
+        <field name="category_id" ref="ektefa_hrms.module_category_ektefa_payroll"/>
+    </record>
+
+    <!-- Ektefa API Sync Requests Group -->
+    <record id="group_ektefa_api_logs" model="res.groups">
+        <field name="name">Ektefa: Enable Sync Requests Menu</field>
+        <field name="category_id" ref="ektefa_hrms.module_category_ektefa_payroll"/>
+        <field name="implied_ids" eval="[(4, ref('ektefa_hrms.group_ektefa_api_records'))]"/>
+    </record>
+
+</odoo>

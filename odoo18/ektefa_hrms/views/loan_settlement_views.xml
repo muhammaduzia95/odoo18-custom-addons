@@ -1,0 +1,127 @@
+
+<odoo>
+
+    <!-- Ektefa Loans List View -->
+    <record id="view_ektefa_loan_settlement_list" model="ir.ui.view">
+        <field name="name">ektefa.loans.settlement.list</field>
+        <field name="model">ektefa.loans.settlement</field>
+        <field name="arch" type="xml">
+            <list
+                    edit="0" create="0" delete="0"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state == 'posted'"
+                    decoration-muted="state == 'cancel'"
+            >
+                <field name="name"/>
+                <field name="ektefa_loan_settlement_id"/>
+                <field name="ektefa_settlement_date"/>
+                <field name="ektefa_comments"/>
+                <field name="ektefa_emp_en"/>
+                <field name="ektefa_settlement_method_name_en" string="Settlement Method"/>
+                <field name="move_id"/>
+                <field name="company_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'posted'"
+                       decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Ektefa Loans Form View -->
+    <record id="view_ektefa_loans_settlement_form" model="ir.ui.view">
+        <field name="name">ektefa.loans.settlement.form</field>
+        <field name="model">ektefa.loans.settlement</field>
+        <field name="arch" type="xml">
+            <form edit="0" create="0" delete="0">
+                <header>
+                    <!-- Status-Bar -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Posted" bg_color="text-bg-success" invisible="state != 'posted'" />
+                    <widget name="web_ribbon" title="Canceled" bg_color="text-bg-danger" invisible="state != 'cancel'"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. John Doe" required="1"/></h1>
+                        <label for="ektefa_emp_id"/>
+                        <h6><field name="ektefa_emp_id"/></h6>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="ektefa_loan_settlement_id"/>
+                            <field name="ektefa_loan_settlement_amount"/>
+                            <field name="ektefa_emp_en"/>
+                            <field name="move_id"/>
+                        </group>
+                        <group>
+                            <div class="o_td_label" name="ektefa_settlement_date_label">
+                                <label for="ektefa_settlement_date"/>
+                            </div>
+                            <div class="o_row" name="ektefa_settlement_date">
+                                <field name="ektefa_settlement_date" nolabel="1" readonly="1"/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                <field name="ektefa_settlement_date_text" nolabel="1"/>
+                            </div>
+                            <field name="ektefa_comments"/>
+                            <field name="ektefa_emp_ar"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Settlement Method" name="ektefa_settlement_method">
+                            <group>
+                                <group>
+                                    <field name="ektefa_settlement_method_id"/>
+                                    <field name="ektefa_settlement_method_name_en"/>
+                                    <field name="ektefa_settlement_method_name_ar"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group>
+                                    <field name="ektefa_company_id"/>
+                                    <field name="ektefa_company_name_en"/>
+                                </group>
+                                <group>
+                                    <field name="ektefa_company_cr_number"/>
+                                    <field name="ektefa_company_name_ar"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ektefa Loans Search View -->
+    <record id="view_ektefa_loans_settlement_search" model="ir.ui.view">
+        <field name="name">ektefa.loans.settlement.search</field>
+        <field name="model">ektefa.loans.settlement</field>
+        <field name="arch" type="xml">
+            <search string="Ektefa Loans Settlement">
+
+                <field name="name"/>
+                <field name="ektefa_loan_settlement_id"/>
+                <field name="ektefa_settlement_method_id"/>
+                <field name="move_id"/>
+                <field name="company_id"/>
+
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Posted" name="filter_posted" domain="[('state', '=', 'posted')]"/>
+                <filter string="Canceled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <filter string="Settlement Date" name="filter_ektefa_settlement_date" date="ektefa_settlement_date"/>
+
+                <group string="Group By">
+                    <filter name="groupby_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="groupby_ektefa_loan_settlement_id" string="Loan Settlement" context="{'group_by': 'ektefa_loan_settlement_id'}"/>
+                    <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+</odoo>

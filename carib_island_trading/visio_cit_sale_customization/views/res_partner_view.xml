@@ -1,0 +1,21 @@
+<!--carib_island_trading\visio_cit_sale_customization\views\res_partner_view.xml-->
+<odoo>
+    <record id="view_partner_form_hide_user_id" model="ir.ui.view">
+        <field name="name">res.partner.form.hide.user_id</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Removing the existing field -->
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- adding our Many2Many field -->
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="user_ids" widget="many2many_tags" required="1" options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

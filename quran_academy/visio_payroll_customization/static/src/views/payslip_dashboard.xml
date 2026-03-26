@@ -1,0 +1,70 @@
+<templates>
+    <t t-name="visio_payroll_customization.PayslipDashboard">
+        <div class="o_payslip_dashboard border-bottom bg-view container-fluid">
+            <div class="row align-items-center justify-content-center">
+
+                <!-- Left Side: Buttons (Stacked on small screens, aligned properly) -->
+                <div class="col-md-6 d-flex flex-row gap-3 my-3 align-items-center">
+                    <!-- Step 1 -->
+                    <div class="p-3 bg-light text-center rounded shadow-sm w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                        <h3 class="fw-bold fs-5">STEP 1</h3>
+                        <small class="d-block mb-2 text-muted">Generate Pay Slips from Selected Month to New Month
+                        </small>
+                        <button class="btn btn-info w-75 mt-auto " t-on-click="openWizard"
+                                wizard_ref="visio_payroll_customization.action_duplicate_payslips_wizard">
+                            Generate Payslips
+                        </button>
+                    </div>
+
+                    <!-- Arrow After Step 1 -->
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-arrow-right fs-3 text-muted"></i>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="p-3 bg-light text-center rounded shadow-sm w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                        <h3 class="fw-bold fs-5">STEP 2</h3>
+                        <small class="d-block mb-2 text-muted">Update Pay Slips with Specific Columns in Excel Sheet
+                        </small>
+                        <button class="btn btn-primary w-75 mt-auto" t-on-click="openWizard"
+                                wizard_ref="visio_payroll_customization.action_import_excel">
+                            Update Payslips
+                        </button>
+                    </div>
+
+                    <!-- Arrow After Step 2 -->
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-arrow-right fs-3 text-muted"></i>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="p-3 bg-light text-center rounded shadow-sm w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                        <h3 class="fw-bold fs-5">STEP 3</h3>
+                        <small class="d-block mb-2 text-muted">Auto Post the All Draft Pay Slips of Selected Month
+                        </small>
+                        <button class="btn btn-success w-75 mt-auto" t-on-click="openWizard"
+                                wizard_ref="visio_payroll_customization.action_post_payslips_wizard">
+                            Post Payslips
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Side: Statistics (Aligned Properly to the Right) -->
+                <!--                <div class="col-lg-4 col-md-5 col-sm-12 ms-auto d-flex gap-2 my-2">-->
+                <!--                    <div class="p-2 bg-light text-center rounded shadow-sm w-100 d-flex flex-column align-items-center justify-content-center">-->
+                <!--                        <h5 class="">Total Payslips</h5>-->
+                <!--                        <h4 t-out="payslipData['total_payslips']"/>-->
+                <!--                    </div>-->
+                <!--                    <div class="p-2 bg-light text-center rounded shadow-sm w-100 d-flex flex-column align-items-center justify-content-center">-->
+                <!--                        <h5 class="">Draft Payslips</h5>-->
+                <!--                        <h4 t-out="payslipData['draft_payslips']"/>-->
+                <!--                    </div>-->
+                <!--                    <div class="p-2 bg-light text-center rounded shadow-sm w-100 d-flex flex-column align-items-center justify-content-center">-->
+                <!--                        <h5 class="">Confirmed Payslips</h5>-->
+                <!--                        <h4 t-out="payslipData['confirmed_payslips']"/>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,53 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\carib_island_trading\visio_cit_new_stages\views\sale_order.xml-->
+<odoo>
+    <record id="view_sale_order_form_inherit_stage" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.stage</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="before">
+                <div>
+                    <field name="stage_id"
+                           widget="statusbar"
+                           options="{'clickable': '1', 'fold_field': 'fold'}"
+                    />
+                </div>
+            </xpath>
+
+            <!-- Add confirm_done field (invisible, just for the condition) -->
+            <xpath expr="//sheet" position="inside">
+                <field name="confirm_done" invisible="1"/>
+                <field name="cancel_done" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="invisible">confirm_done</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+<!--                <attribute name="invisible">not cancel_done</attribute>-->
+                    <attribute name="invisible">state != 'cancel'</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <!--  List view of Sale Order  -->
+    <record id="view_quotation_tree_with_onboarding_inherit_stage" model="ir.ui.view">
+        <field name="name">sale.view.quotation.tree.with.onboarding.inherit.stage</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <!-- Replace the default state column with custom stage -->
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="stage_id" string="Stage"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

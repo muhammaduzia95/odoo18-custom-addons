@@ -1,0 +1,86 @@
+<odoo>
+    <record id="view_salary_statement_this_month" model="ir.ui.view">
+        <field name="name">salary.statement.this.month.list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Salary Statement This Month" create="false">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="master_department" column_invisible="True"/>
+                <field name="worker_code"/>
+                <field name="employee_id"/>
+                <field name="employee_job_title"/>
+                <field name="employee_type_id"/>
+                <field name="rate_per_month" sum="total"/>
+                <field name="other_duty" sum="total"/>
+                <field name="basic_total" sum="total"/>
+                <field name="over_time" string="Over Time Days"/>
+                <field name="over_time_value" string="Over Time" sum="total"
+                       options="{'currency_field': 'currency_id'}"/>
+                <field name="wo_pay" string="W/O P Days"/>
+                <field name="wo_pay_value" string="W/O Pay" sum="total"
+                       options="{'currency_field': 'currency_id'}"/>
+                <field name="leave_in_cash" string="Leave Days"/>
+                <field name="leave_in_cash_value" string="Leave Encash" sum="total"
+                       options="{'currency_field': 'currency_id'}"/>
+                <field name="attendance_star_value" string="Star Amount" sum="total"
+                       options="{'currency_field': 'currency_id'}"/>
+                <field name="ext_arrear_night" string="Ar/ Night" sum="total"/>
+                <field name="other_deduction" string="Other Ded" sum="total"/>
+                <field name="medical" string="Med" sum="total"/>
+                <field name="gross_total" string="Grand Total" sum="total"/>
+                <field name="loan_recovery" string="Loan Recovery" sum="total"/>
+                <field name="prov_fund" string="Prov Fund" sum="total"/>
+                <field name="adv_salary" string="Adv." sum="total"/>
+                <field name="income_tax" string="Incm Tax" sum="total"/>
+                <field name="h_rent" string="Rent" sum="total"/>
+                <field name="tel_bill" sum="total"/>
+                <field name="veh_charges" sum="total"/>
+                <field name="elec_gas_bill" sum="total"/>
+                <field name="eobi_worker" string="EOBI" sum="total"/>
+                <field name="total_deduction" string="Total Deduction" sum="total"/>
+                <field name="net_payable" string="Net Pay" sum="total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_salary_statement_this_month_search" model="ir.ui.view">
+        <field name="name">Salary Statement This Month Search</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <field name="worker_code"/>
+                <field name="employee_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_salary_statement_this_month" model="ir.actions.act_window">
+        <field name="name">Salary Statement This Month</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_id" ref="view_salary_statement_this_month"/>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_salary_statement_this_month_search"/>
+        <field name="context">{ 'search_default_filter_by_month': 1 ,
+            'search_default_filter_done': 1, 'export_filename': 'Salary Statement This Month' }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Records.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_salary_statement_this_month"
+            name="Salary Statement This Month"
+            sequence="80"
+            parent="menu_payroll_reporting"
+            action="action_salary_statement_this_month"
+    />
+</odoo>

@@ -1,0 +1,30 @@
+<!--\visio_cit_sale_customization\data\product_pricelist_rules.xml-->
+<odoo>
+    <data noupdate="0">
+
+        <!-- Custom group for controlling Pricelist visibility -->
+        <record id="group_user_on_pricelist" model="res.groups">
+            <field name="name">Pricelists / User on Pricelists</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <!-- Rule: visible if unassigned OR assigned to current user -->
+        <record id="rule_pricelist_user_access" model="ir.rule">
+            <field name="name">Pricelists: own or unassigned</field>
+            <field name="model_id" ref="product.model_product_pricelist"/>
+            <field name="domain_force">
+                ['|', ('assigned_user_id', '=', False), ('assigned_user_id', '=', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('visio_cit_sale_customization.group_user_on_pricelist'))]"/>
+            <field name="active" eval="True"/>
+            <field name="global" eval="False"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>
+
+
+

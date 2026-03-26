@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payroll_sheet_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    @font-face {
+                    font-family: "Alvi";
+                    src: url('/visio_payroll_customization/static/font/alvi_nastaleeq_regular.ttf') format("woff");
+                    font-weight: normal;
+                    font-style: normal;
+                    }
+                    body {
+                    font-family: "Alvi";
+                    }
+
+                </style>
+                <div class="page" style="">
+                    <t t-set="record_number" t-value="1"/>
+                    <!-- Loop through First Child Departments -->
+                    <t t-foreach="docs.items()" t-as="first_child_dep">
+                        <!-- Initialize main department totals -->
+                        <t t-set="first_total_rate" t-value="0.0"/>
+                        <t t-set="first_total_over_time" t-value="0.0"/>
+                        <t t-set="first_total_ar_night" t-value="0.0"/>
+                        <t t-set="first_total_rent_allow" t-value="0.0"/>
+                        <t t-set="first_total_medical" t-value="0.0"/>
+                        <t t-set="first_total_leave_in_cash" t-value="0.0"/>
+                        <t t-set="first_total_gross" t-value="0.0"/>
+                        <t t-set="first_total_loan" t-value="0.0"/>
+                        <t t-set="first_total_prov_fund" t-value="0.0"/>
+                        <t t-set="first_total_veh" t-value="0.0"/>
+                        <t t-set="first_total_h_rent" t-value="0.0"/>
+                        <t t-set="first_total_eobi_worker" t-value="0.0"/>
+                        <t t-set="first_total_deduction" t-value="0.0"/>
+                        <t t-set="first_total_emp_eobi" t-value="0.0"/>
+                        <t t-set="first_total_other_duty" t-value="0.0"/>
+                        <t t-set="first_total_wo_pay" t-value="0.0"/>
+                        <t t-set="first_total_other_ded" t-value="0.0"/>
+                        <t t-set="first_total_star" t-value="0.0"/>
+                        <t t-set="first_total_attendance" t-value="0.0"/>
+                        <t t-set="first_total_adv_salary" t-value="0.0"/>
+                        <t t-set="first_total_income_tax" t-value="0.0"/>
+                        <t t-set="first_total_tel" t-value="0.0"/>
+                        <t t-set="first_total_elec" t-value="0.0"/>
+                        <t t-set="first_total_arrear" t-value="0.0"/>
+                        <t t-set="first_total_net" t-value="0.0"/>
+                        <t t-set="first_total_emp_arrear" t-value="0.0"/>
+
+                        <div style="page-break-after:always;">
+                            <table style="width:100%; border-color:white; background-color: white;" border="0">
+                                <tr style=" border-color:white;">
+                                    <!-- left: logo -->
+                                    <td style="width:60px; background-color: white;">
+                                        <img t-att-src="'/visio_payroll_customization/static/img/bg.png'"
+                                             style="height:100px; width:75px;" alt="Logo"/>
+                                    </td>
+
+                                    <!-- center: title -->
+                                    <td style="text-align:center; background-color: white;">
+                                        <h2 style="text-align: center;font-family: 'Alvi';">مرکزی انجمن خدام القرآن
+                                            لاہور
+                                        </h2>
+                                    </td>
+
+                                    <!-- right: blank spacer same width as logo -->
+                                    <td style="width:60px; background-color: white;"></td>
+                                </tr>
+                            </table>
+
+
+                            <!--<h2 style="text-align: center;font-family: 'Alvi';">مرکزی انجمن خدام القرآن لاہور</h2>-->
+                            <h4 style="text-align: center; font-weight:bold;">
+                                <span>Salary Bill for Month
+                                    <t t-esc="month"/>
+                                </span>
+                            </h4>
+                            <h3 style="margin-top: 20px; color: #000080;">
+                                <span>
+                                    <t t-esc="first_child_dep[0]"/>
+                                </span>
+                            </h3>
+                            <!-- Loop through Departments inside First Child Department -->
+                            <t t-foreach="first_child_dep[1].items()" t-as="department">
+                                <div style="page-break-after: always;">
+
+                                    <h4 style="margin-top: 10px;">
+                                        <span>
+                                            <t t-esc="department[0]"/>
+                                        </span>
+                                    </h4>
+
+                                    <table class="table table-sm" style="border:1px solid #D3D3D3;">
+                                        <thead style="border-top:3px solid #000080; border-bottom:3px solid #000080;">
+                                            <tr>
+                                                <th rowspan="2"
+                                                    style="text-align:center; font-weight:bold; border:1px solid #D3D3D3;">
+                                                    Code
+                                                </th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Name</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Rate PM</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Over Time</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Ar / Night</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;" rowspan="2">
+                                                    Special
+                                                    Allow
+                                                </th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;" rowspan="2">
+                                                    Medical
+                                                </th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">L. Encash</th>
+                                                <th rowspan="2"
+                                                    style=" border:1px solid #D3D3D3; border-right:3px solid #000080">G.
+                                                    Total
+                                                </th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Loan Rec</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Pr. Fund</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Veh Ch</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">H. Rent</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">W. EOBI</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">
+                                                    <strong>Tot Ded</strong>
+                                                </th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Emp. EOBI</th>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Designation</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Oth Duty</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">w/o pay</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Other Ded</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Star</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Advance</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">I. Tax</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Mess Bill</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Elec Bill</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Arrear</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Net Pay</th>
+                                                <th style="font-weight:bold; border:1px solid #D3D3D3;">Arrear</th>
+                                            </tr>
+                                        </thead>
+
+
+                                        <!-- Loop through Payslips inside the Department -->
+                                        <t t-foreach="sorted(department[1], key=lambda p: p.worker_code or '')"
+                                           t-as="payslip">
+                                            <tbody style="border-bottom:3px solid #000080;">
+                                                <tr style="text-align:right; border:1px solid #D3D3D3;">
+                                                    <td rowspan="2">
+                                                        <t t-esc="payslip.worker_code"/>
+                                                        <br/>
+                                                        <strong>
+                                                            <t t-esc="record_number"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td style="text-align:left;" t-esc="payslip.employee_id.name"/>
+                                                    <td t-esc="payslip.rate_per_month if payslip.rate_per_month != 0 else ''"/>
+                                                    <td t-esc="'{:.2f}'.format(payslip.over_time_value) if payslip.over_time_value != 0 else ''"/>
+                                                    <td t-esc="payslip.ext_arrear_night if payslip.ext_arrear_night != 0 else ''"/>
+                                                    <td rowspan="2"
+                                                        t-esc="payslip.special_allowance_qa if payslip.special_allowance_qa != 0 else ''"/>
+                                                    <td rowspan="2"
+                                                        t-esc="payslip.medical if payslip.medical != 0 else ''"/>
+                                                    <td t-esc="'{:.2f}'.format(payslip.leave_in_cash_value) if payslip.leave_in_cash_value != 0 else ''"/>
+                                                    <td rowspan="2" style="border-right:3px solid #000080"
+                                                        t-esc="payslip.gross_total if payslip.gross_total != 0 else ''"/>
+                                                    <td t-esc="payslip.loan_recovery if payslip.loan_recovery != 0 else ''"/>
+                                                    <td t-esc="payslip.prov_fund if payslip.prov_fund != 0 else ''"/>
+                                                    <td t-esc="payslip.veh_charges if payslip.veh_charges != 0 else ''"/>
+                                                    <td t-esc="payslip.h_rent if payslip.h_rent != 0 else ''"/>
+                                                    <td t-esc="payslip.eobi_worker if payslip.eobi_worker != 0 else ''"/>
+                                                    <td t-esc="payslip.total_deduction if payslip.total_deduction != 0 else ''"/>
+                                                    <td t-esc="payslip.emp_eobi if payslip.emp_eobi != 0 else ''"/>
+                                                </tr>
+                                                <tr style="text-align:right; border:1px solid #D3D3D3;">
+                                                    <td style="text-align:left;" t-esc="payslip.employee_job_title"/>
+                                                    <td t-esc="payslip.other_duty if payslip.other_duty != 0 else ''"/>
+                                                    <td t-esc="'{:.2f}'.format(payslip.wo_pay_value) if payslip.wo_pay_value != 0 else ''"/>
+                                                    <td t-esc="payslip.other_deduction if payslip.other_deduction != 0 else ''"/>
+                                                    <td t-esc="'{:.2f}/{:.2f}'.format(payslip.attendance_star_value, payslip.attendance_star) if payslip.attendance_star_value and payslip.attendance_star else ''"/>
+                                                    <td t-esc="payslip.adv_salary if payslip.adv_salary != 0 else ''"/>
+                                                    <td t-esc="payslip.income_tax if payslip.income_tax != 0 else ''"/>
+                                                    <td t-esc="payslip.tel_bill if payslip.tel_bill != 0 else ''"/>
+                                                    <td t-esc="payslip.elec_gas_bill if payslip.elec_gas_bill != 0 else ''"/>
+                                                    <td t-esc="payslip.eobi_worker_diff if payslip.eobi_worker_diff != 0 else ''"/>
+                                                    <td t-esc="payslip.net_payable if payslip.net_payable != 0 else ''"/>
+                                                    <td t-esc="payslip.eobi_emp_diff if payslip.eobi_emp_diff != 0 else ''"/>
+                                                </tr>
+                                                <tr style="border:1px solid #D3D3D3;">
+                                                    <!-- Comments Column on Left -->
+                                                    <td colspan="4"
+                                                        style="text-align:left; background-color: solid #D3D3D3; border-right:1px solid #000080;">
+                                                        <strong>Comments:</strong>
+                                                        <t t-esc="payslip.comments or ''"/>
+                                                    </td>
+                                                    <td colspan="5" class=""
+                                                        style="text-align:right; background-color: #00FFFF;
+                                                border-right:3px solid #000080"
+                                                    >
+                                                        <t t-if="payslip.paid_by == 'cash'">Paid by Cash</t>
+                                                        <t t-if="payslip.paid_by == 'cross_cheque'">Paid by Cross
+                                                            Cheque
+                                                        </t>
+                                                        <t t-if="payslip.paid_by == 'deposited_in_bank'">
+                                                            Salary deposited in bank Ac. No
+                                                            <t t-esc="payslip.employee_id.acc_num if payslip.employee_id.acc_num != 0 else ''"/>
+                                                        </t>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <t t-set="record_number" t-value="record_number + 1"/>
+                                        </t>
+                                        <!-- ==================== Department Subtotal Row ==================== -->
+                                        <!-- Compute totals for all numeric columns -->
+                                        <t t-set="dep_total_rate"
+                                           t-value="sum((p.rate_per_month or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_over_time"
+                                           t-value="sum((p.over_time_value or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_ar_night"
+                                           t-value="sum((p.ext_arrear_night or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_rent_allow"
+                                           t-value="sum((p.special_allowance_qa or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_medical"
+                                           t-value="sum((p.medical or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_leave_in_cash"
+                                           t-value="sum((p.leave_in_cash_value or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_gross"
+                                           t-value="sum((p.gross_total or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_loan"
+                                           t-value="sum((p.loan_recovery or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_prov_fund"
+                                           t-value="sum((p.prov_fund or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_veh"
+                                           t-value="sum((p.veh_charges or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_h_rent"
+                                           t-value="sum((p.h_rent or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_eobi_worker"
+                                           t-value="sum((p.eobi_worker or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_deduction"
+                                           t-value="sum((p.total_deduction or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_emp_eobi"
+                                           t-value="sum((p.emp_eobi or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_other_duty"
+                                           t-value="sum((p.other_duty or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_wo_pay"
+                                           t-value="sum((p.wo_pay_value or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_other_ded"
+                                           t-value="sum((p.other_deduction or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_star_value"
+                                           t-value="sum((p.attendance_star_value or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_star"
+                                           t-value="sum((p.attendance_star or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_adv_salary"
+                                           t-value="sum((p.adv_salary or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_income_tax"
+                                           t-value="sum((p.income_tax or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_tel"
+                                           t-value="sum((p.tel_bill or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_elec"
+                                           t-value="sum((p.elec_gas_bill or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_arrear"
+                                           t-value="sum((p.eobi_worker_diff or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_net"
+                                           t-value="sum((p.net_payable or 0) for p in department[1])"/>
+                                        <t t-set="dep_total_emp_arrear"
+                                           t-value="sum((p.eobi_emp_diff or 0) for p in department[1])"/>
+
+                                        <!-- ==================== Display Subtotal Row ==================== -->
+
+                                        <tr style="text-align:right; border:1px solid #D3D3D3;">
+                                            <td rowspan="2" colspan="2"
+                                                style="text-align:center; font-weight:bold; border:1px solid #D3D3D3;">
+                                                Subtotal for
+                                                <t t-esc="department[0]"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_rate)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_over_time)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_ar_night)"/>
+                                            </td>
+                                            <td rowspan="2">
+                                                <t t-esc="'{:.2f}'.format(dep_total_rent_allow)"/>
+                                            </td>
+                                            <td rowspan="2">
+                                                <t t-esc="'{:.2f}'.format(dep_total_medical)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_leave_in_cash)"/>
+                                            </td>
+                                            <td style="border-right:3px solid #000080;" rowspan="2">
+                                                <t t-esc="'{:.2f}'.format(dep_total_gross)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_loan)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_prov_fund)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_veh)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_h_rent)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_eobi_worker)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_deduction)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_emp_eobi)"/>
+                                            </td>
+                                        </tr>
+
+                                        <!--                                        second subtotal line for row-2 level fields &ndash;&gt;-->
+                                        <tr style="text-align:right; border:1px solid #D3D3D3;">
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_other_duty)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_wo_pay)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_other_ded)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}/{:.2f}'.format(dep_total_star_value, dep_total_star) if dep_total_star_value or dep_total_star else ''"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_adv_salary)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_income_tax)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_tel)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_elec)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_arrear)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_net)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="'{:.2f}'.format(dep_total_emp_arrear)"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <!-- ==================== Add to Main Department Total ==================== -->
+                                    <t t-set="first_total_rate"
+                                       t-value="(first_total_rate or 0) + (dep_total_rate or 0)"/>
+                                    <t t-set="first_total_over_time"
+                                       t-value="(first_total_over_time or 0) + (dep_total_over_time or 0)"/>
+                                    <t t-set="first_total_ar_night"
+                                       t-value="(first_total_ar_night or 0) + (dep_total_ar_night or 0)"/>
+                                    <t t-set="first_total_rent_allow"
+                                       t-value="(first_total_rent_allow or 0) + (dep_total_rent_allow or 0)"/>
+                                    <t t-set="first_total_medical"
+                                       t-value="(first_total_medical or 0) + (dep_total_medical or 0)"/>
+                                    <t t-set="first_total_leave_in_cash"
+                                       t-value="(first_total_leave_in_cash or 0) + (dep_total_leave_in_cash or 0)"/>
+                                    <t t-set="first_total_gross"
+                                       t-value="(first_total_gross or 0) + (dep_total_gross or 0)"/>
+                                    <t t-set="first_total_loan"
+                                       t-value="(first_total_loan or 0) + (dep_total_loan or 0)"/>
+                                    <t t-set="first_total_prov_fund"
+                                       t-value="(first_total_prov_fund or 0) + (dep_total_prov_fund or 0)"/>
+                                    <t t-set="first_total_veh" t-value="(first_total_veh or 0) + (dep_total_veh or 0)"/>
+                                    <t t-set="first_total_h_rent"
+                                       t-value="(first_total_h_rent or 0) + (dep_total_h_rent or 0)"/>
+                                    <t t-set="first_total_eobi_worker"
+                                       t-value="(first_total_eobi_worker or 0) + (dep_total_eobi_worker or 0)"/>
+                                    <t t-set="first_total_deduction"
+                                       t-value="(first_total_deduction or 0) + (dep_total_deduction or 0)"/>
+                                    <t t-set="first_total_emp_eobi"
+                                       t-value="(first_total_emp_eobi or 0) + (dep_total_emp_eobi or 0)"/>
+                                    <t t-set="first_total_other_duty"
+                                       t-value="(first_total_other_duty or 0) + (dep_total_other_duty or 0)"/>
+                                    <t t-set="first_total_wo_pay"
+                                       t-value="(first_total_wo_pay or 0) + (dep_total_wo_pay or 0)"/>
+                                    <t t-set="first_total_other_ded"
+                                       t-value="(first_total_other_ded or 0) + (dep_total_other_ded or 0)"/>
+                                    <t t-set="first_total_star"
+                                       t-value="(first_total_star or 0) + (dep_total_star or 0)"/>
+                                    <t t-set="first_total_attendance"
+                                       t-value="(first_total_attendance or 0) + (dep_total_star_value or 0)"/>
+                                    <t t-set="first_total_adv_salary"
+                                       t-value="(first_total_adv_salary or 0) + (dep_total_adv_salary or 0)"/>
+                                    <t t-set="first_total_income_tax"
+                                       t-value="(first_total_income_tax or 0) + (dep_total_income_tax or 0)"/>
+                                    <t t-set="first_total_tel" t-value="(first_total_tel or 0) + (dep_total_tel or 0)"/>
+                                    <t t-set="first_total_elec"
+                                       t-value="(first_total_elec or 0) + (dep_total_elec or 0)"/>
+                                    <t t-set="first_total_arrear"
+                                       t-value="(first_total_arrear or 0) + (dep_total_arrear or 0)"/>
+                                    <t t-set="first_total_net" t-value="(first_total_net or 0) + (dep_total_net or 0)"/>
+                                    <t t-set="first_total_emp_arrear"
+                                       t-value="(first_total_emp_arrear or 0) + (dep_total_emp_arrear or 0)"/>
+
+                                </div>
+                            </t>
+                            <!-- ==================== First Child Department Grand Total ==================== -->
+                            <h4 style="margin-top:30px; color:#000080;">Grand Total for
+                                <t t-esc="first_child_dep[0]"/>
+                            </h4>
+                            <!-- ==================== First Child Department Grand Total ==================== -->
+                            <table class="table table-sm" style="border:1px solid #D3D3D3;">
+                                <thead style="border-top:3px solid #000080; border-bottom:3px solid #000080;">
+                                    <tr style="text-align:right; border:1px solid #D3D3D3;">
+                                        <td rowspan="2"
+                                            style="text-align:center; font-weight:bold; border:1px solid #D3D3D3;">
+                                            Grand Total for
+                                            <t t-esc="first_child_dep[0]"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_rate or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_over_time or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_ar_night or 0)"/>
+                                        </td>
+                                        <td rowspan="2">
+                                            <t t-esc="'{:.2f}'.format(first_total_rent_allow or 0)"/>
+                                        </td>
+                                        <td rowspan="2">
+                                            <t t-esc="'{:.2f}'.format(first_total_medical or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_leave_in_cash or 0)"/>
+                                        </td>
+                                        <td style="border-right:3px solid #000080;" rowspan="2">
+                                            <t t-esc="'{:.2f}'.format(first_total_gross or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_loan or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_prov_fund or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_veh or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_h_rent or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_eobi_worker or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_deduction or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_emp_eobi or 0)"/>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Second Line (same as subtotal's second row) -->
+                                    <tr style="text-align:right; border:1px solid #D3D3D3;">
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_other_duty or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_wo_pay or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_other_ded or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}/{:.0f}'.format(first_total_attendance or 0, first_total_star or 0) if first_total_star or first_total_attendance else ''"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_adv_salary or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_income_tax or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_tel or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_elec or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_arrear or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_net or 0)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(first_total_emp_arrear or 0)"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </t>
+                </div>
+                <!--                Footer with Pagination-->
+                <!--                <div class="footer" style="text-align:right; font-size: 15px;">-->
+                <!--                    Page-->
+                <!--                    <strong class="page"/>-->
+                <!--                    of-->
+                <!--                    <strong class="topage"/>-->
+                <!--                </div>-->
+            </t>
+        </t>
+    </template>
+</odoo>

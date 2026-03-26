@@ -1,0 +1,94 @@
+<!--quran_academy\visio_payroll_customization\views\payReceivingBankSheet_view.xml-->
+<odoo>
+
+    <!-- Tree View - Pay Receiving Bank Sheet QA -->
+    <record id="view_pay_receiving_bank_sheet_tree_qa" model="ir.ui.view">
+        <field name="name">pay.receiving.bank.sheet.tree.qa</field>
+        <field name="type">list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Pay Receiving Bank Sheet" create="false">
+                <field name="worker_code" string="W Code"/>
+                <field name="employee_job_title" string="Designation"/>
+                <field name="contract_id" string="Name"/>
+                <field name="rate_per_month" string="Rate P Month" sum="total"/>
+                <field name="other_duty" string="Other Duty" sum="total"/>
+                <field name="over_time" string="Over Time"/>
+                <field name="over_time_value" string="Over Time Days" sum="total"/>
+                <field name="wo_pay" string="Without Pay"/>
+                <field name="wo_pay_value" string="Without Pay Days" sum="total"/>
+                <field name="ext_arrear_night" string="Arrear / Night Allow" sum="total"/>
+                <field name="medical" string="Medical" sum="total"/>
+                <field name="leave_encash" string="Leave Encash" sum="total"/>
+                <field name="attendance_star" string="Attendance Star" sum="total"/>
+                <field name="other_deduction" string="Other Deduction" sum="total"/>
+                <field name="rent_allow" string="Rent Allowance" sum="total"/>
+                <field name="gross_total" string="Gross Total" sum="total"/>
+                <field name="eobi" string="EOBI" sum="total"/>
+                <field name="loan_recovery" string="Loan Recovery" sum="total"/>
+                <field name="rent_allow" string="Rent" sum="total"/>
+                <field name="adv_salary" string="Advance Salary" sum="total"/>
+                <field name="income_tax" string="Income Tax" sum="total"/>
+                <field name="prov_fund" string="Provident Fund" sum="total"/>
+                <field name="emp_eobi" string="Emp. EOBI+ Arrear" sum="total"/>
+                <field name="tel_bill" string="Tel Bill" sum="total"/>
+                <field name="elec_gas_bill" string="Electricity / Gas Bill" sum="total"/>
+                <field name="veh_charges" string="Vehicle Charges" sum="total"/>
+                <field name="total_deduction" string="Total Deductions" sum="total"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_pay_receiving_bank_sheet_search_qa" model="ir.ui.view">
+        <field name="name">pay.receiving.bank.sheet.search.qa</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Filters -->
+                <filter string="Current Month"
+                        name="filter_by_month"
+                        date="date_from"/>
+                <separator/>
+
+                <filter string="Done"
+                        name="filter_done"
+                        domain="[('state', '=', 'done')]"/>
+                <separator/>
+
+                <filter string="Not Paid in Cash"
+                        name="filter_cash"
+                        domain="[('paid_by', '!=', 'cash')]"/>
+                <separator/>
+
+                <!-- Group By -->
+                <filter string="Department"
+                        name="group_by_department"
+                        context="{'group_by': 'department_name'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_pay_receiving_bank_sheet_qa" model="ir.actions.act_window">
+        <field name="name">Pay Receiving Bank Sheet</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="visio_payroll_customization.view_pay_receiving_bank_sheet_tree_qa"/>
+        <field name="search_view_id" ref="visio_payroll_customization.view_pay_receiving_bank_sheet_search_qa"/>
+        <field name="context">
+            {
+            "search_default_filter_by_month": 1,
+            "search_default_filter_cash": 1,
+            "search_default_filter_done": 1,
+            "search_default_group_by_department": 1
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No bank sheet records found.
+            </p>
+        </field>
+    </record>
+
+</odoo>

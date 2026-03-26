@@ -1,0 +1,127 @@
+
+<odoo>
+
+    <!-- Ektefa Loans List View -->
+    <record id="view_ektefa_loan_list" model="ir.ui.view">
+        <field name="name">ektefa.loans.list</field>
+        <field name="model">ektefa.loans</field>
+        <field name="arch" type="xml">
+            <list
+                    edit="0" create="0" delete="0"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state == 'posted'"
+                    decoration-muted="state == 'cancel'"
+            >
+                <field name="name"/>
+                <field name="ektefa_loan_id"/>
+                <field name="ektefa_payment_date"/>
+                <field name="ektefa_comments"/>
+                <field name="ektefa_emp_en"/>
+                <field name="ektefa_payment_method_name_en" string="Payment Method"/>
+                <field name="move_id"/>
+                <field name="company_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'posted'"
+                       decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Ektefa Loans Form View -->
+    <record id="view_ektefa_loans_form" model="ir.ui.view">
+        <field name="name">ektefa.loans.form</field>
+        <field name="model">ektefa.loans</field>
+        <field name="arch" type="xml">
+            <form edit="0" create="0" delete="0">
+                <header>
+                    <!-- Status-Bar -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Posted" bg_color="text-bg-success" invisible="state != 'posted'" />
+                    <widget name="web_ribbon" title="Canceled" bg_color="text-bg-danger" invisible="state != 'cancel'"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. John Doe" required="1"/></h1>
+                        <label for="ektefa_emp_id"/>
+                        <h6><field name="ektefa_emp_id"/></h6>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="ektefa_loan_id"/>
+                            <field name="ektefa_loan_amount"/>
+                            <field name="ektefa_emp_en"/>
+                            <field name="move_id"/>
+                        </group>
+                        <group>
+                            <div class="o_td_label" name="ektefa_payment_date_label">
+                                <label for="ektefa_payment_date"/>
+                            </div>
+                            <div class="o_row" name="ektefa_payment_date">
+                                <field name="ektefa_payment_date" nolabel="1" readonly="1"/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                <field name="ektefa_payment_date_text" nolabel="1"/>
+                            </div>
+                            <field name="ektefa_comments"/>
+                            <field name="ektefa_emp_ar"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payment Method" name="ektefa_payment_method">
+                            <group>
+                                <group>
+                                    <field name="ektefa_payment_method_id"/>
+                                    <field name="ektefa_payment_method_name_en"/>
+                                    <field name="ektefa_payment_method_name_ar"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group>
+                                    <field name="ektefa_company_id"/>
+                                    <field name="ektefa_company_name_en"/>
+                                </group>
+                                <group>
+                                    <field name="ektefa_company_cr_number"/>
+                                    <field name="ektefa_company_name_ar"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ektefa Loans Search View -->
+    <record id="view_ektefa_loans_search" model="ir.ui.view">
+        <field name="name">ektefa.loans.search</field>
+        <field name="model">ektefa.loans</field>
+        <field name="arch" type="xml">
+            <search string="Ektefa Loans">
+
+                <field name="name"/>
+                <field name="ektefa_loan_id"/>
+                <field name="ektefa_payment_method_id"/>
+                <field name="move_id"/>
+                <field name="company_id"/>
+
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Posted" name="filter_posted" domain="[('state', '=', 'posted')]"/>
+                <filter string="Canceled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <filter string="Payment Date" name="filter_ektefa_payment_date" date="ektefa_payment_date"/>
+
+                <group string="Group By">
+                    <filter name="groupby_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="groupby_ektefa_loan_id" string="Loan" context="{'group_by': 'ektefa_loan_id'}"/>
+                    <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+</odoo>

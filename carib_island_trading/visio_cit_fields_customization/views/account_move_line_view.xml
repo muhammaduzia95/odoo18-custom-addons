@@ -1,0 +1,50 @@
+<odoo>
+    <record id="account_move_form_inherit_line_list" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.line.list</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add fields before product -->
+            <xpath expr="//field[@name='invoice_line_ids']//list//field[@name='product_id']" position="before">
+                <field name="region_cit_inv"/>
+                <field name="hs_code_cit_inv"/>
+                <field name="default_code" string="Item Code"/>
+                <field name="barcode" string="UPC"/>
+                <field name="categ_id" string="Brand"/>
+            </xpath>
+
+            <!-- Add size after product -->
+            <xpath expr="//field[@name='invoice_line_ids']//list//field[@name='product_id']" position="after">
+                <field name="size" string="Size"/>
+            </xpath>
+
+            <!-- Change string of price_unit in invoice line -->
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='price_unit']" position="attributes">
+                <attribute name="string">CS Price</attribute>
+            </xpath>
+
+            <!-- Change string of quantity in invoice line -->
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='quantity']" position="attributes">
+                <attribute name="string">CS Order</attribute>
+            </xpath>
+
+            <!-- Per Unit field added in invoice line -->
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='product_uom_id']" position="after">
+                <field name="per_unit"/>
+            </xpath>
+
+             <!-- Units Quantity field added in invoice line -->
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='quantity']" position="after">
+                <field name="units_quantity"/>
+            </xpath>
+
+            <!-- Add Per-Unit Price fields added in invoice line -->
+            <xpath expr="//field[@name='invoice_line_ids']//field[@name='price_unit']" position="after">
+                <field name="price_per_unit"/>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>

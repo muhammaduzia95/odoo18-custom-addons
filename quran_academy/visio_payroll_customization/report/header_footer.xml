@@ -1,0 +1,86 @@
+<odoo>
+    <!-- Custom Footer Template -->
+    <template id="custom_footer_qac">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 12px; padding-top: 10px;">
+            <div class="align-items-center"
+                 style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="flex: 1; text-align: center; font-size: 12px;">
+                    <t t-if="report_type == 'pdf'">
+                        Page <span class="page"/> / <span class="topage"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Custom Header Template -->
+    <template id="custom_header_qac">
+        <div t-attf-class="header o_company_#{company.id}_layout">
+        </div>
+    </template>
+
+    <!-- Override all external layout footers and headers -->
+    <template id="external_layout_striped_footer" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_boxed_footer" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_bold_footer" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_standard_footer" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_folder_footer" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_wave_footer" inherit_id="web.external_layout_wave">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_bubble_footer" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_footer_qac"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_payroll_customization.custom_header_qac"/>
+        </xpath>
+    </template>
+</odoo>

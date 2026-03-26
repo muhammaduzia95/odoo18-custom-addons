@@ -1,0 +1,34 @@
+<!--quran_academy\visio_contact_extension_qa\wizard\monthly_due_pdf_wizard_view.xml-->
+<odoo>
+    <record id="view_monthly_due_pdf_wizard_form" model="ir.ui.view">
+        <field name="name">monthly.due.pdf.wizard.form</field>
+        <field name="model">monthly.due.pdf.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Monthly Due PDF">
+                <group>
+
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+
+                    <group>
+                        <field name="date_to"/>
+                    </group>
+
+                </group>
+                <footer>
+                    <button name="action_generate_pdf" string="Generate PDF" type="object" class="btn-primary"/>
+                    <button name="action_generate_excel" string="Generate Excel" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_transaction_due_pdf" model="ir.actions.act_window">
+        <field name="name">Monthly Due PDF</field>
+        <field name="res_model">monthly.due.pdf.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

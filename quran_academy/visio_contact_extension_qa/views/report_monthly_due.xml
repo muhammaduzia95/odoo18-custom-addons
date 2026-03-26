@@ -1,0 +1,114 @@
+<!-- quran_academy/visio_contact_extension_qa/views/report_monthly_due.xml -->
+<odoo>
+    <data>
+        <template id="report_monthly_due">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="wiz">
+                    <t t-set="company" t-value="env.company"/>
+
+                    <div class="article">
+                        <div class="row align-items-center" style="border-bottom:1px solid #000;">
+                            <!-- logo -->
+                            <div class="col-auto">
+                                <img t-if="company.logo"
+                                     t-att-src="image_data_uri(company.logo)"
+                                     style="max-height:80px; width:auto;"/>
+                            </div>
+
+                            <!-- headline -->
+                            <div class="col text-left" style="font-size:20px; font-weight:bold; margin-left:20px;">
+                                Monthly Contribution Dues Detail
+                                <br/>
+                                <span t-esc="wiz.date_from"/>
+                                to
+                                <span t-esc="wiz.date_to"/>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-12">
+                                <table class="table table-sm table-bordered">
+                                    <thead style="background:#0d1b67;">
+                                        <tr>
+                                            <th style="color:#fff;">AC#</th>
+                                            <th style="color:#fff;">Gender</th>
+                                            <th style="color:#fff;">Name</th>
+                                            <th style="color:#fff;">Mobile</th>
+                                            <th style="color:#fff; width:85px;">Mem Date</th>
+                                            <th style="color:#fff; width:85px;">Paid Upto</th>
+                                            <th style="color:#fff;">Months</th>
+                                            <th style="color:#fff;">MLContb</th>
+                                            <th style="color:#fff;">Dues</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t t-foreach="wiz._get_due_lines()" t-as="l">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="l['ac_num']"/>
+                                                </td>
+                                                <td t-attf-align="center">
+                                                    <t t-esc="l['gender']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="l['name']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="l['mobile']"/>
+                                                </td>
+
+                                                <td t-attf-align="center">
+                                                    <t t-esc="l['mem_date']"
+                                                       t-options="{'widget':'date','format':'dd-MM-yy'}"/>
+                                                </td>
+                                                <td t-attf-align="center">
+                                                    <t t-esc="l['paid_upto']"
+                                                       t-options="{'widget':'date','format':'dd-MM-yy'}"/>
+                                                </td>
+
+                                                <td class="text-right">
+                                                    <t t-esc="l['months']"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <t t-esc="l['mlcontb']"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <t t-esc="l['dues']"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div style="page-break-after:always;"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="paperformat_monthly_due" model="report.paperformat">
+            <field name="name">Monthly Due – A4 Portrait</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">8</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_monthly_due_report" model="ir.actions.report">
+            <field name="name">Monthly Due PDF</field>
+            <field name="model">monthly.due.pdf.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_monthly_due</field>
+            <field name="report_file">visio_contact_extension_qa.report_monthly_due</field>
+            <field name="paperformat_id" ref="paperformat_monthly_due"/>
+        </record>
+    </data>
+</odoo>

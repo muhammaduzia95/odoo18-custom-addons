@@ -1,0 +1,16 @@
+<!-- visio_payroll_customization/views/payslip_dashboard_action.xml -->
+<odoo>
+    <!-- 1 ▸ Client action that mounts the OWL dashboard -->
+    <record id="action_payslip_dashboard" model="ir.actions.client">
+        <field name="name">Payslip Dashboard</field>
+        <field name="tag">visio_payroll_customization.PayslipDashboard</field>
+    </record>
+
+    <!-- 2 ▸ Top‑level menu entry (optional, change or remove as needed) -->
+    <menuitem
+        id="menu_payslip_dashboard"
+        name="Payslip Dashboard"
+        parent="hr.menu_hr_root"
+        action="action_payslip_dashboard"
+        sequence="250"/>
+</odoo>

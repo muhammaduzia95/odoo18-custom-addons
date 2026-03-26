@@ -1,0 +1,43 @@
+<!--carib_island_trading\visio_chatter_highlights\views\sale_order_view.xml-->
+<odoo>
+
+    <!-- Inherit the 18.0 quotation list view -->
+    <record id="view_sale_order_list_highlight_manual" model="ir.ui.view">
+        <field name="name">sale.order.list.highlight.manual</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+
+            <!-- Add toggle field after partner_id or state -->
+            <xpath expr="//list/field[@name='state']" position="after">
+<!--                <field name="has_unread_chatter" widget="boolean_toggle" optional="show"/>-->
+                <field name="has_unread_chatter" column_invisible="1"/>
+            </xpath>
+
+            <!-- Highlight blue if True -->
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-info">has_unread_chatter</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!--  Field added in form view for testing  -->
+    <record id="view_order_form_inherit_validate" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.validate.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Form view (right side) -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="has_unread_chatter" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+</odoo>

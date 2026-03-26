@@ -1,0 +1,58 @@
+<!--carib_island_trading\visio_cit_fields_customization\views\sale_order_line_view.xml-->
+<odoo>
+    <record id="sale_order_form_inherit_line_tree" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.line.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='analytic_distribution']" position="replace">
+                <field name="analytic_distribution"
+                       groups="visio_cit_fields_customization.group_hide_analytic_distribution"
+                       invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']" position="before">
+<!--                <field name="translated_product_name" invisible="1"/>-->
+<!--                <field name="region_cit"/>-->
+<!--                <field name="hs_code_cit"/>-->
+<!--                <field name="default_code" string="Item Code"/>-->
+<!--                <field name="barcode" string="UPC"/>-->
+                <field name="categ_id" string="Brand"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']" position="after">
+                <field name="size" string="Size"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="string">CS Price</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="attributes">
+                <attribute name="string">CS Price</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="after">
+                <field name="per_unit_price"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']"
+                   position="after">
+                <field name="per_unit" string="Per Unit" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="string">CS Order</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
+                <field name="units_quantity"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+</odoo>

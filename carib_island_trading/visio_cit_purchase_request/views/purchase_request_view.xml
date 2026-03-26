@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--carib_island_trading\visio_cit_purchase_request\views\purchase_request_views.xml-->
+<odoo>
+    <data>
+
+        <!-- TREE view -->
+        <record id="purchase_request_list" model="ir.ui.view">
+            <field name="name">purchase.request.list</field>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sale_order_id"/>
+                    <field name="vendor_ids"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- FORM view -->
+        <record id="purchase_request_form" model="ir.ui.view">
+            <field name="name">purchase.request.form</field>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Request">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validate"/>
+                        <button name="action_validate" string="Validate" type="object" class="btn-primary"
+                                invisible="state == 'validate'"/>
+
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sale_order_id"/>
+                                <field name="vendor_ids"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Sale Order Lines">
+                                <!-- List view path is visio_cit_fields_customization\views\purchase_request_view.xml -->
+                                <field name="filtered_so_line_ids" readonly="1" mode="list">
+                                </field>
+                            </page>
+                        </notebook>
+
+                        <!-- New HTML field section -->
+                        <group>
+                            <field name="note_pr" widget="html" nolabel="1" placeholder="Terms and conditions..."/>
+                        </group>
+
+                    </sheet>
+                    <chatter/>
+
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_purchase_request" model="ir.actions.act_window">
+            <field name="name">Purchase Requests</field>
+            <field name="res_model">purchase.request</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- MENU root -->
+        <menuitem id="menu_purchase_request_root"
+                  web_icon="visio_cit_purchase_request,static/src/img/purchase_request.png"
+                  name="Purchase Request"
+                  action="action_purchase_request"
+                  sequence="10"
+                  groups="visio_cit_purchase_request.group_purchase_request_user"/>
+
+    </data>
+</odoo>

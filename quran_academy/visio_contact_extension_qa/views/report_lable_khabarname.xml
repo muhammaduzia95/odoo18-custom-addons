@@ -1,0 +1,77 @@
+<!--quran_academy\visio_contact_extension_qa\views\report_lable_khabarname.xml-->
+<odoo>
+
+    <template id="report_khabarname_label">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="partner">
+                <div class="article" style="font-size:24px; padding:10px;">
+
+                    <!-- Name (Urdu or Default) -->
+                    <div style="font-weight:bold;">
+                        <t t-if="partner.urdu_lable">
+                            <t t-esc="partner.urdu_name or ''"/>
+                        </t>
+                        <t t-else="">
+                            <t t-esc="partner.name or ''"/>
+                        </t>
+                    </div>
+
+                    <!-- Address (Urdu or Default) -->
+                    <div>
+                        <t t-if="partner.urdu_lable">
+                            <t t-esc="partner.urdu_address or ''"/>
+                            <br/>
+                        </t>
+                        <t t-else="">
+                            <t t-if="partner.street">
+                                <t t-esc="partner.street"/>
+                                <br/>
+                            </t>
+                            <t t-if="partner.street2">
+                                <t t-esc="partner.street2"/>
+                                <br/>
+                            </t>
+                            <t t-if="partner.street3_qa">
+                                <t t-esc="partner.street3_qa"/>
+                                <br/>
+                            </t>
+                        </t>
+
+                        <!-- These fields are ALWAYS shown -->
+                        <t t-if="partner.city">
+                            <t t-esc="partner.city"/>
+                            ,
+                        </t>
+                        <t t-if="partner.state_id">
+                            <t t-esc="partner.state_id.name"/>
+                            ,
+                        </t>
+                        <t t-if="partner.country_id">
+                            <t t-esc="partner.country_id.name"/>
+                        </t>
+                        <br/>
+                        <t t-if="partner.phone">Tel:
+                            <t t-esc="partner.phone"/>
+                        </t>
+                        <t t-if="partner.mobile">Mob:
+                            <t t-esc="partner.mobile"/>
+                        </t>
+                    </div>
+
+                </div>
+
+                <!-- Page break -->
+                <div style="page-break-after:always;"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_khabarname_label" model="ir.actions.report">
+        <field name="name">KhabarName Label</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_contact_extension_qa.report_khabarname_label</field>
+        <field name="report_file">visio_contact_extension_qa.report_khabarname_label</field>
+    </record>
+</odoo>
+

@@ -1,0 +1,30 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_purchase_stages_tree" model="ir.ui.view">
+        <field name="name">purchase.stages.tree</field>
+        <field name="model">purchase.stages</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="sequence"/>
+<!--                <field name="fold"/>-->
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_purchase_stages" model="ir.actions.act_window">
+        <field name="name">Purchase Stages</field>
+        <field name="res_model">purchase.stages</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_purchase_stages_tree"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_purchase_stages"
+              name="Purchase Stages"
+              parent="purchase.menu_purchase_config"
+              action="action_purchase_stages"
+              sequence="1"/>
+</odoo>

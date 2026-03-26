@@ -1,0 +1,145 @@
+<!--quran_academy\visio_contact_extension_qa\views\list_election_candidates.xml-->
+<odoo>
+    <data>
+        <template id="report_election_candidates">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="wiz">
+                    <t t-set="company" t-value="env.company"/>
+
+                    <div class="article">
+                        <!-- Header -->
+                        <div class="row align-items-center" style="border-bottom:1px solid #000;">
+                            <!-- Logo -->
+                            <div class="col-auto">
+                                <img t-if="company.logo"
+                                     t-att-src="image_data_uri(company.logo)"
+                                     style="max-height:80px; width:auto;"/>
+                            </div>
+
+                            <!-- Headline -->
+                            <div class="col text-left" style="font-size:20px; font-weight:bold; margin-left: 20px;">
+                                Election<t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>,
+                                Candidates list Markazi Anjuman Khuddam-ul-Quran Lahore
+                            </div>
+                        </div>
+
+                        <!-- Parameters line -->
+                        <div class="row" style="margin-top:6px;font-size:12px;">
+                            <div class="col-12">
+                                <span>
+                                    <b>Member type:</b>
+                                    <t t-esc="wiz.get_member_type_display()"/>,
+                                </span>
+                                <span t-if="wiz.trans_upto_date">
+                                    <b>Trans Up to:</b>
+                                    <t t-esc="wiz.trans_upto_date" t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                    ,
+                                </span>
+                                <span t-if="wiz.mem_date_candidate">
+                                    <b>Mem Date Candidates:</b>
+                                    <t t-esc="wiz.mem_date_candidate"
+                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-12">
+                                <table class="table table-sm table-bordered">
+                                    <thead style="background:#0d1b67;">
+                                        <tr>
+                                            <th style="color: white;">ACNO</th>
+                                            <th style="color: white;">F Name</th>
+                                            <th style="color: white;">Address</th>
+                                            <th style="color: white;">Tel</th>
+                                            <th style="color: white;">Phone</th>
+                                            <th style="color: white;">Cont</th>
+                                            <th style="color: white;">Mem Date</th>
+                                            <th style="color: white;">Trans Date</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody style="font-size:12px;">
+                                        <t t-foreach="[p for p in wiz._get_candidate_lines() if not p.label_hold_yn]"
+                                           t-as="p">
+                                            <tr>
+                                                <!-- ACNO -->
+                                                <td style="width:8%;">
+                                                    <t t-esc="p.acno_qa or ''"/>
+                                                </td>
+                                                <!-- F Name -->
+                                                <td style="width:15%;">
+                                                    <t t-if="p.urdu_lable">
+                                                        <t t-esc="p.urdu_name or ''"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="p.name or ''"/>
+                                                    </t>
+                                                </td>
+                                                <!-- Address (only street1 or urdu_address) -->
+                                                <td style="width:30%;">
+                                                    <t t-if="p.urdu_lable">
+                                                        <t t-esc="p.urdu_address or ''"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="p.street or ''"/>
+                                                    </t>
+                                                </td>
+                                                <!-- Tel -->
+                                                <td style="width:10%;">
+                                                    <t t-esc="p.phone or ''"/>
+                                                </td>
+                                                <!-- Phone -->
+                                                <td style="width:8%;">
+                                                    <t t-esc="p.mobile or ''"/>
+                                                </td>
+                                                <!-- Cont -->
+                                                <td style="width:8%;">
+                                                    <t t-esc="p.country_id.code or ''"/>
+                                                </td>
+                                                <!-- Mem Date -->
+                                                <td style="width:10%; text-align:center;">
+                                                    <t t-esc="p.mem_date"
+                                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                                </td>
+                                                <!-- Trans Date -->
+                                                <td style="width:10%; text-align:center;">
+                                                    <t t-esc="p.trans_date_qa"
+                                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="paperformat_election_candidates" model="report.paperformat">
+            <field name="name">Election Candidates – A4 Portrait</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">8</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">8</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_election_candidates_report" model="ir.actions.report">
+            <field name="name">Election Candidates</field>
+            <field name="model">elections.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_election_candidates</field>
+            <field name="report_file">visio_contact_extension_qa.report_election_candidates</field>
+            <field name="paperformat_id" ref="paperformat_election_candidates"/>
+        </record>
+
+    </data>
+</odoo>

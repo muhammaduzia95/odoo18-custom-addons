@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--NOT-VALIDATED PICKINGS-->
+    <template id="visio_delivery_open_extra_cols" inherit_id="stock.report_delivery_document">
+
+        <!-- flags -->
+        <xpath expr="//table[@name='stock_move_table']" position="before">
+            <t t-set="open_lines" t-value="o.move_ids.filtered(lambda m: m.product_uom_qty)"/>
+            <t t-set="has_region" t-value="any(l.region_cit for l in open_lines)"/>
+            <t t-set="has_hs_code" t-value="any(l.hs_code_cit for l in open_lines)"/>
+            <t t-set="has_upc" t-value="any(l.barcode for l in open_lines)"/>
+            <t t-set="has_size" t-value="any(l.size for l in open_lines)"/>
+            <t t-set="has_cs" t-value="any(l.cs_order_cit for l in open_lines)"/>
+        </xpath>
+
+        <!-- HEADER: REGION, H.S CODE, UPC, SIZE, PRODUCT, CS ORDER, PCS ORDER, ORDERED, DELIVERED -->
+        <xpath expr="//table[@name='stock_move_table']/thead/tr" position="replace">
+            <tr>
+                <th t-if="has_region" class="text-start">Region</th>
+                <th t-if="has_hs_code" class="text-start">H.S Code</th>
+                <th t-if="has_upc" class="text-start">UPC</th>
+                <th name="th_sm_product" class="text-start">Product</th>
+                <th t-if="has_size" class="text-start">Size</th>
+                <th t-if="has_cs" class="text-end">CS Order</th>
+                <th t-if="has_cs" class="text-end">Pcs Order</th>
+                <th name="th_sm_ordered" class="text-end">Ordered</th>
+                <th name="th_sm_quantity" class="text-end">Delivered</th>
+            </tr>
+        </xpath>
+
+        <!-- BODY ROW: align exactly with header -->
+        <xpath expr="//table[@name='stock_move_table']/tbody/tr" position="replace">
+            <tr t-foreach="lines" t-as="move">
+                <td t-if="has_region">
+                    <span t-field="move.region_cit"/>
+                </td>
+                <td t-if="has_hs_code">
+                    <span t-field="move.hs_code_cit"/>
+                </td>
+                <td t-if="has_upc">
+                    <span t-field="move.barcode"/>
+                </td>
+
+                <!-- Product -->
+                <td>
+                    <span t-field="move.product_id"/>
+                    <p t-if="move.description_picking and move.description_picking != move.product_id.name and move.description_picking != move.product_id.display_name">
+                        <span t-field="move.description_picking"/>
+                    </p>
+                </td>
+
+                <td t-if="has_size">
+                    <span t-field="move.size"/>
+                </td>
+
+                <!-- CS / Pcs -->
+                <td t-if="has_cs" class="text-end">
+                    <span t-field="move.cs_order_cit"/>
+                </td>
+                <td t-if="has_cs" class="text-end">
+                    <span t-field="move.product_uom_qty"/>
+                </td>
+
+                <!-- Ordered -->
+                <td class="text-end">
+                    <span t-field="move.product_uom_qty"/>
+                    <span t-field="move.product_uom" groups="uom.group_uom"/>
+                    <span t-if="move.product_packaging_id">
+                        (
+                        <span t-field="move.product_packaging_qty" t-options='{"widget": "integer"}'/>
+                        <span t-field="move.product_packaging_id"/>)
+                    </span>
+                </td>
+
+                <!-- Delivered -->
+                <td class="text-end">
+                    <span t-field="move.quantity"/>
+                    <span t-field="move.product_uom" groups="uom.group_uom"/>
+                    <span t-if="move.product_packaging_id">
+                        (
+                        <span t-field="move.product_packaging_quantity" t-options='{"widget": "integer"}'/>
+                        <span t-field="move.product_packaging_id"/>)
+                    </span>
+                </td>
+            </tr>
+        </xpath>
+
+    </template>
+
+    <!--  VALIDATED PICKINGS  -->
+    <template id="visio_delivery_done_table_replace" inherit_id="stock.report_delivery_document">
+        <xpath expr="//table[@name='stock_move_line_table']" position="replace">
+
+            <!-- flags (safe default + group override for has_serial) -->
+            <t t-set="has_serial" t-value="False"/>
+            <t t-set="has_serial" t-value="o.move_line_ids.mapped('lot_id')" groups="stock.group_lot_on_delivery_slip"/>
+
+            <t t-set="has_region_done" t-value="any(ml.move_id.region_cit    for ml in o.move_line_ids)"/>
+            <t t-set="has_hs_code_done" t-value="any(ml.move_id.hs_code_cit  for ml in o.move_line_ids)"/>
+            <t t-set="has_upc_done" t-value="any(ml.product_id.barcode   for ml in o.move_line_ids)"/>
+            <t t-set="has_size_done" t-value="any(ml.move_id.size         for ml in o.move_line_ids)"/>
+            <t t-set="has_cs_done" t-value="any(ml.move_id.cs_order_cit for ml in o.move_line_ids)"/>
+
+
+            <table t-if="o.move_line_ids and o.state=='done'" class="table table-borderless mt48"
+                   name="stock_move_line_table">
+                <thead>
+                    <tr>
+                        <th t-if="has_region_done" class="text-start">Region</th>
+                        <th t-if="has_hs_code_done" class="text-start">H.S Code</th>
+                        <th t-if="has_upc_done" class="text-start">UPC</th>
+
+                        <!-- PRODUCT -->
+                        <th name="th_sml_product">Product</th>
+
+                        <!-- SIZE now here -->
+                        <th t-if="has_size_done" class="text-start">Size</th>
+
+                        <!-- CS / PCS (or Lot/Serial) -->
+                        <th t-if="has_cs_done" class="text-end">CS Order</th>
+                        <th t-if="not has_serial and has_cs_done" class="text-end">Pcs Order</th>
+                        <th t-if="has_serial" name="lot_serial">Lot/Serial Number</th>
+
+                        <th name="th_sml_quantity" class="text-end">Delivered</th>
+                        <th class="text-start">Unit</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr t-foreach="o.move_line_ids" t-as="ml">
+                        <td t-if="has_region_done">
+                            <span t-field="ml.move_id.region_cit"/>
+                        </td>
+                        <td t-if="has_hs_code_done">
+                            <span t-field="ml.move_id.hs_code_cit"/>
+                        </td>
+                        <td t-if="has_upc_done">
+                            <span t-field="ml.product_id.barcode"/>
+                        </td>
+
+                        <!-- PRODUCT -->
+                        <td>
+                            <span t-field="ml.product_id"/>
+                            <t t-set="description" t-value="ml.move_id.description_picking"/>
+                            <p t-if="description and description != ml.product_id.display_name and description != ml.product_id.name">
+                                <span t-esc="description"/>
+                            </p>
+                        </td>
+
+                        <!-- SIZE now here -->
+                        <td t-if="has_size_done">
+                            <span t-field="ml.move_id.size"/>
+                        </td>
+
+                        <!-- CS / PCS or Lot/Serial -->
+                        <td t-if="has_cs_done" class="text-end">
+                            <span t-field="ml.move_id.cs_order_cit"
+                                  t-options="{'widget':'float','precision_digits':2}"/>
+                        </td>
+                        <td t-if="not has_serial and has_cs_done" class="text-end">
+                            <span t-field="ml.move_id.product_uom_qty"/>
+                        </td>
+                        <td t-if="has_serial">
+                            <span t-field="ml.lot_id.name"/>
+                        </td>
+
+                        <!-- DELIVERED -->
+                        <td class="text-end">
+                            <span t-field="ml.quantity"/>
+                        </td>
+
+                        <!-- UNIT -->
+                        <td>
+                            <span t-field="ml.product_uom_id"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </xpath>
+    </template>
+
+</odoo>

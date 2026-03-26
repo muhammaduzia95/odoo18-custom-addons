@@ -1,0 +1,145 @@
+<odoo>
+    <template id="pay_cash_list_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    /* Urdu font definition */
+                    @font-face {
+                        font-family: "Jameel";
+                        src: url('/visio_payroll_customization/static/font/jameel.ttf') format("woff");
+                        font-weight: normal;
+                        font-style: normal;
+                    }
+                    body {
+                        font-family: "Jameel";
+                    }
+                    .two-column-container {
+                        page-break-inside: avoid;
+                    }
+                    .department-block {
+                        margin-bottom: 20px;
+                    }
+                </style>
+                <!-- Start record numbering from 1 -->
+                <t t-set="record_number" t-value="1"/>
+                <!-- "page" container plus multi-column class -->
+                <div class="page two-column-container" style="font-family: 'Jameel';">
+
+                    <!-- Main title -->
+                    <table style="margin-bottom:30px; width:100%; border-color:white; background-color: white;">
+                        <tr style=" border-color:white;">
+                            <!-- left: logo -->
+                            <td style="width:60px; background-color: white;">
+                                <img t-att-src="'/visio_payroll_customization/static/img/bg.png'"
+                                     style="height:100px; width:75px;" alt="Logo"/>
+                            </td>
+
+                            <!-- center: title -->
+                            <td style="text-align:center; background-color: white;">
+                                <h2 style="margin:0;">
+                                    Pay Receiving Cash List -
+                                    <t t-esc="month"/>
+                                </h2>
+                            </td>
+
+                            <!-- right: blank spacer same width as logo -->
+                            <td style="width:60px; background-color: white;"></td>
+                        </tr>
+                    </table>
+
+                    <!-- Track the overall total amount -->
+                    <t t-set="total_amount" t-value="0"/>
+
+                    <!-- ✅ Department order fixed (same as docs order) -->
+                    <t t-set="departments" t-value="[]"/>
+                    <t t-foreach="docs" t-as="slip">
+                        <t t-if="slip.first_child_dep and slip.first_child_dep not in departments">
+                            <t t-set="departments" t-value="departments + [slip.first_child_dep]"/>
+                        </t>
+                    </t>
+
+                    <!-- Group by Department -->
+                    <t t-foreach="departments" t-as="department">
+
+                        <!-- Wrap each department in a block -->
+                        <div class="department-block">
+                            <!-- Department total calculation -->
+                            <t t-set="department_total"
+                               t-value="sum(abs(p.net_payable) for p in docs if p.first_child_dep == department)"/>
+
+                            <!-- Department header + total -->
+                            <table class="table table-borderless" style="width: 100%;">
+                                <tr style="border-bottom: 1px solid black;">
+                                    <td style="font-size: 20px; font-weight: bold; text-align: left;">
+                                        <t t-esc="department"/>
+                                    </td>
+                                    <td style="font-size: 20px; font-weight: bold; text-align: right;">
+                                        <t t-esc="department_total"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Cash Group -->
+                            <t t-set="cash_payslips"
+                               t-value="docs.filtered(lambda p: p.paid_by == 'cash' and p.first_child_dep == department)"/>
+                            <t t-if="cash_payslips">
+                                <t t-set="cash_total"
+                                   t-value="sum(p.net_payable for p in cash_payslips)"/>
+
+                                <table class="table table-borderless" style="width: 100%;">
+                                    <tr class="bg-secondary" style="border-bottom: 1px solid black;">
+                                        <td style="font-size: 16px; font-weight: bold; text-align: left;">
+                                            Cash
+                                        </td>
+                                        <td style="font-size: 16px; font-weight: bold; text-align: right;">
+                                            <t t-esc="abs(cash_total)"/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table class="table table-borderless" style="width: 100%;">
+                                    <thead>
+                                        <tr style="border-bottom: 1px solid black;">
+                                            <th style="text-align: left;">#</th>
+                                            <th style="text-align: left;">Name</th>
+                                            <th style="text-align: right;">Net Pay</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="cash_payslips" t-as="payslip">
+                                            <tr style="border-bottom: 1px solid black;">
+                                                <td style="text-align: left;">
+                                                    <t t-esc="record_number"/>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    <t t-esc="payslip.employee_id.name"/>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    <t t-esc="payslip.net_payable"/>
+                                                </td>
+                                            </tr>
+                                            <!-- Update totals -->
+                                            <t t-set="total_amount" t-value="total_amount + payslip.net_payable"/>
+                                            <t t-set="record_number" t-value="record_number + 1"/>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+                            <!-- Department Grand Total -->
+                            <table class="table table-borderless" style="width: 100%;">
+                                <tr class="bg-secondary" style="border-bottom: 1px solid black; font-weight: bold;">
+                                    <td style="text-align: left; font-size: 18px;">
+                                        Grand Total
+                                    </td>
+                                    <td style="text-align: right; font-size: 18px;">
+                                        <t t-esc="department_total"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div> <!-- /department-block -->
+                    </t> <!-- /t-foreach departments -->
+                </div> <!-- /page two-column-container -->
+            </t>
+        </t>
+    </template>
+</odoo>

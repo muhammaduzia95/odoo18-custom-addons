@@ -1,0 +1,35 @@
+<!--quran_academy\visio_contact_extension_qa\wizard\create_transaction_wizard_view.xml-->
+<odoo>
+    <data>
+        <record id="view_create_transaction_wizard_form" model="ir.ui.view">
+            <field name="name">create.transaction.wizard.form</field>
+            <field name="model">create.transaction.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Transaction">
+                    <group>
+                        <group>
+                            <field name="tran_members" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="tran_date"/>
+                        </group>
+                        <group>
+                            <field name="tran_amount"/>
+                            <field name="tran_paid_by"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_create" string="Create" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_transaction_create" model="ir.actions.act_window">
+            <field name="name">Create Transaction</field>
+            <field name="res_model">create.transaction.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,70 @@
+<!--quran_academy\visio_contact_extension_qa\views\menus.xml-->
+<odoo>
+
+    <menuitem id="qa_menu_main_payments"
+              name="Payments"
+              action="qa_action_account_payments_election"
+              sequence="65"
+              groups="account.group_account_invoice"
+              web_icon="visio_contact_extension_qa/static/img/icon_payments.png"/>
+
+    <!-- Parent Menu: Transaction -->
+    <menuitem id="menu_transaction_root"
+              name="Transaction"
+              sequence="2"
+              parent="contacts.menu_contacts"
+              groups="base.group_user"/>
+
+    <!-- Child Menu: Create Transaction -->
+    <menuitem id="menu_transaction_create"
+              name="Create Transaction"
+              parent="visio_contact_extension_qa.menu_transaction_root"
+              action="visio_contact_extension_qa.action_transaction_create"
+              sequence="1"
+              groups="base.group_user"/>
+
+    <!-- Child Menu: Monthly Due PDF -->
+    <menuitem id="menu_transaction_due_pdf"
+              name="Monthly Due PDF"
+              parent="visio_contact_extension_qa.menu_transaction_root"
+              action="visio_contact_extension_qa.action_transaction_due_pdf"
+              sequence="2"
+              groups="base.group_user"/>
+
+    <!-- Elections Menu -->
+    <menuitem id="menu_elections_root"
+              name="Elections"
+              sequence="3"
+              parent="contacts.menu_contacts"
+              groups="base.group_user"
+              action="visio_contact_extension_qa.action_elections_wizard"/>
+
+    <!-- Parent Menu: Lables -->
+    <menuitem id="menu_lables_root"
+              name="Lables and List"
+              sequence="4"
+              parent="contacts.menu_contacts"
+              groups="base.group_user"/>
+
+    <!-- Child Menu: Lables Mohsineen -->    <!-- Menu now is not in use, as we created Wizard -->
+<!--    <menuitem id="menu_lables_mohsineen"-->
+<!--              name="Lables Mohsineen"-->
+<!--              parent="visio_contact_extension_qa.menu_lables_root"-->
+<!--              action="visio_contact_extension_qa.server_action_print_lables_mohsineen"-->
+<!--              sequence="1"-->
+<!--              groups="base.group_user"/>-->
+
+    <!-- Child Menu: By Hand List -->    <!-- Menu now is not in use, as we created Wizard -->
+<!--    <menuitem id="menu_by_hand_list"-->
+<!--              name="By Hand List"-->
+<!--              parent="visio_contact_extension_qa.menu_lables_root"-->
+<!--              action="visio_contact_extension_qa.server_action_print_by_hand_list"-->
+<!--              sequence="1"-->
+<!--              groups="base.group_user"/>-->
+
+    <!-- Changing the sequence number of Configuration menu to 3  -->
+    <record id="contacts.res_partner_menu_config" model="ir.ui.menu">
+        <field name="sequence">5</field>
+    </record>
+
+</odoo>

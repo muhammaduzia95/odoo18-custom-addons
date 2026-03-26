@@ -1,0 +1,220 @@
+<odoo>
+    <record id="view_hr_payslip_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.page</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//header//button[@name='action_payslip_cancel']" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+            <xpath expr="//header//button[@name='action_send_email']" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+            <xpath expr="//header//button[@name='refund_sheet']" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+            <xpath expr="//header//button[@name='action_payslip_draft']" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+            <!--basic salary page-->
+            <xpath expr="//notebook/page[1]" position="before">
+                <page name="salary" string="Basic Salary" >
+                    <group>
+                        <group>
+                            <field name="two_third_rentpmonth"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="rate_per_month" />
+                        </group>
+                        <group>
+                            <field name="medical_availed" readonly="1"/>
+                            <field name="other_duty" />
+                        </group>
+                        <group>
+                            <field name="total_deduction" readonly="1"/>
+                            <field name="net_payable" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="gross_total" readonly="1"/>
+                        </group>
+                    </group>
+                    <separator string="Comments"/>
+                    <field name="comments" placeholder="Comments"/>
+                </page>
+            </xpath>
+            <!--allowance page-->
+            <xpath expr="//notebook/page[1]" position="after">
+                <page name="allowances" string="Allowances">
+                    <group>
+                        <group>
+                            <field name="medical" />
+                            <field name="ext_arrear_night" />
+                            <field name="daily_wages" />
+                            <field name="special_allowance_qa" />
+                            <field name="other_deduction" />
+                            <field name="total_other_ded" readonly="1"/>
+                            <field name="remaining_other_ded" readonly="1"/>
+                        </group>
+                        <group>
+                            <label for="leave_in_cash" string="Leave in cash"/>
+                            <div>
+                                <field name="leave_in_cash" class="oe_inline" style="width: 1.5rem"
+                                       />
+                                /
+                                <field name="leave_in_cash_value" class="oe_inline" readonly="1"/>
+                            </div>
+                            <label for="over_time" string="Over Time"/>
+                            <div>
+                                <field name="over_time" class="oe_inline" />
+                                /
+                                <field name="over_time_value" class="oe_inline" readonly="1"/>
+                            </div>
+                            <label for="wo_pay" string="Without Pay"/>
+                            <div>
+                                <field name="wo_pay" class="oe_inline" />
+                                /
+                                <field name="wo_pay_value" class="oe_inline" readonly="1"/>
+                            </div>
+                            <label for="attendance_star" string="Attendance Star"/>
+                            <div>
+                                <field name="attendance_star" class="oe_inline" />
+                                /
+                                <field name="attendance_star_value" class="oe_inline" readonly="1"/>
+                            </div>
+                            <field name="one_time_deduction" />
+                            <field name="rent_allow" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <!--deductions page-->
+            <xpath expr="//notebook/page[2]" position="after">
+                <page name="deductions" string="Deductions">
+                    <group>
+                        <group>
+                            <field name="loan_recovery" />
+                            <field name="adv_salary" />
+                            <field name="income_tax" />
+                            <field name="prov_fund" />
+                            <field name="tel_bill" />
+                            <field name="h_rent" />
+                        </group>
+                        <group>
+                            <field name="veh_charges" />
+                            <field name="elec_gas_bill" />
+                            <!--                            <field name="other"/>-->
+                            <field name="eobi_worker"/>
+                            <field name="emp_eobi"/>
+                            <field name="eobi_emp_diff" />
+                            <field name="eobi_worker_diff" />
+                            <field name="special_allowance_deduction"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//sheet/group[1]" position="replace">
+                <group col="2">
+                    <group>
+                        <label for="date_from" string="Period"/>
+                        <div>
+                            <field name="date_from" class="oe_inline" />
+                            -
+                            <field name="date_to" class="oe_inline" />
+                        </div>
+                        <field name="worker_code" readonly="1"/>
+                        <field name="department_code" readonly="1"/>
+                        <field name="contract_id"
+                               domain="[('employee_id','=',employee_id),('date_start','&lt;=',date_to),'|',('date_end','&gt;=',date_from),('date_end','=',False)]"
+                               context="{'default_employee_id': employee_id}"
+                               options="{'no_create': True, 'no_create_edit': True , 'no_open': True}"/>
+                        <field name="employee_type_id" readonly="state != 'draft'"/>
+                        <field name="paid_by" />
+                    </group>
+                    <group>
+                        <field name="number" readonly="1"/>
+                        <field name="struct_id" required="contract_id != False" readonly="state != 'draft'"
+                               options="{'no_create': True, 'no_create_edit': True , 'no_open': True}"/>
+                        <field name="name" readonly="state != 'draft'"/>
+                        <field name="eobi" widget="boolean_toggle" readonly="state != 'draft'" force_save="1"/>
+                        <field name="leave_encash" widget="boolean_toggle" readonly="state != 'draft'" force_save="1"/>
+                        <!--                        <field name="credit_note" readonly="state != 'draft'"/>-->
+                    </group>
+                </group>
+            </xpath>
+
+            <!--            <xpath expr="//notebook/page[5]//list" position="attributes">-->
+            <!--                <attribute name="domain">[('total', '!=', 0)]</attribute>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//notebook/page[4]" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[5]" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[6]" position="attributes">
+                <attribute name="string">Salary Details</attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[6]//field[@name='details_by_salary_rule_category']" position="attributes">
+                <attribute name="domain">[('amount', '>', 0)]</attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[7]" position="attributes">
+                <attribute name="groups">visio_payroll_customization.group_disable_extra_pages</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_payslip_search_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.search.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='done']" position="after">
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <field name="worker_code" filter_domain="[('worker_code', '=', self)]"/>
+                <filter string="Date" name="group_by_month"
+                        context="{'group_by': 'date_to'}"/>
+            </xpath>
+            <xpath expr="//filter[@name='draft']" position="before">
+                <filter string="Date" name="filter_by_month" date="date_from"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_payslip_list_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.list.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-info">state == 'draft'</attribute>
+                <attribute name="decoration-success">state == 'done'</attribute>
+            </xpath>
+            <xpath expr="//list" position="attributes">
+                <attribute name="js_class">payslip_dashboard</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="before">
+                <field name="worker_code"/>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payslip_run_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

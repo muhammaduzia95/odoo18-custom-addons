@@ -1,0 +1,46 @@
+<!--quran_academy\visio_payroll_customization\wizard\post_payslips.xml-->
+<odoo>
+    <record id="view_post_payslips_wizard" model="ir.ui.view">
+        <field name="name">post.payslips.wizard.form</field>
+        <field name="model">post.payslips.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Post Payslips">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                </group>
+                <footer>
+                    <!--                    <button name="action_post_payslips" type="object" string="Post Payslips" class="btn-primary"-->
+                    <!--                    confirm="Do you want to compute and post all payslips?"/>-->
+
+                    <button name="action_post_payslips"
+                            type="object"
+                            string="Post Payslips"
+                            class="btn-primary"
+                            confirm="Warning ‑ Are you sure? These changes are hard to undo."/>
+
+
+                    <!--                    <button name="action_compute_sheets" type="object" string="Compute Payslips" class="btn-info"/>-->
+
+                    <button name="action_compute_sheets"
+                            type="object"
+                            string="Compute Payslips"
+                            class="btn-info"
+                            confirm="Warning ‑ Are you sure? These changes are hard to undo."/>
+
+
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_post_payslips_wizard" model="ir.actions.act_window">
+        <field name="name">Post Payslips</field>
+        <field name="res_model">post.payslips.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

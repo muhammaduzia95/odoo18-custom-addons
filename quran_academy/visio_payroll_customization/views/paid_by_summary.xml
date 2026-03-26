@@ -1,0 +1,73 @@
+<odoo>
+    <menuitem
+            id="menu_payroll_reporting"
+            name="Reporting"
+            sequence="50"
+            parent="om_hr_payroll.menu_hr_payroll_root"
+            action=""
+    />
+
+    <!--    list view paid by summary-->
+    <record id="view_paid_by_summary_tree" model="ir.ui.view">
+        <field name="name">paid.by.summary.list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Paid By Summary" create="false" expand="1">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="master_department" width="25%"/>
+                <field name="net_payable" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <!--    search view for paid by summary-->
+    <record id="view_paid_by_summary_search" model="ir.ui.view">
+        <field name="name">Paid by Summary Search</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <filter string="Master Department" name="group_by_master_department"
+                        context="{'group_by': 'master_department'}"/>
+                <filter string="Paid By" name="group_by_paid_by" context="{'group_by': 'paid_by'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!--   action for paid by summary menu-->
+    <!-- action for paid by summary menu-->
+    <record id="action_paid_by_summary" model="ir.actions.act_window">
+        <field name="name">Paid By Summary</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_id" ref="view_paid_by_summary_tree"/>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_paid_by_summary_search"/>
+        <field name="context">{
+            'search_default_group_by_master_department': 1,
+            'search_default_group_by_paid_by': 1,
+            'search_default_filter_by_month': 1,
+            'search_default_filter_done': 1,
+            'export_filename': 'Paid By Summary'
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Paid by Records.
+            </p>
+        </field>
+    </record>
+
+    <!--    paid by summary menu-->
+    <menuitem
+            id="menu_paid_by_summary"
+            name="Paid By Summary"
+            sequence="30"
+            parent="menu_payroll_reporting"
+            action="action_paid_by_summary"
+    />
+</odoo>

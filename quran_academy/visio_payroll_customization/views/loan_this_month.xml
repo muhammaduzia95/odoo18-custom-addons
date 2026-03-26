@@ -1,0 +1,56 @@
+<odoo>
+    <record id="view_loan_this_month" model="ir.ui.view">
+        <field name="name">loan.this.month.list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Loan This Month" create="false" >
+                <field name="currency_id" column_invisible="True"/>
+                <field name="worker_code"/>
+                <field name="employee_id"/>
+                <field name="employee_job_title"/>
+                <field name="rate_per_month" />
+                <field name="other_duty" />
+                <field name="loan_recovery" sum="Total"/>
+                <field name="net_payable" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_loan_this_month_search" model="ir.ui.view">
+        <field name="name">Loan This Month Search</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_loan_this_month" model="ir.actions.act_window">
+        <field name="name">Loan This Month</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_id" ref="view_loan_this_month"/>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_loan_this_month_search"/>
+        <field name="context">{ 'search_default_filter_by_month': 1  , 'search_default_filter_done': 1,
+            'export_filename': 'Loan This Month'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Records.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_loan_this_month"
+            name="Loan This Month"
+            sequence="50"
+            parent="menu_payroll_reporting"
+            action="action_loan_this_month"
+    />
+</odoo>

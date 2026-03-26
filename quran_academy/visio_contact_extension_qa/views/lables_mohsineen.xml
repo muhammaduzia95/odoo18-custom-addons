@@ -1,0 +1,126 @@
+<!-- quran_academy\visio_contact_extension_qa\views\lables_mohsineen.xml -->
+<odoo>
+    <template id="report_lables_mohsineen">
+        <t t-call="web.html_container">
+            <!-- fetch only those partners -->
+            <t t-set="lines" t-value="docs"/>
+
+<!--            <t t-set="lines"-->
+<!--               t-value="env['res.partner'].search([('show_records_qa', '=', 'mohsinin'), ('label_hold_yn', '=', False) ])"/>-->
+            <!-- sequence counter -->
+            <t t-set="seq" t-value="0"/>
+
+            <div class="page">
+                <div class="article">
+                    <t t-foreach="lines" t-as="p">
+                        <!-- increment sequence -->
+                        <t t-set="seq" t-value="seq + 1"/>
+
+                        <!-- one label cell -->
+                        <div style="width:48%;
+                        float:left;
+                        padding:4mm;
+                        padding-bottom:25px;
+                        box-sizing:border-box;
+                        border-bottom:1px dotted white;
+                        border-right:1px dotted white;">
+                            <!-- seq + code in top-left -->
+                            <div style="position:relative; min-height:1.2em;">
+                                <span style="font-size: 12px; position:absolute; top:0; left:0;">
+                                    <t t-esc="seq"/>
+                                    <span style="display:inline-block; width:20px;"></span>
+                                    <t t-esc="p.acno_qa or ''"/>
+                                </span>
+                            </div>
+                            <!-- partner name centered -->
+                            <div style="text-align:center; margin-top:1.5em;">
+                                <t t-if="p.urdu_lable">
+                                    <t t-esc="p.urdu_name or ''"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="p.name or ''"/>
+                                </t>
+                            </div>
+                            <!-- address centered -->
+                            <div style="text-align:center; margin-top:0.5em;">
+                                <t t-if="p.urdu_lable">
+                                    <t t-if="p.urdu_address">
+                                        <t t-esc="p.urdu_address"/>
+                                        <br/>
+                                    </t>
+                                    <t t-if="p.urdu_address1">
+                                        <t t-esc="p.urdu_address1"/>
+                                        <br/>
+                                    </t>
+                                    <t t-if="p.urdu_address2">
+                                        <t t-esc="p.urdu_address2"/>
+                                        <br/>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="p.street">
+                                        <t t-esc="p.street"/>
+                                        <br/>
+                                    </t>
+                                    <t t-if="p.street2">
+                                        <t t-esc="p.street2"/>
+                                        <br/>
+                                    </t>
+                                    <t t-if="p.street3_qa">
+                                        <t t-esc="p.street3_qa"/>
+                                        <br/>
+                                    </t>
+                                </t>
+                            </div>
+
+                        </div>
+
+                        <!-- clear float after every 2 labels -->
+                        <t t-if="seq % 2 == 0">
+                            <div style="clear:both;"></div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- paper‑format -->
+    <record id="paperformat_lables_mohsineen" model="report.paperformat">
+        <field name="name">Lables Mohsineen (A4 3x10)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">7</field>
+        <field name="margin_bottom">12</field>
+        <field name="margin_left">6</field>
+        <field name="margin_right">6</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- report action -->
+    <record id="action_report_lables_mohsineen" model="ir.actions.report">
+        <field name="name">Lables Mohsineen</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_contact_extension_qa.report_lables_mohsineen</field>
+        <field name="report_file">visio_contact_extension_qa.report_lables_mohsineen</field>
+        <field name="paperformat_id" ref="paperformat_lables_mohsineen"/>
+    </record>
+
+    <!-- server action -->
+    <record id="server_action_print_lables_mohsineen" model="ir.actions.server">
+        <field name="name">Print Lables Mohsineen</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = env.ref('visio_contact_extension_qa.action_report_lables_mohsineen').report_action(
+            env['res.partner'].search([
+            ('show_records_qa', '=', 'mohsinin'),
+            ('label_hold_yn', '=', True)
+            ])
+            )
+        </field>
+    </record>
+</odoo>

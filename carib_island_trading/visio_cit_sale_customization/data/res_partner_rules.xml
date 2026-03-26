@@ -1,0 +1,27 @@
+<!--\carib_island_trading\visio_cit_sale_customization\data\res_partner_rules.xml-->
+<odoo>
+    <data noupdate="0">
+
+        <record id="group_user_on_contacts" model="res.groups">
+            <field name="name">Contacts / User on Contacts</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <record id="rule_partner_user_on_contacts" model="ir.rule">
+            <field name="name">Contacts: own &amp; unassigned only</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">
+                ['|', ('id', '=', user.partner_id.id), ('user_ids', 'in', [user.id])]
+            </field>
+            <field name="groups"
+                   eval="[(4, ref('visio_cit_sale_customization.group_user_on_contacts'))]"/>
+            <field name="active" eval="True"/>
+            <field name="global" eval="False"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+
+        </record>
+    </data>
+</odoo>

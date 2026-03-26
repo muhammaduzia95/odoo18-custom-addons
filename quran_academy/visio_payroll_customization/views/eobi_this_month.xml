@@ -1,0 +1,60 @@
+<odoo>
+    <record id="view_eobi_this_month" model="ir.ui.view">
+        <field name="name">eobi.this.month.list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="EOBI This Month" create="false">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="master_department" column_invisible="True"/>
+                <field name="worker_code"/>
+                <field name="eobi_num"/>
+                <field name="employee_id" />
+                <field name="employee_job_title" />
+                <field name="emp_eobi" sum="total"/>
+                <field name="eobi_worker" sum="total"/>
+                <field name="grand_total" sum="total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_eobi_this_month_search" model="ir.ui.view">
+        <field name="name">EOBI This Month Search</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <filter string="Master Department" name="group_by_master_department"
+                        context="{'group_by': 'master_department'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eobi_this_month" model="ir.actions.act_window">
+        <field name="name">EOBI This Month</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_id" ref="view_eobi_this_month"/>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_eobi_this_month_search"/>
+        <field name="context">{ 'search_default_group_by_master_department': 1  , 'search_default_filter_by_month': 1  ,
+            'search_default_filter_done': 1, 'export_filename': 'EOBI This Month' }</field>
+        <field name="domain">[('eobi', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Records.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_eobi_this_month"
+            name="EOBI This Month"
+            sequence="60"
+            parent="menu_payroll_reporting"
+            action="action_eobi_this_month"
+    />
+</odoo>

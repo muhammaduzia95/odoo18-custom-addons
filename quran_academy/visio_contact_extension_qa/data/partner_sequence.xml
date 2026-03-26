@@ -1,0 +1,16 @@
+<!--quran_academy\visio_contact_extension_qa\data\partner_sequence.xml-->
+<odoo>
+    <data noupdate="0">
+
+        <!--  Sequence number for a field on Contacts -->
+        <record id="seq_ac_number_qa" model="ir.sequence">
+            <field name="name">QA Partner AC Number</field>
+            <field name="code">res.partner.ac.number.qa</field>
+            <field name="prefix"/>
+            <field name="padding">0</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+
+    </data>
+</odoo>

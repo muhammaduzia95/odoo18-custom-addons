@@ -1,0 +1,104 @@
+<odoo>
+    <data>
+
+        <!-- Payrun Action -->
+        <record id="action_ektefa_payrun" model="ir.actions.act_window">
+            <field name="name">Salaries Logs</field>
+            <field name="res_model">ektefa.payrun</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="search_view_id" ref="ektefa_hrms.view_ektefa_payrun_search"/>
+            <field name="groups_id" eval="[(4, ref('ektefa_hrms.group_ektefa_api_records'))]"/>
+        </record>
+
+        <!-- EOS Action -->
+        <record id="action_ektefa_eos" model="ir.actions.act_window">
+            <field name="name">End of Services Logs</field>
+            <field name="res_model">ektefa.end.of.service</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="search_view_id" ref="ektefa_hrms.view_ektefa_eos_search"/>
+            <field name="groups_id" eval="[(4, ref('ektefa_hrms.group_ektefa_api_records'))]"/>
+        </record>
+
+        <!-- Loans Action -->
+        <record id="action_ektefa_loans" model="ir.actions.act_window">
+            <field name="name">Loan Logs</field>
+            <field name="res_model">ektefa.loans</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="search_view_id" ref="ektefa_hrms.view_ektefa_loans_search"/>
+            <field name="groups_id" eval="[(4, ref('ektefa_hrms.group_ektefa_api_records'))]"/>
+        </record>
+
+        <!-- Loans Settlement Action -->
+        <record id="action_ektefa_loans_settlement" model="ir.actions.act_window">
+            <field name="name">Loan Settlement Logs</field>
+            <field name="res_model">ektefa.loans.settlement</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="search_view_id" ref="ektefa_hrms.view_ektefa_loans_settlement_search"/>
+            <field name="groups_id" eval="[(4, ref('ektefa_hrms.group_ektefa_api_records'))]"/>
+        </record>
+
+        <!-- API Logs Action -->
+        <record id="action_api_log" model="ir.actions.act_window">
+            <field name="name">Sync Requests Logs</field>
+            <field name="res_model">ektefa.api.log</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="groups_id" eval="[(4, ref('ektefa_hrms.group_ektefa_api_logs'))]"/>
+        </record>
+
+        <!-- Ektefa HRMS Action For Conf Settings -->
+        <record id="action_ektefa_payroll_config" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="groups_id" eval="[(4, ref('ektefa_hrms.group_ektefa_user'))]"/>
+            <field name="context">{'module' : 'ektefa_hrms', 'bin_size': False}</field>
+        </record>
+
+        <!-- Ektefa Main Menu with Enterprise Image and Access Group -->
+        <menuitem id="ektefa_menu_root" name="Ektefa HRMS" sequence="10"
+                  groups="ektefa_hrms.group_ektefa_user,ektefa_hrms.group_ektefa_api_records"
+                  web_icon="ektefa_hrms,static/description/icon.png"/>
+
+        <!-- Ektefa Main Menu with Enterprise Image and Access Group -->
+        <menuitem id="ektefa_logs_menu_root"  parent="ektefa_hrms.ektefa_menu_root" name="Ektefa Logs" sequence="10"
+                  groups="ektefa_hrms.group_ektefa_api_records"/>
+
+        <!-- Ektefa Payrun Menu -->
+        <menuitem id="menu_ektefa_payrun" parent="ektefa_hrms.ektefa_logs_menu_root" name="Salaries"
+                  sequence="10" groups="ektefa_hrms.group_ektefa_api_records" action="ektefa_hrms.action_ektefa_payrun"/>
+
+        <!-- Ektefa End of Services Menu -->
+        <menuitem id="menu_ektefa_eos" parent="ektefa_hrms.ektefa_logs_menu_root" name="End of Services"
+                  sequence="20" groups="ektefa_hrms.group_ektefa_api_records" action="ektefa_hrms.action_ektefa_eos"/>
+
+        <!-- Ektefa Loans -->
+        <menuitem id="menu_ektefa_loans" parent="ektefa_hrms.ektefa_logs_menu_root" name="Loans"
+                  sequence="30" groups="ektefa_hrms.group_ektefa_api_records" action="ektefa_hrms.action_ektefa_loans"/>
+
+        <!-- Ektefa Loans Settlement -->
+        <menuitem id="menu_ektefa_loans_settlement" parent="ektefa_hrms.ektefa_logs_menu_root" name="Loans Settlement"
+                  sequence="40" groups="ektefa_hrms.group_ektefa_api_records" action="ektefa_hrms.action_ektefa_loans_settlement"/>
+
+        <!-- Ektefa API Logs Menu -->
+        <menuitem id="menu_api_log" name="Sync Requests" parent="ektefa_hrms.ektefa_logs_menu_root" sequence="50"
+              groups="ektefa_hrms.group_ektefa_api_logs" action="ektefa_hrms.action_api_log"/>
+
+        <!-- Ektefa HRMS Configuration Menu -->
+        <menuitem id="menu_ektefa_payroll_config" name="Configuration" sequence="130"
+                  parent="ektefa_hrms.ektefa_menu_root" groups="ektefa_hrms.group_ektefa_user"/>
+
+        <!-- Ektefa HRMS Settings Menu -->
+        <menuitem id="loan_management_settings" name="Settings" groups="ektefa_hrms.group_ektefa_user"
+                  parent="ektefa_hrms.menu_ektefa_payroll_config"
+                  action="ektefa_hrms.action_ektefa_payroll_config"/>
+
+
+    </data>
+</odoo>

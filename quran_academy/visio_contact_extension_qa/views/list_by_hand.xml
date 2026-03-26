@@ -1,0 +1,125 @@
+<!-- quran_academy\visio_contact_extension_qa\views\list_by_hand.xml -->
+<odoo>
+    <data>
+
+        <template id="report_by_hand_list">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+
+                <div class="page">
+                    <div class="article">
+                        <!-- Title -->
+                        <h3 style="margin-bottom:4px;">Member</h3>
+                        <div style="border-bottom:1px solid #000; margin-bottom:8px;"></div>
+
+                        <table style="border-color: white; width:100%; border-collapse:collapse; font-size:11pt;">
+                            <thead>
+                                <tr>
+                                    <th style="color: white;">Sr</th>
+                                    <th style="text-align: left;">Code</th>
+                                    <th style="text-align: left;">Name</th>
+                                    <th style="text-align: left; width:20%;">Signature</th>
+                                    <th style="width:10px"></th>
+                                    <th style="color: white;">Sr</th>
+                                    <th style="color: white;">Code</th>
+                                    <th style="color: white;">Name</th>
+                                    <th style="color: white; width:20%">Signature</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- total partners -->
+                                <t t-set="total" t-value="len(docs)"/>
+                                <!-- loop over indices 0,2,4,… -->
+                                <t t-foreach="range(0, total, 2)" t-as="idx">
+                                    <tr>
+                                        <!-- first partner in the pair -->
+                                        <td>
+                                            <t t-esc="idx + 1"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="docs[idx].acno_qa or ''"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="docs[idx].urdu_lable">
+                                                <t t-esc="docs[idx].urdu_name or ''"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="docs[idx].name or ''"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; border-bottom:1px solid #000; height:45px;"></span>
+                                        </td>
+
+                                        <!-- second partner (if exists) -->
+                                        <t t-if="idx + 1 &lt; total">
+                                            <td></td>
+                                            <td>
+                                                <t t-esc="idx + 2"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="docs[idx + 1].acno_qa or ''"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="docs[idx + 1].urdu_lable">
+                                                    <t t-esc="docs[idx + 1].urdu_name or ''"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-esc="docs[idx + 1].name or ''"/>
+                                                </t>
+                                            </td>
+
+                                            <td>
+                                                <span style="display:block; border-bottom:1px solid #000; height:45px;"></span>
+                                            </td>
+                                        </t>
+                                        <!-- otherwise: four blanks to keep 8‑cell layout -->
+                                        <t t-else="">
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Paper format -->
+        <record id="paperformat_by_hand_list" model="report.paperformat">
+            <field name="name">By‑Hand List Paper</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+        </record>
+
+        <!-- Report Action -->
+        <record id="action_report_by_hand_list" model="ir.actions.report">
+            <field name="name">By Hand List</field>
+            <field name="model">res.partner</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_by_hand_list</field>
+            <field name="report_file">visio_contact_extension_qa.report_by_hand_list</field>
+            <field name="paperformat_id" ref="paperformat_by_hand_list"/>
+        </record>
+
+        <!-- Server action -->
+        <record id="server_action_print_by_hand_list" model="ir.actions.server">
+            <field name="name">Print By Hand List</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = env.ref('visio_contact_extension_qa.action_report_by_hand_list').report_action(
+                env['res.partner'].search([('by_hand_qa', '=', True),('label_hold_yn', '=', False)]))
+            </field>
+        </record>
+
+    </data>
+</odoo>

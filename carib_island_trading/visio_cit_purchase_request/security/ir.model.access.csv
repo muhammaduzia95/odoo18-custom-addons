@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_request_all,Purchase Request,model_purchase_request,,1,1,1,1
+access_shipping_methods_user,shipping.methods,model_shipping_methods,,1,1,1,1
+access_purchase_order_logistics_user,purchase_order_logistics_user,model_purchase_order_logistics,base.group_user,1,1,1,1
+access_sub_shipping_user,sub_shipping_user,model_sub_shipping,base.group_user,1,1,1,1
+
+
+
+
+
+
+

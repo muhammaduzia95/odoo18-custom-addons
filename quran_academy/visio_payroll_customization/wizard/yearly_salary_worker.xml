@@ -1,0 +1,35 @@
+<!--quran_academy\visio_payroll_customization\wizard\yearly_salary_worker.xml-->
+<odoo>
+    <record id="view_worker_payslip_wizard_form" model="ir.ui.view">
+        <field name="name">worker.payslip.wizard.form</field>
+        <field name="model">yearly.salary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Worker Payslip Report">
+                <group>
+                    <field name="worker_code"/>
+                </group>
+                <footer>
+                    <button name="print_worker_payslip" string="Print PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="worker_payslip_wizard_action" model="ir.actions.act_window">
+        <field name="name">Worker Payslip Report</field>
+        <field name="res_model">yearly.salary.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="visio_payroll_customization.view_worker_payslip_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+            id="menu_yearly_salary_statement_worker"
+            name="Yearly Salary Statement Worker"
+            sequence="120"
+            parent="visio_payroll_customization.menu_payroll_reporting"
+            action="visio_payroll_customization.worker_payslip_wizard_action"
+    />
+
+</odoo>

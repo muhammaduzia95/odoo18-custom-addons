@@ -1,0 +1,228 @@
+<odoo>
+    <template id="yearly_salary_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    /* Urdu font definition */
+                    @font-face {
+                    font-family: "Jameel";
+                    src: url('/visio_payroll_customization/static/font/jameel.ttf') format("woff");
+                    font-weight: normal;
+                    font-style: normal;
+                    }
+                    body {
+                    font-family: "Jameel";
+                    }
+                    table{
+                    border: 1px solid black;
+                    }
+                </style>
+                <div class="page" style="font-family: 'Jameel'">
+
+
+                    <table style="width:100%; border:none; border-collapse:collapse; background:#fff;">
+
+                        <tr style=" border-color:white;">
+                            <!-- left: logo -->
+                            <td style="border:none; width:60px; background:#fff;">
+
+                                <img t-att-src="'/visio_payroll_customization/static/img/bg.png'"
+                                     style="height:100px; width:75px;" alt="Logo"/>
+                            </td>
+
+                            <!-- center: title -->
+                            <td style="border:none; text-align:center; background:#fff;">
+                                <h2 style="text-align: center; margin-bottom: 30px;">
+                                    مرکزی انجمن خدام القرآن لاہور
+                                </h2>
+                            </td>
+
+                            <!-- right: blank spacer same width as logo -->
+                            <td style="border:none; width:60px; background:#fff;"></td>
+                        </tr>
+                    </table>
+
+
+<!--                    <h2 style="text-align: center; margin-bottom: 30px;">-->
+<!--                        مرکزی انجمن خدام القرآن لاہور-->
+<!--                    </h2>-->
+
+
+                    <p style="text-align: center; margin-bottom: 30px; font-size:20px; font-weight: 900;">
+                        <strong class="bold">
+                            <b>Detail of Salary up to:</b>
+                        </strong>
+                        <t t-set="current_date" t-value="datetime.datetime.today()"/>
+                        <t t-esc="current_date.strftime('%B %Y')"/>
+                    </p>
+
+                    <t t-if="error">
+                        <p style="color: red; text-align: center;">
+                            <strong>Error:</strong>
+                            <t t-esc="error"/>
+                        </p>
+                    </t>
+
+                    <t t-elif="employee">
+                        <div class="d-flex gap-4 fw-bold mb-1" style="gap: 20px;">
+                            <p class="mr-6" style="margin-right: 80px; font-size:20px; font-weight: bold;">
+                                <strong>Employee Name:</strong>
+                                <t t-esc="employee.name"/>
+                            </p>
+                            <p style="font-size:20px;">
+                                <strong>Designation:</strong>
+                                <t t-esc="employee.job_title"/>
+                            </p>
+                        </div>
+                        <p style="font-weight: bold; font-size:20px;">
+                            <strong>Worker Code:</strong>
+                            <t t-esc="employee.employee_sequence"/>
+                        </p>
+
+                        <table class="table table-dark">
+                            <thead class="bg-secondary" style="font-weight: bold;">
+                                <tr style="font-weight: bold;">
+                                    <th style="font-weight:bold;">Month</th>
+                                    <th style="font-weight:bold;">Rate PM</th>
+                                    <th style="font-weight:bold;">Other Duty</th>
+                                    <th style="font-weight:bold;">Over Time</th>
+                                    <th style="font-weight:bold;">W/O Pay</th>
+                                    <th style="font-weight:bold;">Leave Encash</th>
+                                    <th style="font-weight:bold;">Star Amount</th>
+                                    <th style="font-weight:bold;">Ar/</th>
+                                    <th style="font-weight:bold;">Other Ded</th>
+                                    <th style="font-weight:bold;">Medical</th>
+                                    <th style="font-weight:bold;">Grand Total</th>
+                                    <th style="font-weight:bold;">Loan Recov</th>
+                                    <th style="font-weight:bold;">Advance</th>
+                                    <th style="font-weight:bold;">Income Tax</th>
+                                    <th style="font-weight:bold;">Rent</th>
+                                    <th style="font-weight:bold;">EOBI</th>
+                                    <th style="font-weight:bold;">Total Deduction</th>
+                                    <th style="font-weight:bold;">Net Pay</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="payslips" t-as="payslip">
+                                    <tr>
+                                        <td style="font-weight: bold;">
+                                            <t t-esc="payslip.date_from.strftime('%B %Y')"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.rate_per_month"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.other_duty"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(payslip.over_time_value)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(payslip.wo_pay_value)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(payslip.leave_in_cash_value)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="'{:.2f}'.format(payslip.attendance_star_value)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.ext_arrear_night"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.other_deduction"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.medical"/>
+                                        </td>
+                                        <td style="font-weight: bold;">
+                                            <t t-esc="payslip.basic_total"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.loan_recovery"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.adv_salary"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.income_tax"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.h_rent"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.eobi_worker"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payslip.total_deduction"/>
+                                        </td>
+                                        <td style="font-weight: bold;">
+                                            <t t-esc="payslip.net_payable"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot class="bg-secondary">
+                                <tr style="font-weight:bold;">
+                                    <th style="font-weight:bold;">Total</th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('rate_per_month'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('other_duty'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="'{:.2f}'.format(sum(payslips.mapped('over_time_value')))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="'{:.2f}'.format(sum(payslips.mapped('wo_pay_value')))"/>
+
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="'{:.2f}'.format(sum(payslips.mapped('leave_in_cash_value')))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="'{:.2f}'.format(sum(payslips.mapped('attendance_star_value')))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('ext_arrear_night'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('other_deduction'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('medical'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('basic_total'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('loan_recovery'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('adv_salary'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('income_tax'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('h_rent'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('eobi_worker'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('total_deduction'))"/>
+                                    </th>
+                                    <th style="font-weight:bold;">
+                                        <t t-esc="sum(payslips.mapped('net_payable'))"/>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

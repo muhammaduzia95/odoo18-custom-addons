@@ -1,0 +1,19 @@
+<!--carib_island_trading\visio_cit_units_qty\views\sale_order_view.xml-->
+<odoo>
+    <record id="view_order_form_inherit_case_qty" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.case.qty</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="string">Case Quantity</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
+                <field name="units_quantity"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

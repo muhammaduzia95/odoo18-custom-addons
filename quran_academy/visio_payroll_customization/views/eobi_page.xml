@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_eobi_page" model="ir.ui.view">
+        <field name="name">eobi.page.view</field>
+        <field name="model">hr.payroll.structure</field>
+        <field name="inherit_id" ref="om_hr_payroll.view_hr_employee_grade_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="eobi_info" string="EOBI Info" groups="visio_payroll_customization.group_employee_eobi">
+                    <group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="eobi_amount" options="{'currency_field': 'currency_id'}"/>
+                            <field name="eobi_employer_percent" widget="percentage" style="width: 2.5rem"/>
+                            <field name="eobi_employee_percent" widget="percentage" style="width: 2.5rem" />
+                        </group>
+                        <group>
+                            <field name="eobi_employer" options="{'currency_field': 'currency_id'}"
+                                   readonly="1"/>
+                            <field name="eobi_employee" options="{'currency_field': 'currency_id'}"
+                                   readonly="1"/>
+                            <field name="eobi_employer_difference"
+                                   options="{'currency_field': 'currency_id'}" readonly="False"/>
+                            <field name="eobi_employee_difference"
+                                   options="{'currency_field': 'currency_id'}" readonly="False"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

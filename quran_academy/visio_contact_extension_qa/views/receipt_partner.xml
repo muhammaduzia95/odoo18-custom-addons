@@ -1,0 +1,177 @@
+<!-- visio_contact_extension_qa/views/receipt_partner.xml -->
+<odoo>
+    <data>
+
+        <template id="report_partner_receipt">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+
+                <t t-foreach="docs" t-as="p">
+                    <div class="article" style="font-family:'Noto Nastaliq Urdu','Times New Roman';
+                                         font-size:22px; color:#1e3c70;">
+
+
+                        <table style="width:100%; border-color: white; border-collapse:collapse;" border="0">
+                            <tr>
+                                <!-- left = company logo -->
+                                <td style="text-align:center; width:30%;">
+                                    <img t-if="company.logo"
+                                         t-att-src="image_data_uri(company.logo)"
+                                         style="height:190px; width:auto;"/>
+                                </td>
+
+                                <!-- right = any picture -->
+                                <td style="text-align:right; width:70%;">
+                                    <!-- static image shipped inside the module -->
+                                    <img t-att-src="'/visio_contact_extension_qa/static/img/receipt_header.png'"
+                                         style="height:210px; width:auto;"/>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <!-- fixed 2-column layout – keep all original ruler lines -->
+                        <table style="width:100%; border-color:white; border-collapse:collapse;
+                               line-height:26px;" border="0">
+                            <tr>
+                                <!-- ──────────── LEFT ──────────── -->
+                                <td style="width:35%; vertical-align:top; direction:rtl;">
+
+                                    <!-- تاریخ -->
+                                    <div style="margin-right:10px; margin-top:4mm;">
+                                        تاریخ
+                                        <span style="border-bottom:1px solid #000; min-width:225px;
+                                             display:inline-block; text-align:center;">
+                                            <t t-esc="p.trans_date_qa"
+                                               t-options="{'widget':'date','format':'dd-MM-yy'}"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- رسید نمبر -->
+                                    <div style="margin-right:10px; margin-top:4mm;">
+                                        رسید نمبر
+                                        <span style="border-bottom:1px solid #000; min-width:192px;
+                                             display:inline-block;">
+                                            <t t-esc="p.rec_no_qa or ''"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- اکاؤنٹ نمبر -->
+                                    <div style="margin-right:10px; margin-top:4mm;">
+                                        اکاؤنٹ نمبر
+                                        <span style="border-bottom:1px solid #000; min-width:172px;
+                                             display:inline-block;">
+                                            <t t-esc="p.acno_qa or ''"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- RS box with amount -->
+                                    <div style="margin-right:10px; margin-top:5mm; border:1px solid #000;
+                                         width:269px; height:10mm; text-align:left;">
+                                        <span style="margin-left:3px;">RS.
+                                            <t t-esc="p.mlcontb or ''"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- دستخط وصول کنندہ -->
+                                    <div style="margin-right:10px; margin-top:10mm;">
+                                        دستخط وصول کنندہ
+                                        <span style="border-bottom:1px solid #000; min-width:120px;
+                                             display:inline-block;">
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <!-- ──────────── RIGHT ──────────── -->
+                                <td style="width:65%; vertical-align:top; direction:rtl;">
+
+                                    <!-- name -->
+                                    <div style="margin-right:5px; margin-top:4mm;">
+                                        از جانب
+                                        <span style="border-bottom:1px solid #000; min-width:420px;
+                                             display:inline-block;">
+                                            <t t-esc="p.name or ''"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- پتہ line 1 -->
+                                    <div style="margin-right:5px; margin-top:4mm;">
+                                        پتہ
+                                        <span style="border-bottom:1px solid #000; min-width:461px;
+                                             display:inline-block;">
+                                            <t t-esc="p.street or ''"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- پتہ line 2 -->
+                                    <div style="margin-right:5px; margin-top:4mm;">
+                                        <span style="border-bottom:1px solid #000; min-width:486px;
+                                             display:inline-block;">
+                                            <t t-esc="(', '.join(filter(None,[p.street2,p.street3_qa])))"
+                                               t-raw="True"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- مبلغ / بصورت -->
+                                    <div style="margin-right:5px; margin-top:4mm;">
+                                        مبلغ
+                                        <span style="border-bottom:1px solid #000; min-width:222px;
+                                             display:inline-block; text-align:center;">
+                                            <t t-esc="p.mlcontb or ''"/>
+                                        </span>
+                                        بصورت
+                                        <span style="border-bottom:1px solid #000; min-width:156px;
+                                             display:inline-block;">
+                                            <t t-esc="p.paid_by_qa or ''"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- بابت -->
+                                    <div style="margin-right:5px; margin-top:4mm;">
+                                        بابت
+                                        <span style="border-bottom:1px solid #000; min-width:222px;
+                                             display:inline-block;">
+                                            <t t-esc="p.baabat or ''"/>
+                                        </span>
+                                        بعد شکریہ وصول پائی
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- page break between receipts -->
+                    <div style="page-break-after:always;"/>
+                </t>
+            </t>
+        </template>
+
+
+        <!-- A4 portrait paper-format  -->
+        <record id="paperformat_partner_receipt" model="report.paperformat">
+            <field name="name">Partner Receipt (A4 Portrait)</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <!-- report action shown under   Gear ▸ Receipt -->
+        <record id="action_partner_receipt_report" model="ir.actions.report">
+            <field name="name">Partner Receipt</field>
+            <field name="model">res.partner</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_partner_receipt</field>
+            <field name="report_file">visio_contact_extension_qa.report_partner_receipt</field>
+            <field name="paperformat_id" ref="paperformat_partner_receipt"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

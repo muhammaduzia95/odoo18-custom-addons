@@ -1,0 +1,23 @@
+<odoo>
+    <record id="action_current_month" model="ir.actions.act_window">
+        <field name="name">Current Month Payslips</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_id" ref="om_hr_payroll.view_hr_payslip_tree"/>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_by_month': 1 }</field>
+        <field name="domain">[('state', '=', 'draft')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Record Exists.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_current_month"
+            name="Current Month"
+            sequence="30"
+            parent="menu_employee_medical_payslip_main"
+            action="action_current_month"
+    />
+</odoo>

@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_pdf_reports_wizard" model="ir.ui.view">
+        <field name="name">pdf.reports.wizard.form</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate PDF Report">
+                <group>
+                    <field name="report_type" widget="radio" options="{'horizontal': True}"/>
+                </group>
+                <group>
+                    <group>
+                        <field name="month"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Print Report" type="object" name="action_print_report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+<!--                    <button string="Salary Summary" type="object" name="action_salary_summary" class="btn-primary"/>-->
+<!--                    <button string="Payroll Sheet" type="object" name="action_payroll_sheet" class="btn-primary"/>-->
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pdf_reports_wizard" model="ir.actions.act_window">
+        <field name="name">PDF Reports</field>
+        <field name="res_model">pdf.reports.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+            id="menu_payroll_pdf_reports"
+            name="PDF Reports"
+            sequence="60"
+            parent="om_hr_payroll.menu_hr_payroll_root"
+            action="action_pdf_reports_wizard"
+    />
+</odoo>

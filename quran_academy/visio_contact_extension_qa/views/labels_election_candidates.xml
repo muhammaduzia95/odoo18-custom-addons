@@ -1,0 +1,98 @@
+<!--D:\Odoo\odoo-18.0\custom_addons\quran_academy\visio_contact_extension_qa\views\labels_election_candidates.xml-->
+<odoo>
+    <data>
+        <template id="report_election_candidate_labels">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="wiz">
+                    <!-- get candidates & skip partners with label_hold_yn = True -->
+                    <t t-set="lines"
+                       t-value="[p for p in wiz._get_candidate_lines() if not p.label_hold_yn]"/>
+                    <!-- running sequence -->
+                    <t t-set="seq" t-value="0"/>
+
+                    <div class="page">
+                        <div class="article">
+                            <t t-foreach="lines" t-as="p">
+                                <!-- increment seq -->
+                                <t t-set="seq" t-value="seq + 1"/>
+
+                                <!-- one label (48% width) -->
+                                <div style="
+                                    width:48%;
+                                    float:left;
+                                    padding:4mm;
+                                    padding-bottom:25px;
+                                    box-sizing:border-box;
+                                    border-bottom:1px dotted white;
+                                    border-right:1px dotted white;
+                                ">
+                                    <!-- seq top‑left -->
+                                    <div style="position:relative; min-height:1.2em;">
+                                        <span style="font-size:12px; position:absolute; top:0; left:0;">
+                                            <t t-esc="seq"/>
+                                        </span>
+                                    </div>
+
+                                    <!-- name -->
+                                    <div style="text-align:center; margin-top:1.5em; font-weight:bold;">
+                                        <t t-if="p.urdu_lable">
+                                            <t t-esc="p.urdu_name or ''"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-esc="p.name or ''"/>
+                                        </t>
+                                    </div>
+
+                                    <!-- address -->
+                                    <div style="text-align:center; margin-top:0.5em; font-weight:normal;">
+                                        <t t-if="p.urdu_lable">
+                                            <t t-if="p.urdu_address"><t t-esc="p.urdu_address"/><br/></t>
+                                            <t t-if="p.urdu_address1"><t t-esc="p.urdu_address1"/><br/></t>
+                                            <t t-if="p.urdu_address2"><t t-esc="p.urdu_address2"/><br/></t>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-if="p.street"><t t-esc="p.street"/><br/></t>
+                                            <t t-if="p.street2"><t t-esc="p.street2"/><br/></t>
+                                            <t t-if="p.street3_qa"><t t-esc="p.street3_qa"/><br/></t>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- clearfix after every 2 labels -->
+                                <t t-if="seq % 2 == 0">
+                                    <div style="clear:both;"></div>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- page break after each wizard instance -->
+                    <div style="page-break-after:always;"/>
+                </t>
+            </t>
+        </template>
+
+        <record id="paperformat_election_voter_labels" model="report.paperformat">
+            <field name="name">Election – Voter Labels (A4 3×10)</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_election_candidate_labels_report" model="ir.actions.report">
+            <field name="name">Election – Candidate Labels</field>
+            <field name="model">elections.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_election_candidate_labels</field>
+            <field name="report_file">visio_contact_extension_qa.report_election_candidate_labels</field>
+            <!-- reuse voter‑label paperformat -->
+            <field name="paperformat_id" ref="paperformat_election_voter_labels"/>
+        </record>
+    </data>
+</odoo>

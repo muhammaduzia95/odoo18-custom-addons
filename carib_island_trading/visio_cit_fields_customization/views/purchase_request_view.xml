@@ -1,0 +1,50 @@
+<odoo>
+    <record id="purchase_request_form_inherit_order_lines" model="ir.ui.view">
+        <field name="name">purchase.request.form.inherit.order.lines</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="visio_cit_purchase_request.purchase_request_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Replace the placeholder by a custom list -->
+            <xpath expr="//field[@name='filtered_so_line_ids']" position="replace">
+                <field name="filtered_so_line_ids" readonly="1" mode="list">
+                    <list string="Sale Order Lines">
+
+                        <field name="order_id" string="Order Reference"/>
+                        <!--                        <field name="order_partner_id" string="Customer"/>-->
+                        <field name="default_code" string="Item Code"/>
+                        <field name="barcode" string="UPC"/>
+                        <field name="categ_id" string="Brand"/>
+                        <!-- <field name="product_id" string="Product"/> -->
+                        <field name="size" string="Size"/>
+                        <field name="name" string="Description"/>
+                        <field name="salesman_id" string="Salesperson"/>
+                        <!-- <field name="product_uom_qty" string="Qty"/> -->
+                        <field name="product_uom_qty" string="CS Order" sum="Total CS"/>
+                        <field name="units_quantity" string="Pcs Order"/>
+                        <field name="product_uom" string="UoM"/>
+                        <field name="vendor_price_cit" string="Case Price"/>
+                        <field name="per_unit_price" string="Pcs Price"/>
+
+                        <!-- ADD THIS: currency field must be present for monetary totals -->
+                        <field name="currency_id" invisible="1"/>
+
+                        <!--                        <field name="price_subtotal"-->
+                        <!--                               string="Subtotal"-->
+                        <!--                               widget="monetary"-->
+                        <!--                               options="{'currency_field': 'currency_id'}"-->
+                        <!--                               sum="Total Amount"/>-->
+                        <field name="vendor_subtotal_cit"
+                               string="Subtotal"
+                               widget="monetary"
+                               options="{'currency_field': 'currency_id'}"
+                               sum="Total Amount"/>
+
+                    </list>
+                </field>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

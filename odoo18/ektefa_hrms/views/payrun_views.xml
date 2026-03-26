@@ -1,0 +1,126 @@
+
+<odoo>
+
+    <!-- Ektefa Payrun Search View -->
+    <record id="view_ektefa_payrun_list" model="ir.ui.view">
+        <field name="name">ektefa.payrun.list</field>
+        <field name="model">ektefa.payrun</field>
+        <field name="arch" type="xml">
+            <list
+                    edit="0" create="0" delete="0"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state == 'posted'"
+                    decoration-muted="state == 'cancel'"
+            >
+                <field name="name"/>
+                <field name="ektefa_payrun_id"/>
+                <field name="ektefa_month_date"/>
+                <field name="move_id"/>
+                <field name="company_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'posted'"
+                       decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Ektefa Payrun Form View -->
+    <record id="view_ektefa_payrun_form" model="ir.ui.view">
+        <field name="name">ektefa.payrun.form</field>
+        <field name="model">ektefa.payrun</field>
+        <field name="arch" type="xml">
+            <form edit="0" create="0" delete="0">
+                <header>
+                    <!-- Status-Bar -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Posted" bg_color="text-bg-success" invisible="state != 'posted'"/>
+                    <widget name="web_ribbon" title="Canceled" bg_color="text-bg-danger" invisible="state != 'cancel'"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. John Doe" required="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="ektefa_payrun_id"/>
+                            <field name="move_id"/>
+                        </group>
+                        <group>
+                            <div class="o_td_label" name="ektefa_month_date_label">
+                                <label for="ektefa_month_date"/>
+                            </div>
+                            <div class="o_row" name="ektefa_month_date">
+                                <field name="ektefa_month_date" nolabel="1" readonly="1"/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                <field name="ektefa_month_date_text" nolabel="1"/>
+                            </div>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Debit Lines" name="ektefa_debit_lines">
+                            <field name="ektefa_debit_line_ids">
+                                <list create="0" delete="0" edit="0">
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Credit Lines" name="ektefa_credit_lines">
+                            <field name="ektefa_credit_line_ids">
+                                <list create="0" delete="0" edit="0">
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group>
+                                    <field name="ektefa_company_id"/>
+                                    <field name="ektefa_company_name_en"/>
+                                </group>
+                                <group>
+                                    <field name="ektefa_company_cr_number"/>
+                                    <field name="ektefa_company_name_ar"/>
+
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ektefa Payrun Search View -->
+    <record id="view_ektefa_payrun_search" model="ir.ui.view">
+        <field name="name">ektefa.payrun.search</field>
+        <field name="model">ektefa.payrun</field>
+        <field name="arch" type="xml">
+            <search string="Ektefa Payrun">
+
+                <field name="name"/>
+                <field name="ektefa_payrun_id"/>
+                <field name="ektefa_month_date"/>
+                <field name="move_id"/>
+                <field name="company_id"/>
+
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Posted" name="filter_posted" domain="[('state', '=', 'posted')]"/>
+                <filter string="Canceled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                <filter string="Month Date" name="filter_ektefa_month_date" date="ektefa_month_date"/>
+
+                <group string="Group By">
+                    <filter name="groupby_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="groupby_ektefa_payrun_id" string="Payrun" context="{'group_by': 'ektefa_payrun_id'}"/>
+                    <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+</odoo>

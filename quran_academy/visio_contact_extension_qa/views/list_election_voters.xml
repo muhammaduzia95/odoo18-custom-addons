@@ -1,0 +1,144 @@
+<!--custom_addons\quran_academy\visio_contact_extension_qa\views\list_election_voters.xml-->
+<odoo>
+    <data>
+        <template id="report_election_voters">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="wiz">
+                    <t t-set="company" t-value="env.company"/>
+
+                    <div class="article">
+                        <!-- Header -->
+                        <div class="row align-items-center" style="border-bottom:1px solid #000;">
+                            <!-- Logo -->
+                            <div class="col-auto">
+                                <img t-if="company.logo"
+                                     t-att-src="image_data_uri(company.logo)"
+                                     style="max-height:80px; width:auto;"/>
+                            </div>
+
+                            <!-- Headline -->
+                            <div class="col text-left" style="font-size:20px; font-weight:bold; margin-left: 20px;">
+                                Election <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>,
+                                Voters list – Markazi Anjuman Khuddam-ul-Quran Lahore
+                            </div>
+                        </div>
+
+                        <!-- Parameters line -->
+                        <div class="row" style="margin-top:6px;font-size:12px;">
+                            <div class="col-12">
+                                <t t-if="wiz.trans_upto_date">
+                                    <b>Trans Up to:</b>
+                                    <t t-esc="wiz.trans_upto_date"
+                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>,
+                                </t>
+                                <t t-if="wiz.mem_date_voters">
+                                    <b>Mem Date Voters:</b>
+                                    <t t-esc="wiz.mem_date_voters"
+                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-12">
+                                <table class="table table-sm table-bordered">
+                                    <thead style="background:#0d1b67;">
+                                        <tr>
+                                            <th style="color:#fff;">ACNO</th>
+                                            <th style="color:#fff;">F Name</th>
+                                            <th style="color:#fff;">Address 1</th>
+                                            <th style="color:#fff;">Address 2</th>
+                                            <th style="color:#fff;">Address 3</th>
+                                            <th style="color:#fff;">Mem Date</th>
+                                            <th style="color:#fff;">Trans Date</th>
+                                            <th style="color:#fff;">Sex</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody style="font-size:12px;">
+                                        <t t-foreach="[p for p in wiz._get_voter_lines() if not p.label_hold_yn]"
+                                           t-as="p">
+                                            <tr>
+                                                <!-- ACNO -->
+                                                <td style="width:8%;">
+                                                    <t t-esc="p.acno_qa or ''"/>
+                                                </td>
+                                                <!-- F Name -->
+                                                <td style="width:15%;">
+                                                    <t t-if="p.urdu_lable">
+                                                        <t t-esc="p.urdu_name or ''"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="p.name or ''"/>
+                                                    </t>
+                                                </td>
+                                                <!-- Address 1 -->
+                                                <td style="width:20%;">
+                                                    <t t-if="p.urdu_lable">
+                                                        <t t-esc="p.urdu_address or ''"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="p.street or ''"/>
+                                                    </t>
+                                                </td>
+                                                <!-- Address 2 -->
+                                                <td style="width:15%;">
+                                                    <t t-if="p.urdu_lable">
+                                                        <t t-esc="p.urdu_address1 or ''"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="p.street2 or ''"/>
+                                                    </t>
+                                                </td>
+                                                <!-- Address 3 -->
+                                                <td style="width:15%;">
+                                                    <t t-if="p.urdu_lable">
+                                                        <t t-esc="p.urdu_address2 or ''"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="p.street3_qa or ''"/>
+                                                    </t>
+                                                </td>
+                                                <!-- Mem Date -->
+                                                <td style="width:10%; text-align:center;">
+                                                    <t t-esc="p.mem_date"
+                                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                                </td>
+                                                <!-- Trans Date -->
+                                                <td style="width:10%; text-align:center;">
+                                                    <t t-esc="p.trans_date_qa"
+                                                       t-options="{'widget':'date','format':'dd-MM-yyyy'}"/>
+                                                </td>
+                                                <!-- Sex -->
+                                                <td style="width:7%; text-align:center;">
+                                                    <t t-if="p.gender_qa">
+                                                        <t t-esc="p.gender_qa[0].upper()"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Use the same paper-format defined earlier -->
+        <record id="action_election_voters_report" model="ir.actions.report">
+            <field name="name">Election Voters</field>
+            <field name="model">elections.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_election_voters</field>
+            <field name="report_file">visio_contact_extension_qa.report_election_voters</field>
+            <field name="paperformat_id" ref="visio_contact_extension_qa.paperformat_election_candidates"/>
+        </record>
+    </data>
+</odoo>

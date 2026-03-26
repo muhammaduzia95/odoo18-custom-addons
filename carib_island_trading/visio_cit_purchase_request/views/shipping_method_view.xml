@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--\carib_island_trading\visio_cit_purchase_request\views\shipping_method_view.xml-->
+<odoo>
+    <data>
+
+        <!-- Tree View -->
+        <record id="view_shipping_method_tree" model="ir.ui.view">
+            <field name="name">shipping.method.tree</field>
+            <field name="model">shipping.methods</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_shipping_method" model="ir.actions.act_window">
+            <field name="name">Shipping Methods</field>
+            <field name="res_model">shipping.methods</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <!-- Menu (under Purchase > Configuration) -->
+        <menuitem id="root_shipping_method"
+                  name="Shipping"
+                  parent="purchase.menu_purchase_config"/>
+
+        <!-- Menu (under Purchase > Configuration) -->
+        <menuitem id="menu_shipping_method"
+                  name="Main Shipping Methods"
+                  parent="root_shipping_method"
+                  action="action_shipping_method"/>
+
+    </data>
+</odoo>
+
+

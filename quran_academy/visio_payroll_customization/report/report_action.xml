@@ -1,0 +1,85 @@
+<odoo>
+    <!--    yearly salary report action-->
+    <record id="worker_payslip_report_action" model="ir.actions.report">
+        <field name="name">Yearly Salary Report</field>
+        <field name="model">yearly.salary.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.yearly_salary_template</field>
+        <field name="print_report_name">'Yearly_Salary_Report_' + object.worker_code</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_landscape"/>
+    </record>
+
+    <!--    Pay receiving bank list-->
+    <record id="pay_receiving_list_report_action" model="ir.actions.report">
+        <field name="name">Pay Receiving Bank List</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.pay_receiving_list_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_portrait"/>
+    </record>
+
+    <!--    Pay receiving Cash list-->
+    <record id="pay_receiving_cash_list_report_action" model="ir.actions.report">
+        <field name="name">Pay Receiving Cash List</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.pay_cash_list_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_portrait"/>
+    </record>
+
+    <!--    Salary Summary report action-->
+    <record id="salary_summary_report_action" model="ir.actions.report">
+        <field name="name">Salary Summary</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.salary_summary_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_landscape"/>
+    </record>
+
+    <!--    Pay Receiving Bank Sheet report action-->
+    <record id="pay_receiving_bank_sheet_report_action" model="ir.actions.report">
+        <field name="name">Pay Receiving Bank Sheet</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.pay_bank_sheet_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_portrait"/>
+    </record>
+
+    <!--    Pay Receiving Cash Sheet report action-->
+    <record id="pay_receiving_cash_sheet_report_action" model="ir.actions.report">
+        <field name="name">Pay Receiving Cash Sheet</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.pay_cash_sheet_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_portrait"/>
+    </record>
+
+    <!--    Payroll Sheet report action-->
+    <record id="payroll_sheet_report_action" model="ir.actions.report">
+        <field name="name">Payroll Sheet</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.payroll_sheet_template</field>
+        <field name="report_file">visio_payroll_customization.payroll_sheet_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_legal_landscape"/>
+    </record>
+
+    <!--    EOBI Anjuman report action-->
+    <record id="eobi_anjuman_report_action" model="ir.actions.report">
+        <field name="name">EOBI Anjuman</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.eobi_anjuman_report_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_portrait"/>
+    </record>
+
+     <!--    Eobi Maktaba report action-->
+    <record id="eobi_maktaba_report_action" model="ir.actions.report">
+        <field name="name">EOBI Maktaba</field>
+        <field name="model">pdf.reports.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_payroll_customization.eobi_maktaba_report_template</field>
+        <field name="paperformat_id" ref="visio_payroll_customization.paperformat_portrait"/>
+    </record>
+
+</odoo>

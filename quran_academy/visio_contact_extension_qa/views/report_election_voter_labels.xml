@@ -1,0 +1,84 @@
+<!-- visio_contact_extension_qa/views/report_election_voter_labels.xml -->
+<odoo>
+    <data>
+        <template id="report_election_voter_labels">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="wiz">
+                    <t t-set="lines" t-value="wiz._get_voter_lines()"/>
+
+                    <!-- Build rows 3 records at a time -->
+                    <table style="width:100%; border-collapse:collapse;">
+                        <t t-foreach="range(0, len(lines), 3)" t-as="start">
+                            <tr style="height:37mm;">
+                                <t t-foreach="lines[start:start+3]" t-as="p">
+                                    <td style="width:33.3%; padding:2mm; font-size:11px;">
+                                        <div style="font-weight:bold;">
+                                            <t t-esc="p.name or ''"/>
+                                        </div>
+                                        <div>
+                                            <t t-esc="p.street or ''"/>
+                                            <br/>
+                                            <t t-if="p.street2">
+                                                <t t-esc="p.street2"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="p.street3_qa">
+                                                <t t-esc="p.street3_qa"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="p.city"><t t-esc="p.city"/>,
+                                            </t>
+                                            <t t-if="p.state_id"><t t-esc="p.state_id.name"/>,
+                                            </t>
+                                            <t t-if="p.country_id">
+                                                <t t-esc="p.country_id.name"/>
+                                            </t>
+                                            <br/>
+                                            <t t-if="p.phone">Tel:
+                                                <t t-esc="p.phone"/>
+                                            </t>
+                                            <t t-if="p.mobile">Mob:
+                                                <t t-esc="p.mobile"/>
+                                            </t>
+                                        </div>
+                                    </td>
+                                </t>
+                                <!-- add empty cells if last row has <3 items -->
+                                <t t-if="len(lines[start:start+3]) &lt; 3">
+                                    <t t-foreach="range(3 - len(lines[start:start+3]))" t-as="x">
+                                        <td style="width:33.3%; padding:2mm;"/>
+                                    </t>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+
+                    <!-- force page-break after each wizard -->
+                    <div style="page-break-after:always;"/>
+                </t>
+            </t>
+        </template>
+
+        <record id="paperformat_election_voter_labels" model="report.paperformat">
+            <field name="name">Election – Voter Labels (A4 3×10)</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_election_voter_labels_report" model="ir.actions.report">
+            <field name="name">Election – Voter Labels</field>
+            <field name="model">elections.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_contact_extension_qa.report_election_voter_labels</field>
+            <field name="report_file">visio_contact_extension_qa.report_election_voter_labels</field>
+            <field name="paperformat_id" ref="paperformat_election_voter_labels"/>
+        </record>
+    </data>
+</odoo>

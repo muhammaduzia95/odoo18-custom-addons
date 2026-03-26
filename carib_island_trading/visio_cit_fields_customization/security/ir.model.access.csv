@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_visio_cit_fields_customization_visio_cit_fields_customization,visio_cit_fields_customization.visio_cit_fields_customization,model_visio_cit_fields_customization_visio_cit_fields_customization,base.group_user,1,1,1,1

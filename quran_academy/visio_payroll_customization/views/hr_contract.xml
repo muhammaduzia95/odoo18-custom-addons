@@ -1,0 +1,46 @@
+<odoo>
+    <record id="view_hr_contract_form_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='salary_info']" position="after">
+                <group>
+                    <field name="loan_recovery" string="Loan Recovery" groups="visio_payroll_customization.group_disable_extra_pages"/>
+                </group>
+            </xpath>
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='structure_type_id'][1]" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='structure_type_id'][2]" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='department_id'][2]" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='job_id'][2]" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='contract_type_id'][2]" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_om_hr_contract_form_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="om_hr_payroll.hr_contract_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='type_id']" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[@name='top_info']/group[@name='top_info_right']/field[@name='struct_id']" position="attributes">
+                <attribute name="options">{'no_create': True , 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='allowances']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

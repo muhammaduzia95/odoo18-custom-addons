@@ -1,0 +1,116 @@
+<!--carib_island_trading\visio_cit_sale_customization\views\sale_order_view.xml-->
+<odoo>
+
+    <record id="view_order_form_inherit_validate" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.validate.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Change the label of the existing Delivery stat button -->
+            <xpath expr="//button[@name='action_view_delivery']/field[@name='delivery_count']"
+                   position="attributes">
+                <attribute name="string">Packing Slip</attribute>
+            </xpath>
+
+            <!-- Button -->
+            <xpath expr="//form/header/field[@name='state']" position="before">
+                <button name="action_create_purchase_request"
+                        type="object"
+                        string="Purchase Request"
+                        class="btn-primary"
+                        invisible="purchase_request_created"/>
+            </xpath>
+
+            <!-- Logistics tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Logistics" invisible="1">
+                    <field name="logistics_ids" mode="list,form">
+                        <list editable="bottom" create="false" delete="false">
+
+                            <field name="shipping_method_id" readonly="1"/>
+                            <field name="sub_shipping_id" domain="[('shipping_method_id','=',shipping_method_id)]"
+                                   options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                            <field name="price" readonly="1"/>
+                            <!--<field name="accepted_by_customer"/>-->
+                            <button name="action_accept_logistics"
+                                    type="object"
+                                    string="Add to line"
+                                    attrs="{'invisible': [('accepted_by_customer', '=', True)]}"
+                                    class="oe_highlight"/>
+
+                        </list>
+                    </field>
+                </page>
+
+                <page name="logistics_details" string="Logistics Details">
+                    <group>
+                        <group>
+                            <button name="action_accept_logistics_details"
+                                    type="object"
+                                    string="Add line"
+                                    class="oe_highlight"
+                            />
+                            <field name="logistics_company_so" invisible="1"/>
+                            <field name="so_logistics_company" invisible="1"/>
+                            <field name="packing_request_so"/>
+                            <field name="notes_cit_so"/>
+                            <field name="pickup_address_so" placeholder="Enter pickup location..."/>
+                            <field name="delivery_address_so" placeholder="Enter delivery location..."/>
+                            <field name="incoterms_cit_so"/>
+                            <field name="weight_cit_so"/>
+                            <field name="booking_number_cit_so"/>
+                            <field name="bol_status_so"/>
+                            <field name="shipment_status_so"/>
+                            <field name="charge_to_customer_so"/>
+                            <field name="document_attachment_so" widget="many2many_binary"/>
+                        </group>
+                    </group>
+                </page>
+
+                <page string="Documents">
+                    <group string="Attachments">
+                        <field name="attachment_ids_so" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Form view (right side) -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="markup_percent" widget="percent"/>
+                <field name="margin_percent" widget="percent"/>
+                <field name="po_state" readonly="1"/>
+            </xpath>
+
+            <!-- Field in the Sale Order Line -->
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="after">
+                <field name="markup_percent_line" widget="percent"/>
+                <field name="margin_percent_line" widget="percent"/>
+            </xpath>
+
+            <!-- Quote Validation Date field in the view Right Group -->
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="quote_validation_cit"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <!-- List view of SO -->
+    <record id="view_sale_order_list_po_state" model="ir.ui.view">
+        <field name="name">sale.order.list.po.state</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+
+            <!-- Add toggle field after partner_id or state -->
+            <xpath expr="//list/field[@name='activity_ids']" position="before">
+                <field name="po_state" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
+

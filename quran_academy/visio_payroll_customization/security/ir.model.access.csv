@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_yearly_salary_wizard,Access Yearly Salary Wizard,model_yearly_salary_wizard,,1,1,1,1
+access_duplicate_payslips_wizard,Access Duplicate Payslips Wizard,model_duplicate_payslips_wizard,,1,1,1,1
+access_post_payslips_wizard,Access Post Payslips Wizard,model_post_payslips_wizard,,1,1,1,1
+access_excel_import_wizard,access.excel.import.wizard,model_excel_import_wizard,base.group_user,1,1,1,1
+access_pdf_reports_wizard,Access PDF Reports Wizard,model_pdf_reports_wizard,,1,1,1,1
+access_email_payslips_wizard,Access Email Payslips Wizard,model_email_payslips_wizard,,1,1,1,1
+access_yearly_gross_salary_wizard,Access Yearly Gross Salary Wizard,model_yearly_gross_salary_wizard,,1,1,1,1

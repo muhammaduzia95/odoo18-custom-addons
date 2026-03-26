@@ -1,0 +1,94 @@
+<!--quran_academy\visio_contact_extension_qa\views\report_lables_mohsineen.xml-->
+<odoo>
+    <template id="report_lables_mohsineen">
+        <t t-call="web.html_container">
+            <t t-set="lines" t-value="env['res.partner'].search([('show_records_qa', '=', 'mohsinin')])"/>
+
+            <!-- Build rows 3 records at a time -->
+            <table style="width:100%; border-collapse:collapse;">
+                <t t-foreach="range(0, len(lines), 3)" t-as="start">
+                    <tr style="height:37mm;">
+                        <t t-foreach="lines[start:start+3]" t-as="p">
+                            <td style="width:33.3%; padding:2mm; font-size:11px;">
+                                <div style="font-weight:bold;">
+                                    <t t-esc="p.name or ''"/>
+                                </div>
+                                <div>
+                                    <t t-esc="p.street or ''"/>
+                                    <br/>
+                                    <t t-if="p.street2">
+                                        <t t-esc="p.street2"/>
+                                        <br/>
+                                    </t>
+                                    <t t-if="p.street3_qa">
+                                        <t t-esc="p.street3_qa"/>
+                                        <br/>
+                                    </t>
+                                    <t t-if="p.city"><t t-esc="p.city"/>,
+                                    </t>
+                                    <t t-if="p.state_id"><t t-esc="p.state_id.name"/>,
+                                    </t>
+                                    <t t-if="p.country_id">
+                                        <t t-esc="p.country_id.name"/>
+                                    </t>
+                                    <br/>
+                                    <t t-if="p.phone">Tel:
+                                        <t t-esc="p.phone"/>
+                                    </t>
+                                    <t t-if="p.mobile">Mob:
+                                        <t t-esc="p.mobile"/>
+                                    </t>
+                                </div>
+                            </td>
+                        </t>
+                        <!-- Fill empty cells if less than 3 -->
+                        <t t-if="len(lines[start:start+3]) &lt; 3">
+                            <t t-foreach="range(3 - len(lines[start:start+3]))" t-as="x">
+                                <td style="width:33.3%; padding:2mm;"/>
+                            </t>
+                        </t>
+                    </tr>
+                </t>
+            </table>
+
+            <!-- Force page break -->
+            <div style="page-break-after:always;"/>
+        </t>
+    </template>
+
+    <!-- Paperformat -->
+    <record id="paperformat_lables_mohsineen" model="report.paperformat">
+        <field name="name">Lables Mohsineen (A4 3x10)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">7</field>
+        <field name="margin_bottom">12</field>
+        <field name="margin_left">6</field>
+        <field name="margin_right">6</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action -->
+    <record id="action_report_lables_mohsineen" model="ir.actions.report">
+        <field name="name">Lables Mohsineen</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_contact_extension_qa.report_lables_mohsineen</field>
+        <field name="report_file">visio_contact_extension_qa.report_lables_mohsineen</field>
+        <field name="paperformat_id" ref="paperformat_lables_mohsineen"/>
+    </record>
+
+    <!-- Server Action -->
+    <record id="server_action_print_lables_mohsineen" model="ir.actions.server">
+        <field name="name">Print Lables Mohsineen</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+            action =
+            env.ref('visio_contact_extension_qa.action_report_lables_mohsineen').report_action(env['res.partner'].search([('show_records_qa','=','mohsinin')]))
+        </field>
+    </record>
+</odoo>
+

@@ -1,0 +1,52 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\odoo18\ektefa_hrms\data\cron_data.xml-->
+<odoo noupdate="1">
+
+    <!-- Cron Job to Sync Salaries By Company ID from Ektefa -->
+    <record id="ir_cron_sync_salaries_by_company_data" model="ir.cron">
+        <field name="name">Ektefa: Sync Salaries By Company</field>
+        <field name="model_id" ref="ektefa_hrms.model_ektefa_payroll_sync"/>
+        <field name="state">code</field>
+        <field name="code">model.action_sync_salaries_by_company()</field>
+        <field name="interval_number">1</field> <!-- Run every 1 month -->
+        <field name="interval_type">months</field>
+<!--        <field name="numbercall">-1</field>-->
+        <field name="active">True</field>
+    </record>
+
+    <!-- Cron Job to Sync End of Services By Company ID from Ektefa -->
+    <record id="ir_cron_sync_eos_by_company_data" model="ir.cron">
+        <field name="name">Ektefa: Sync End of Services By Company</field>
+        <field name="model_id" ref="ektefa_hrms.model_ektefa_payroll_sync"/>
+        <field name="state">code</field>
+        <field name="code">model.action_sync_eos_by_company()</field>
+        <field name="interval_number">1</field> <!-- Run every 1 month -->
+        <field name="interval_type">months</field>
+<!--        <field name="numbercall">-1</field>-->
+        <field name="active">True</field>
+    </record>
+
+    <!-- Cron Job to Loans By Company ID from Ektefa -->
+    <record id="ir_cron_sync_loans_by_company_data" model="ir.cron">
+        <field name="name">Ektefa: Sync Loans By Company</field>
+        <field name="model_id" ref="ektefa_hrms.model_ektefa_payroll_sync"/>
+        <field name="state">code</field>
+        <field name="code">model.action_sync_loans_by_company()</field>
+        <field name="interval_number">1</field> <!-- Run every 1 month -->
+        <field name="interval_type">months</field>
+<!--        <field name="numbercall">-1</field>-->
+        <field name="active">True</field>
+    </record>
+
+    <!-- Cron Job to Loans Settlement By Company ID from Ektefa -->
+    <record id="ir_cron_sync_loans_settlement_by_company_data" model="ir.cron">
+        <field name="name">Ektefa: Sync Loans Settlement By Company</field>
+        <field name="model_id" ref="ektefa_hrms.model_ektefa_payroll_sync"/>
+        <field name="state">code</field>
+        <field name="code">model.action_sync_loans_settlement_by_company()</field>
+        <field name="interval_number">1</field> <!-- Run every 1 month -->
+        <field name="interval_type">months</field>
+<!--        <field name="numbercall">-1</field>-->
+        <field name="active">True</field>
+    </record>
+
+</odoo>

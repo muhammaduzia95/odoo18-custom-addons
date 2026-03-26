@@ -1,0 +1,70 @@
+<!--quran_academy\visio_payroll_customization\views\salarySummary_view.xml-->
+<odoo>
+
+    <!-- Salary Summary Tree View QA -->
+    <record id="view_salary_summary_tree_qa" model="ir.ui.view">
+        <field name="name">salary.summary.tree.qa</field>
+        <field name="type">list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Salary Summary" create="false" expand="1">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="department_name"/>
+                <field name="gross_total" sum="total"/>
+                <field name="total_deduction" sum="total"/>
+                <field name="net_payable" sum="total"/>
+                <field name="emp_eobi" sum="total"/>
+                <field name="eobi_worker" sum="total"/>
+                <field name="adv_salary" sum="total"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Salary Summary Search View QA -->
+    <record id="view_salary_summary_search_qa" model="ir.ui.view">
+        <field name="name">salary.summary.search.qa</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Filters -->
+                <filter string="Month" name="filter_by_month" date="date_from"/>
+                <separator/>
+                <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'verify')]"/>
+                <filter string="Rejected" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+
+                <!-- Group By -->
+                <filter string="Master Department" name="group_by_master_department"
+                        context="{'group_by': 'master_department'}"/>
+                <filter string="First Child Department" name="group_by_first_child_dep"
+                        context="{'group_by': 'first_child_dep'}"/>
+                <filter string="Paid By" name="group_by_paid_by"
+                        context="{'group_by': 'paid_by'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Salary Summary Action QA -->
+    <record id="action_salary_summary_qa" model="ir.actions.act_window">
+        <field name="name">Salary Summary</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="visio_payroll_customization.view_salary_summary_tree_qa"/>
+        <field name="search_view_id" ref="visio_payroll_customization.view_salary_summary_search_qa"/>
+        <field name="context">
+        {
+            "search_default_group_by_first_child_dep": 1,
+            "search_default_filter_by_month": 1,
+            "search_default_filter_done": 1
+        }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Salary Summary records found.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+
