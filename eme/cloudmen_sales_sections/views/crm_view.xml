@@ -1,0 +1,43 @@
+<odoo>
+    <record id="view_crm_view_buttons"
+            model="ir.ui.view">
+        <field name="name">crm.buttons.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(crm.action_lead_mail_compose)d']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_reschedule_meeting']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_snooze']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(crm_sms.crm_lead_act_window_sms_composer_single)d']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_view_buttons_2"
+            model="ir.ui.view">
+        <field name="name">crm.buttons.form.sms</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm_sms.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(crm_sms.crm_lead_act_window_sms_composer_single)d']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(crm.action_lead_mail_compose)d']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

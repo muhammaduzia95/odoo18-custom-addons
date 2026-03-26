@@ -1,0 +1,43 @@
+<odoo>
+    <!-- Inherit the stock.picking form view to add a button -->
+    <record id="view_picking_form_inherit_igp_report" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.igp.report</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <!-- Add the button to the header -->
+            <xpath expr="//header" position="inside">
+                <button
+                    name="%(action_report_igp)d"
+                    string="IGP Report"
+                    type="action"
+                    class="btn-primary"
+                    icon="fa-download"
+                    invisible="report_button != 'igp' or state != 'done'"
+                />
+                <button
+                    name="%(action_report_gin)d"
+                    string="GIN Report"
+                    type="action"
+                    class="btn-primary"
+                    icon="fa-download"
+                    invisible="report_button != 'gin' or state != 'done'"
+                />
+                <button
+                    name="%(action_report_grn)d"
+                    string="GRN Report"
+                    type="action"
+                    class="btn-primary"
+                    icon="fa-download"
+                    invisible="report_button != 'grn' or state != 'done'"
+                />
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="vehicle_number" invisible="report_button != 'igp'" readonly="state == 'done'"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="dept_id" invisible="picking_type_code != 'internal'" readonly="state == 'done'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

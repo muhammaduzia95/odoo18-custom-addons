@@ -1,0 +1,360 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_salary_report\report\salary_report_pdf.xml-->
+
+<odoo>
+    <!-- Template -->
+    <template id="report_salary_pdf_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="report_type" t-value="'pdf'"/>
+                <t t-set="is_salary_report" t-value="True"/>
+                <t t-call="web.external_layout">
+
+                    <div class="page" style="font-size:11px;">
+
+                        <h3 style="text-align:center; margin:0 0 5px 0;">
+                            Textile Testing International
+                        </h3>
+
+                        <div style="text-align:center; margin-bottom:6px;">
+                            <h6>Salary for the month of
+                                <t t-esc="month_label"/>
+                            </h6>
+                        </div>
+
+                        <!-- Branch -->
+                        <t t-foreach="groups" t-as="b">
+                            <h6 style="margin-top:8px;">
+                                <t t-esc="b['branch']"/>
+                                Branch
+                            </h6>
+
+                            <!-- Department / Table-->
+                            <t t-foreach="b['departments']" t-as="d">
+                                <p style="margin-top:4px;">
+                                    <t t-esc="d['department']"/>
+                                </p>
+
+                                <table class="table table-sm table-bordered"
+                                       style="width:100%; text-align:center; margin-bottom:20px;">
+
+                                    <!-- thead -->
+                                    <thead style="background:#227acb; text-align:center;">
+                                        <tr>
+                                            <th style="width:3%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Sr.No</span></th>
+                                            <th style="width:5%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Emp.No.</span></th>
+                                            <th style="width:8%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Name</span></th>
+                                            <th style="width:12%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Designation</span></th>
+                                            <th style="width:6%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Gross<br/>Salary</span></th>
+                                            <th style="width:6%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Paid<br/>Days</span></th>
+                                            <th style="width:9%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Gross Salary<br/>for the Month</span></th>
+                                            <th style="width:8%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Other<br/>Allowance</span></th>
+                                            <th style="width:9%; text-align:center;" rowspan="2"><span style="color:white; font-weight:bold;">Total Gross<br/>Salary Payable</span></th>
+                                            <th style="text-align:center;" colspan="7"><span style="color:white; font-weight:bold;">Deduction</span></th>
+                                            <th style="width:12%; text-align:center; white-space:nowrap;" rowspan="2"><span style="color:white; font-weight:bold; white-space:nowrap;">Net Salary<br/>Payable</span></th>
+
+
+                                        </tr>
+                                        <tr>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">Advance</span></th>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">Loan</span></th>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">EOBI</span></th>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">Mess</span></th>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">Tax</span></th>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">Other</span></th>
+                                            <th style="width:5%; text-align:center;"><span style="color:white; font-weight:bold;">Total</span></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t t-foreach="d['rows']" t-as="l">
+                                            <tr>
+                                                <td style="text-align:center;">
+                                                    <t t-esc="l['sr']"/>
+                                                </td>
+                                                <td style="text-align:left;">
+                                                    <t t-esc="l['emp_no']"/>
+                                                </td>
+                                                <td style="text-align:left;">
+                                                    <t t-esc="l['name']"/>
+                                                </td>
+                                                <td style="text-align:left;">
+                                                    <t t-esc="l['designation']"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['gross_salary']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['paid_days']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['gross_for_month']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['other_allowance']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['total_gross']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['advance']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['loan']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['eobi']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['mess']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['tax']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['other']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['total_deduction']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    <t t-esc="l['net_pay']"
+                                                       t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+
+                                        <!-- Department Total Row -->
+                                        <tr style="font-weight:bold;">
+                                            <td style="text-align:left;" colspan="2">Department Total</td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="len(d['rows'])"/>
+                                            </td> <!-- employee count -->
+                                            <td></td> <!-- Designation blank -->
+                                            <td></td> <!-- Gross Salary blank -->
+                                            <td></td> <!-- Paid Days blank -->
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['gross_for_month'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['other_allowance'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['total_gross'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['advance'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['loan'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['eobi'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['mess'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['tax'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['other'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['total_deduction'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-esc="sum(r['net_pay'] for r in d['rows'])"
+                                                   t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <!-- Branch Total Row -->
+                            <table class="table table-sm table-bordered"
+                                   style="width:100%; text-align:center; margin-bottom:30px;">
+                                <tbody>
+                                    <tr style="font-weight:bold;">
+                                        <td style="width:3%; text-align:left;" colspan="2">Branch Total</td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(len(dep['rows']) for dep in b['departments'])"/>
+                                        </td>
+                                        <td style="width:8%;"></td>
+                                        <td style="width:12%;"></td>
+                                        <td style="width:6%;"></td>
+                                        <td style="width:6%; text-align:right;">
+                                            <t t-esc="sum(sum(r['gross_for_month'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:9%; text-align:right;">
+                                            <t t-esc="sum(sum(r['other_allowance'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:8%; text-align:right;">
+                                            <t t-esc="sum(sum(r['total_gross'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:9%; text-align:right;">
+                                            <t t-esc="sum(sum(r['advance'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(sum(r['loan'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(sum(r['eobi'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(sum(r['mess'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(sum(r['tax'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(sum(r['other'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:5%; text-align:right;">
+                                            <t t-esc="sum(sum(r['total_deduction'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                        <td style="width:12%; text-align:right;">
+                                            <t t-esc="sum(sum(r['net_pay'] for r in dep['rows']) for dep in b['departments'])"
+                                               t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+                        </t>
+
+                        <!-- Grand Total Row -->
+                        <table class="table table-sm table-bordered"
+                               style="width:100%; text-align:center; margin-top:20px;">
+                            <tbody>
+                                <tr style="font-weight:bold;">
+                                    <td style="width:3%;text-align:left;" colspan="2">Grand Total</td>
+                                    <td style="width:5%;text-align:right;">
+                                        <t t-esc="sum(sum(len(dep['rows']) for dep in b['departments']) for b in groups)"/>
+                                    </td>
+                                    <td style="width:8%;"></td> <!-- Designation blank -->
+                                    <td style="width:12%;"></td> <!-- Gross Salary blank -->
+                                    <td style="width:6%;"></td> <!-- Paid Days blank -->
+                                    <td style="width:6%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['gross_for_month'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:9%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['other_allowance'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:8%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['total_gross'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:9%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['advance'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:5%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['loan'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:5%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['eobi'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:5%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['mess'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:5%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['tax'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:5%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['other'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:5%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['total_deduction'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                    <td style="width:12%; text-align:right;">
+                                        <t t-esc="sum(sum(sum(r['net_pay'] for r in dep['rows']) for dep in b['departments']) for b in groups)"
+                                           t-options="{'widget':'float','precision':0,'thousand_sep':True}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Paperformat -->
+    <record id="paperformat_salary_report" model="report.paperformat">
+        <field name="name">Salary Report Landscape</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">25</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action -->
+    <record id="action_report_salary_pdf" model="ir.actions.report">
+        <field name="name">Salary Report PDF</field>
+        <field name="model">tti.salary.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_salary_report.report_salary_pdf_template</field>
+        <field name="report_file">visio_tti_salary_report.report_salary_pdf_template</field>
+        <field name="paperformat_id" ref="visio_tti_salary_report.paperformat_salary_report"/>
+        <field name="binding_model_id" ref="visio_tti_salary_report.model_tti_salary_report_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'salary_report_%s_%s' % (
+            (object.date_from and object.date_from.strftime("%d-%m-%Y") or ''),
+            (object.date_to and object.date_to.strftime("%d-%m-%Y") or '')
+            )
+        </field>
+    </record>
+
+</odoo>

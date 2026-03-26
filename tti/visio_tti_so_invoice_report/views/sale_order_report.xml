@@ -1,0 +1,529 @@
+<odoo>
+    <template id="custom_report_saleorder_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="d-flex justify-content-between" style="margin-bottom: 30px; font-size: 12px;">
+
+                            <!-- Left Column: Bill To -->
+                            <div style="text-align:left;">
+                                <p class="mb-0">Bill To:</p>
+                                <p class="mb-0" t-esc="o.partner_id.name"/>
+                                <t t-if="o.partner_id.vat">
+                                    <p class="mb-0">NTN:
+                                        <span t-esc="o.partner_id.vat"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.partner_id.tti_city_id">
+                                    <p class="mb-0">STRN:
+                                        <span t-esc="o.partner_id.strn"/>
+                                    </p>
+                                </t>
+                                <p class="mb-0">
+                                    <t t-if="o.partner_id.street"><t t-esc="o.partner_id.street"/>,
+                                    </t>
+                                    <t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/>,
+                                    </t>
+                                    <t t-if="o.partner_id.city">
+                                        <t t-esc="o.partner_id.city"/>
+                                    </t>
+                                    <t t-if="o.partner_id.state_id">-
+                                        <t t-esc="o.partner_id.state_id.name"/>
+                                    </t>
+                                    <t t-if="o.partner_id.zip">-
+                                        <t t-esc="o.partner_id.zip"/>
+                                    </t>
+                                    <t t-if="o.partner_id.country_id">,
+                                        <t t-esc="o.partner_id.country_id.name"/>
+                                    </t>
+                                </p>
+                                <t t-if="o.tti_pi_applicant.name">
+                                    <p class="mb-0" t-esc="o.tti_pi_applicant.name"/>
+                                </t>
+                                <t t-if="o.tti_pi_applicant.phone">
+                                    <p class="mb-0" t-esc="o.tti_pi_applicant.phone"/>
+                                </t>
+                            </div>
+
+                            <!-- Right Column: Sample Info -->
+                            <div style="text-align:left;max-width: 250px;">
+                                <t t-if="o.tti_si_category">
+                                    <p class="mb-0">Sample Category:
+                                        <span t-esc="o.tti_si_category.name"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_description">
+                                    <p class="mb-0">Sample Description:
+                                        <span t-esc="o.tti_si_description"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_pi_buyer">
+                                    <p class="mb-0">Buyer:
+                                        <span t-esc="o.tti_pi_buyer.name"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_pi_agent_id">
+                                    <p class="mb-0">Agent:
+                                        <span t-esc="o.tti_pi_agent_id.name"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_style_no">
+                                    <p class="mb-0">Style Number :
+                                        <span t-esc="o.tti_si_style_no"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_fabric">
+                                    <p class="mb-0">Fabric :
+                                        <span t-esc="o.tti_si_fabric"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_colour">
+                                    <p class="mb-0">Color :
+                                        <span t-esc="o.tti_si_colour"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.client_order_ref">
+                                    <p class="mb-0">Vendor Ref :
+                                        <span t-esc="o.client_order_ref"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_po">
+                                    <p class="mb-0">PO :
+                                        <span t-esc="o.tti_si_po"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_design">
+                                    <p class="mb-0">Design :
+                                        <span t-esc="o.tti_si_design"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_label_1_name or o.tti_si_label_1_value">
+                                    <p class="mb-0">
+                                        <span t-if="o.tti_si_label_1_name" t-esc="o.tti_si_label_1_name"/>:
+                                        <span t-if="o.tti_si_label_1_value" t-esc="o.tti_si_label_1_value"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_label_2_name or o.tti_si_label_2_value">
+                                    <p class="mb-0">
+                                        <span t-if="o.tti_si_label_2_name" t-esc="o.tti_si_label_2_name"/>:
+                                        <span t-if="o.tti_si_label_2_value" t-esc="o.tti_si_label_2_value"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_label_3_name or o.tti_si_label_3_value">
+                                    <p class="mb-0">
+                                        <span t-if="o.tti_si_label_3_name" t-esc="o.tti_si_label_3_name"/>:
+                                        <span t-if="o.tti_si_label_3_value" t-esc="o.tti_si_label_3_value"/>
+                                    </p>
+                                </t>
+                                <t t-if="o.tti_si_label_4_name or o.tti_si_label_4_value">
+                                    <p class="mb-0">
+                                        <span t-if="o.tti_si_label_4_name" t-esc="o.tti_si_label_4_name"/>:
+                                        <span t-if="o.tti_si_label_4_value" t-esc="o.tti_si_label_4_value"/>
+                                    </p>
+                                </t>
+                            </div>
+                        </div>
+
+
+                        <!-- Sale Invoice Heading -->
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="color: #2E69A6; margin: 0;">
+                                <t t-if="o.state in ['draft','sent']">Quotation Order #</t>
+                                <t t-if="o.state == 'sale'">Sale Order #</t>
+                                <t t-esc="o.name"/>
+                            </h2>
+                        </div>
+
+                        <!-- Invoice Meta Info Row -->
+                        <div class="d-flex"
+                             style="display: flex; flex-direction:row; justify-content: space-between; margin-bottom: 20px; gap:30px;">
+                            <!-- Quotation Reference -->
+                            <div style="margin-right:60px;">
+                                <p style="margin: 0;">
+                                    <strong>Quotation Reference #:</strong>
+                                </p>
+                                <p style="margin: 0;">
+                                    <t t-esc="o.quotation_num"/>
+                                </p>
+                            </div>
+
+                            <!-- Date -->
+                            <div style="margin-right:60px;">
+                                <p style="margin: 0;">
+                                    <strong>Date:</strong>
+                                </p>
+                                <p style="margin: 0;">
+                                    <t t-esc="o.date_order.strftime('%d/%m/%Y')"/>
+                                </p>
+                            </div>
+
+                            <!-- Payment Terms -->
+                            <!-- <t t-if="o.payment_term_id">
+                                <div style="margin-right:60px;">
+                                    <p style="margin: 0;">
+                                        <strong>Payment Terms:</strong>
+                                    </p>
+                                    <p style="margin: 0;" t-if="o.payment_term_id">
+                                        <t t-esc="o.payment_term_id.name"/>
+                                    </p>
+                                </div>
+                            </t> -->
+
+                        </div>
+
+                        <!-- Test Table Section -->
+                        <table class="table"
+                               style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px;">
+                            <!-- Header Row -->
+                            <thead>
+                                <tr style="background-color: #2E69A6; color: white; text-align: left;">
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-set="currency" t-value="o.pricelist_id.currency_id"/>
+                                    <t t-set="currency_name" t-value="o.pricelist_id.currency_id.name"/>
+                                    <th style="padding: 8px; color: white; border: 1px solid black;">Sr #</th>
+                                    <!-- <th style="padding: 8px; color: white; border: 1px solid black;">Test Code</th> -->
+                                    <th style="padding: 8px; color: white; border: 1px solid black;">Test Name</th>
+                                    <th style="padding: 8px; color: white; border: 1px solid black;">Test Method</th>
+                                    <th style="padding: 8px; color: white; border: 1px solid black; text-align: right;">
+                                        Qty
+                                    </th>
+                                    <th style="padding: 8px; color: white; border: 1px solid black; text-align: right;">
+                                        Rate USD
+                                    </th>
+                                    <th style="padding: 8px; color: white; border: 1px solid black; text-align: right;">
+                                        Total USD
+                                    </th>
+                                    <t t-if="currency_name == 'PKR'">
+                                        <th style="padding: 8px; color: white; width:8%; border: 1px solid black; text-align: right;">
+                                            Total
+                                            PKR
+                                        </th>
+                                    </t>
+                                    <t t-elif="currency_name == 'EUR'">
+                                        <th style="padding: 8px; color: white; width:8%; border: 1px solid black; text-align: right;">
+                                            Total
+                                            Euro
+                                        </th>
+                                    </t>
+                                </tr>
+                            </thead>
+
+                            <!-- Body Rows -->
+                            <tbody>
+                                <tr t-foreach="o.order_line" t-as="line">
+                                    <t t-if="line.product_template_id.name not in [
+                                        'Express Charges',
+                                        'Shuttle Service Charges',
+                                        'Import Duty Charges',
+                                        'Courier Charge',
+                                        'Travelling Charges',
+                                        'Discount'
+                                    ] and line.product_uom_qty > 0">
+                                        <td style="padding: 6px; border: 1px solid black;">
+                                            <t t-esc="index"/>
+                                        </td>
+                                        <!-- <td style="padding: 6px; border: 1px solid black;"> -->
+                                        <!-- <t t-esc="line.default_code"/> -->
+                                        <!-- </td> -->
+                                        <td style="padding: 6px; border: 1px solid black;">
+                                            <t t-esc="line.product_template_id.name"/>
+                                        </td>
+                                        <td style="padding: 6px; border: 1px solid black;">
+                                            <t t-esc="line.tti_test_method"/>
+                                        </td>
+                                        <td style="padding: 6px; border: 1px solid black; text-align: right;">
+                                            <t t-esc="int(line.product_uom_qty)"/>
+                                        </td>
+                                        <td style="padding: 6px; border: 1px solid black; text-align: right;">
+                                            <t t-esc="line.price_unit_rate"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </td>
+                                        <td style="padding: 6px; border: 1px solid black; text-align: right;">
+                                            <t t-esc="(line.price_unit_rate * line.product_uom_qty)"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </td>
+                                        <t t-if="currency_name in ['PKR', 'EUR']">
+                                            <td style="padding: 6px; border: 1px solid black; text-align: right;">
+                                                <t t-esc="(line.product_uom_qty * line.price_unit)"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            </td>
+                                        </t>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <!-- Footer Block: Notes + Totals -->
+                        <div class="d-flex justify-content-between"
+                             style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 12px;">
+
+                            <!-- Left: Special Notes -->
+                            <div style="width: 50%; margin-right:150px;">
+                                <div style="background-color: #2E69A6; color: white; padding: 5px 10px; font-weight: bold;">
+                                    Special Notes or Instructions
+                                </div>
+                                <div style="border: 1px solid #2E69A6; border-top: none; padding: 10px;">
+                                    <p style="margin: 0;">
+                                        - Exchange Rate (USD to PKR):
+                                        <t t-esc="('%.2f' % o.tti_dollar_exchange_rate)"/>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Right: Totals Table -->
+                            <div style="width: 30%; align-items:flex-end;">
+                                <table class="table-sm table-borderless"
+                                       style="width: 100%; font-size: 12px;">
+                                    <t t-set="dollar_exchange_rate" t-value="o.tti_dollar_exchange_rate"/>
+                                    <t t-set="excluded_products" t-value="[
+                                        'Express Charges',
+                                        'Shuttle Service Charges',
+                                        'Import Duty Charges',
+                                        'Courier Charge',
+                                        'Travelling Charges',
+                                        'Discount'
+                                    ]"/>
+                                    <t t-set="total_usd"
+                                       t-value="sum(line.price_unit_rate * line.product_uom_qty for line in o.order_line if line.product_template_id.name not in excluded_products)"/>
+                                    <t t-set="total_pkr_eur"
+                                       t-value="sum(line.price_unit * line.product_uom_qty for line in o.order_line if line.product_template_id.name not in excluded_products)"/>
+
+                                    <!-- USD Discount -->
+                                    <t t-set="usd_discount"
+                                       t-value="sum(((line.discount/100) * (line.price_unit_rate * line.product_uom_qty)) for line in o.order_line) +
+                                         sum(abs((line.price_unit_rate * line.product_uom_qty)) for line in o.order_line if line.product_template_id.name == 'Discount')"/>
+                                    <!-- PKR/EUR Discount -->
+                                    <t t-set="pkr_eur_discount"
+                                       t-value="sum(((line.discount/100) * (line.price_unit * line.product_uom_qty)) for line in o.order_line) +
+                                        sum(abs((line.price_unit * line.product_uom_qty)) for line in o.order_line if line.product_template_id.name == 'Discount')"/>
+                                    <t t-set="tax_name"
+                                       t-value="o.order_line[0].tax_id[0].name if o.order_line and o.order_line[0].tax_id else ''"/>
+                                    <t t-set="tax_percent"
+                                       t-value="o.order_line[0].tax_id[0].amount if o.order_line and o.order_line[0].tax_id else 0.0"/>
+                                    <t t-set="tax_pkr_eur"
+                                       t-value="o.amount_untaxed * (tax_percent / 100)"/>
+                                    <t t-set="tax_usd" t-value="tax_pkr_eur/dollar_exchange_rate"/>
+                                    <t t-set="charge_names"
+                                       t-value="['Express Charges', 'Shuttle Service Charges', 'Import Duty Charges', 'Courier Charge', 'Travelling Charges']"/>
+                                    <t t-set="charge_usd_total"
+                                       t-value="sum(line.price_unit_rate * line.product_uom_qty for line in o.order_line if line.product_template_id.name in charge_names)"/>
+                                    <t t-set="charge_pkr_eur_total"
+                                       t-value="sum((line.price_unit * line.product_uom_qty) for line in o.order_line if line.product_template_id.name in charge_names and line.product_uom_qty > 0)"/>
+                                    <tr>
+                                        <td>
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td style="text-align: right; ">
+                                            <t t-esc="total_usd"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            $
+                                        </td>
+                                        <t t-if="currency_name == 'PKR'">
+                                            <td style="text-align: right; ">
+                                                <t t-esc="total_pkr_eur"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                Rs.
+                                            </td>
+                                        </t>
+                                        <t t-if="currency_name == 'EUR'">
+                                            <td style="text-align: right; ">
+                                                <t t-esc="total_pkr_eur"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                €
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr t-foreach="o.order_line" t-as="line">
+                                        <t t-if="line.product_template_id.name in charge_names and line.product_uom_qty > 0">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="line.product_template_id.name"/>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    <t t-esc="(line.price_unit_rate * line.product_uom_qty)"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    $
+                                                </td>
+                                                <!-- PKR -->
+                                                <t t-if="currency_name == 'PKR'">
+                                                    <td style="text-align: right;">
+                                                        <t t-esc="line.price_unit * line.product_uom_qty"
+                                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                        Rs.
+                                                    </td>
+                                                </t>
+
+                                                <!-- EUR -->
+                                                <t t-if="currency_name == 'EUR'">
+                                                    <td style="text-align: right;">
+                                                        <t t-esc="line.price_unit * line.product_uom_qty"
+                                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                        €
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </tr>
+                                    <t t-if="usd_discount != 0.0 or pkr_eur_discount != 0.0">
+                                        <tr>
+                                            <td>Discount</td>
+                                            <td style="text-align: right; border-bottom:1px solid black;">-
+                                                <t t-esc="usd_discount"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                $
+                                            </td>
+                                            <t t-if="currency_name == 'PKR'">
+                                                <td style="text-align: right; border-bottom:1px solid black;">-
+                                                    <t t-esc="pkr_eur_discount"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    Rs.
+                                                </td>
+                                            </t>
+                                            <t t-if="currency_name == 'EUR'">
+                                                <td style="text-align: right; border-bottom:1px solid black;">-
+                                                    <t t-esc="pkr_eur_discount"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    €
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Sub Total</strong>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <t t-esc="((total_usd + charge_usd_total) - usd_discount)"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                $
+                                            </td>
+                                            <t t-if="currency_name == 'PKR'">
+                                                <td style="text-align: right;">
+                                                    <t t-esc="((total_pkr_eur + charge_pkr_eur_total) - pkr_eur_discount)"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    Rs.
+                                                </td>
+                                            </t>
+                                            <t t-if="currency_name == 'EUR'">
+                                                <td style="text-align: right;">
+                                                    <t t-esc="((total_pkr_eur + charge_pkr_eur_total) - pkr_eur_discount)"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    €
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <t t-if="tax_name">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="tax_name"/>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <t t-esc="tax_usd"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                $
+                                            </td>
+
+                                            <!-- PKR -->
+                                            <t t-if="currency_name == 'PKR'">
+                                                <td style="text-align: right;">
+                                                    <t t-esc="tax_pkr_eur"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    Rs.
+                                                </td>
+                                            </t>
+
+                                            <!-- EUR -->
+                                            <t t-if="currency_name == 'EUR'">
+                                                <td style="text-align: right;">
+                                                    <t t-esc="tax_pkr_eur"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                    €
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <tr style="background-color: #2E69A6; color: white; font-weight: bold;">
+                                        <td>Net Payable</td>
+                                        <td style="text-align: right;">
+                                            <t t-esc="(tax_usd + charge_usd_total +(total_usd - usd_discount))"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            $
+                                        </td>
+                                        <!-- PKR -->
+                                        <t t-if="currency_name == 'PKR'">
+                                            <td style="text-align: right;">
+                                                <t t-esc="(tax_pkr_eur + charge_pkr_eur_total + (total_pkr_eur - pkr_eur_discount))"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                Rs.
+                                            </td>
+                                        </t>
+
+                                        <!-- EUR -->
+                                        <t t-if="currency_name == 'EUR'">
+                                            <td style="text-align: right;">
+                                                <t t-esc="(tax_pkr_eur + charge_pkr_eur_total + (total_pkr_eur - pkr_eur_discount))"
+                                                   t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                €
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <t t-if="o.tti_attachment_ids">
+                            <div style="background-color: #2E69A6; width: 50%%; color: white; padding: 5px 10px; font-weight: bold; margin-top:20px;">
+                                Attached Images
+                            </div>
+                            <table class="table table-borderless"
+                                   style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                                <tr t-foreach="o.tti_attachment_ids" t-as="img">
+                                    <t t-if="img.mimetype and img.mimetype.startswith('image/')">
+                                        <td style="padding: 10px;  text-align: left;">
+                                            <img t-att-src="'data:image/png;base64,%s' % img.datas.decode('utf-8')"
+                                                 alt="Attachment"
+                                                 style="max-width: 150px; max-height: 150px;"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </table>
+                        </t>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_custom_saleorder" model="report.paperformat">
+        <field name="name">Custom Sale Order Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">55</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+        <field name="report_ids" eval="[(4, ref('sale.action_report_saleorder'))]"/>
+    </record>
+
+
+    <record id="action_custom_sale_report" model="ir.actions.report">
+        <field name="name">TTI Quotation / Order</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_so_invoice_report.custom_report_saleorder_document</field>
+        <field name="report_file">visio_tti_so_invoice_report.custom_report_saleorder_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="visio_tti_so_invoice_report.paperformat_custom_saleorder"/>
+    </record>
+
+</odoo>

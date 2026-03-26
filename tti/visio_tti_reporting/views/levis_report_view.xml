@@ -1,0 +1,50 @@
+<odoo>
+    <!-- List View -->
+    <record id="view_levis_report_list" model="ir.ui.view">
+        <field name="name">sale.order.levis.report</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <list string="Levi's Report" create="false" edit="false">
+                <!-- Date -->
+                <field name="date_order" string="Date"/>
+                <!-- Company Name -->
+                <field name="partner_id" string="Company Name"/>
+                <!-- Sale Order Number -->
+                <field name="name" string="Sale Order Number"/>
+                <!-- Sample Description -->
+                <field name="tti_si_description" string="Sample Description"/>
+                <!-- Colour -->
+                <field name="tti_si_colour" string="Colour"/>
+                <!-- Style No -->
+                <field name="tti_si_style_no" string="Style No"/>
+                <!-- Vendor Ref -->
+                <field name="client_order_ref" string="Vendor Ref"/>
+                <!-- Style -->
+                <field name="tti_si_style" string="Style"/>
+                <!-- Sp.Inst -->
+                <field name="tti_si_sp_inst" string="Sp.Inst"/>
+                <!-- Order Delivery Date -->
+                <field name="commitment_date" string="Order Delivery Date"/>
+                <!-- Salesperson -->
+                <field name="user_id" string="Salesperson"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+<!--    <record id="action_levis_report_view" model="ir.actions.act_window">-->
+<!--        <field name="name">Levi's Report View</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list</field>-->
+<!--        <field name="view_id" ref="view_levis_report_list"/>-->
+<!--        <field name="search_view_id" ref="sale.view_sales_order_filter"/>-->
+<!--        <field name="context">{}</field>-->
+<!--    </record>-->
+
+    <!-- Menu Item -->
+<!--    <menuitem id="menu_levis_report_view"-->
+<!--              name="Levi's Report View"-->
+<!--              parent="visio_tti_reporting.menu_tti_reports"-->
+<!--              action="action_levis_report_view"-->
+<!--              sequence="10"/>-->
+</odoo>

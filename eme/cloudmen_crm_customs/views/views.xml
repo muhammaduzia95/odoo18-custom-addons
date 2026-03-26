@@ -1,0 +1,62 @@
+<odoo>
+    <record id="view_crm_view_tender"
+            model="ir.ui.view">
+        <field name="name">crm.buttons.form.tender</field>
+        <field name="model">crm.lead</field>
+        <!--        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>-->
+        <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sale_quotations_new']" position="replace">
+                <field name="is_tender_stage" invisible="1"/>
+                <button string="Create New Quotation" name="action_sale_quotations_new" type="object"
+                        class="oe_highlight"
+                        data-hotkey="q"
+                        title="Create new quotation"
+                        invisible="type == 'lead' or probability == 0 and not active or is_tender_stage"/>
+
+                <button string="Create New Tender" name="action_sale_quotations_new" type="object" class="oe_highlight"
+                        data-hotkey="q"
+                        title="Create New Tender"
+                        invisible="type == 'lead' or probability == 0 and not active or not is_tender_stage"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='internal_notes']" position="before">
+                <page string="Bidders" name="customers">
+                    <field name="lead_customer_ids">
+                        <list editable="bottom">
+                            <field name="partner_id"/>
+<!--                            <field name="scope_of_work"/> &lt;!&ndash; #zia comment &ndash;&gt;-->
+<!--                            <field name="expected_closing_date"/> &lt;!&ndash; #zia comment &ndash;&gt;-->
+                            <field name="x_studio_aa_quote_ref" optional="hide"/>
+                            <field name="x_studio_eme_quote_ref" optional="hide"/>
+                            <field name="x_studio_lt_quote_ref" optional="hide"/>
+                            <field name="x_studio_boolean_field_6nt_1ikjp945u" optional="hide"/>
+                            <field name="x_studio_quoted_from_aa" optional="hide"/>
+                            <field name="x_studio_quoted_from_lt" optional="hide"/>
+                            <field name="x_studio_boq_received" optional="hide"/>
+                            <field name="x_studio_drawings_received" optional="hide"/>
+                            <field name="x_studio_specs_received" optional="hide"/>
+                            <field name="x_studio_enq_received_by_pl" optional="hide"/>
+                            <field name="x_studio_enquiry_received_by_aa" optional="hide"/>
+                            <field name="x_studio_enquiry_received_by_eme" optional="hide"/>
+                            <field name="x_studio_enquiry_received_by_lt" optional="hide"/>
+                            <field name="x_studio_eme_design" optional="hide"/>
+                            <field name="x_studio_char_field_94p_1ikk2jffl" optional="hide"/>
+                            <field name="x_studio_consultant_text" optional="hide"/>
+                            <field name="x_studio_contractor" optional="hide"/>
+                            <field name="x_studio_eme_folder_location" optional="hide"/>
+                            <field name="x_studio_folder_location" optional="hide" widget="CopyClipboardURL"/>
+                            <field name="x_studio_division_1" optional="hide"/>
+                            <field name="x_studio_sales_team" optional="hide"/>
+                            <field name="x_studio_enq_date" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

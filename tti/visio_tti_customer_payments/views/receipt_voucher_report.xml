@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="receipt_voucher_report_template_id">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="visio_tti_customer_payments.receipt_voucher_report_template" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="receipt_voucher_report_template">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <!-- Set move variable for easier access -->
+                <t t-set="move" t-value="o.move_id"/>
+
+                <div class="page">
+                    <!-- Company and Title -->
+                    <div class="text-center">
+                        <h2>
+                            <span>Tti Testing Laboratories</span>
+                        </h2>
+                        <h4 style="display:inline-block; padding:2px 10px;">
+                            <span>
+                                <t t-if="move.name and move.name.startswith('JV/')">Journal Voucher</t>
+                                <t t-elif="move.name and move.name.startswith('BPV/')">Bank Payment Voucher</t>
+                                <t t-elif="move.name and move.name.startswith('RV/')">Receipt Voucher</t>
+                                <t t-else="">Payment Voucher</t>
+                            </span>
+                        </h4>
+                    </div>
+
+                    <!-- Printed Info -->
+                    <div class="d-flex justify-content-between" style="margin-top: 20px; font-size:12px;">
+                        <div>
+                            <span>Print By:</span>
+                            <span t-esc="user.name"/>
+                        </div>
+                        <div>
+                            <span>Printed at :</span>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %I:%M:%S %p')"/>
+                        </div>
+                    </div>
+
+                    <!-- Voucher Details -->
+                    <table class="table table-sm table-borderless" style="width:100%; margin-top:15px; font-size:13px;">
+                        <tr>
+                            <td width="20%">
+                                <span>Voucher No :</span>
+                            </td>
+                            <td width="30%">
+                                <!-- Use payment name or move name as fallback -->
+                                <span t-esc="o.name or move.name"/>
+                            </td>
+                            <td style="text-align: right;" width="20%">
+                                <span>Voucher Date :</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <!-- Use payment date -->
+                                <span t-esc="o.date.strftime('%d/%m/%Y')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Instr # :</span>
+                            </td>
+                            <td>
+                                <!-- Use cheque_no from payment if available, otherwise from move -->
+                                <span t-esc="o.cheque_no or (move.cheque_no if hasattr(move, 'cheque_no') else '')"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <span>Trans Date :</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span t-esc="move.date.strftime('%d/%m/%Y')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Status :</span>
+                            </td>
+                            <td>
+                                <!-- Use payment state -->
+                                <span t-esc="o.state"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <span>Customer :</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <!-- Use payment partner_id -->
+                                <span t-esc="o.partner_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Voucher Type :</span>
+                            </td>
+                            <td>
+                                <!-- Use payment journal -->
+                                <span t-esc="o.journal_id.name"/>
+                            </td>
+                        </tr>
+                        <!-- Bill No from payment or move -->
+                        <t t-if="o.bill_no or (hasattr(move, 'bill_no') and move.bill_no)">
+                            <tr>
+                                <td width="20%">
+                                    <span>Bill No :</span>
+                                </td>
+                                <td width="30%">
+                                    <span t-esc="o.bill_no or move.bill_no"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td>
+                                <span>Remarks :</span>
+                            </td>
+                            <td colspan="3">
+                                <!-- Use payment ref or move ref -->
+<!--                                <span t-esc="o.ref or move.ref"/>-->
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table style="width:100%; border:1px solid black; border-collapse: collapse; font-size:12px; margin-top:30px;">
+                        <thead>
+                            <tr style="background-color:#d3d3d3;">
+                                <th style="border:1px solid black; padding:5px;">SR#</th>
+                                <th style="border:1px solid black; padding:5px;">Account No.</th>
+                                <th style="border:1px solid black; padding:5px;">SL Name</th>
+                                <th style="border:1px solid black; padding:5px;">Analysis Name</th>
+                                <th style="border:1px solid black; padding:5px;">Remarks</th>
+                                <th style="border:1px solid black; padding:5px;">Analytic Account</th>
+                                <th style="border:1px solid black; padding:5px;">Debit Amount</th>
+                                <th style="border:1px solid black; padding:5px;">Credit Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="sr" t-value="1"/>
+                            <!-- Use move_id.line_ids instead of o.line_ids -->
+                            <t t-foreach="move.line_ids" t-as="line">
+                                <tr>
+                                    <!-- SR# -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-esc="sr"/>
+                                    </td>
+
+                                    <!-- Account No. -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.account_id and line.account_id.code">
+                                            <t t-esc="line.account_id.code"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- SL Name -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.account_id and line.account_id.name">
+                                            <t t-esc="line.account_id.name"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- Partner Name -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.partner_id and line.partner_id.name">
+                                            <t t-esc="line.partner_id.name"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- Narration -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.name">
+                                            <span t-esc="line.name"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- Analytic Distribution -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <span>
+                                            <div t-foreach="line.analytic_distribution" t-as="distribution">
+                                                <t t-set="distributions" t-value="distribution.split(',')"/>
+                                                <t t-foreach="distributions" t-as="dist">
+                                                    <t t-if="line.env['account.analytic.account'].browse(int(dist))[0].partner_id">
+                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].name"/>
+                                                        -
+                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].partner_id.name"/>
+                                                        ,
+                                                        <t t-esc="line.analytic_distribution.get(dist)"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].name"/>
+                                                        ,
+                                                        <t t-esc="line.analytic_distribution.get(dist)"/>
+                                                    </t>
+                                                    <br/>
+                                                </t>
+                                            </div>
+                                        </span>
+                                    </td>
+
+                                    <!-- Debit Amount -->
+                                    <td style="border:1px solid black; padding:5px; text-align:right;">
+                                        <t t-if="line.debit">
+                                            <t t-esc="'{:,.2f}'.format(line.debit)"/>
+                                        </t>
+                                        <t t-if="not line.debit">-</t>
+                                    </td>
+
+                                    <!-- Credit Amount -->
+                                    <td style="border:1px solid black; padding:5px; text-align:right;">
+                                        <t t-if="line.credit">
+                                            <t t-esc="'{:,.2f}'.format(line.credit)"/>
+                                        </t>
+                                        <t t-if="not line.credit">-</t>
+                                    </td>
+                                </tr>
+                                <t t-set="sr" t-value="sr + 1"/>
+                            </t>
+
+                            <!-- Total in Words Row -->
+                            <tr>
+                                <td colspan="6" style="border:1px solid black; padding:5px;">
+                                    <strong>Amount In Words :</strong>
+                                    <!-- Use move currency and line_ids -->
+                                    <span t-esc="move.currency_id.amount_to_text(sum(line.debit for line in move.line_ids))"/>
+                                </td>
+                                <td style="border:1px solid black; padding:5px; text-align:right;">
+                                    <strong>
+                                        <t t-esc="'{:,.2f}'.format(sum(line.debit for line in move.line_ids))"/>
+                                    </strong>
+                                </td>
+                                <td style="border:1px solid black; padding:5px; text-align:right;">
+                                    <strong>
+                                        <t t-esc="'{:,.2f}'.format(sum(line.credit for line in move.line_ids))"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between" style="margin-top: 80px; text-align: center;">
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Prepared By</strong>
+                            </div>
+                        </div>
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Checked By</strong>
+                            </div>
+                        </div>
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Approved By</strong>
+                            </div>
+                        </div>
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Received By</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </template>
+
+        <record id="paperformat_journal_entries" model="report.paperformat">
+            <field name="name">Journal Entries Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="receipt_voucher_report_id" model="ir.actions.report">
+            <field name="name">Print Receipt Voucher</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">visio_tti_customer_payments.receipt_voucher_report_template_id</field>
+            <field name="report_file">visio_tti_customer_payments.receipt_voucher_report_template_id</field>
+            <field name="print_report_name">'Receipt Voucher'</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="visio_tti_customer_payments.paperformat_journal_entries"/>
+        </record>
+
+    </data>
+</odoo>

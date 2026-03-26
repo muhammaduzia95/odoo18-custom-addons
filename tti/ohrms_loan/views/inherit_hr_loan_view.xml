@@ -1,0 +1,16 @@
+<!--tti\ohrms_loan\views\inherit_hr_loan_view.xml-->
+<!-- Zia file -->
+
+<odoo>
+    <record id="view_hr_loan_form_inherit_z" model="ir.ui.view">
+        <field name="name">hr.loan.form.inherit.z</field>
+        <field name="model">hr.loan</field>
+        <field name="inherit_id" ref="ohrms_loan.hr_loan_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="account_move_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

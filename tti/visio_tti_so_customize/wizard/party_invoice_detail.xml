@@ -1,0 +1,38 @@
+<odoo>
+    <record id="view_party_invoice_detail_wizard" model="ir.ui.view">
+        <field name="name">party.invoice.detail.wizard.form</field>
+        <field name="model">party.invoice.detail.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Party Invoice Detail">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="manufacturer_id"/>
+                        <field name="buyer_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_party_invoice_detail_wizard" model="ir.actions.act_window">
+        <field name="name">Party Invoice Detail</field>
+        <field name="res_model">party.invoice.detail.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_party_invoice_detail_root"
+              name="Party Invoice Detail"
+              parent="sale.menu_sale_report"
+              action="action_party_invoice_detail_wizard"
+              sequence="100"/>
+
+</odoo>

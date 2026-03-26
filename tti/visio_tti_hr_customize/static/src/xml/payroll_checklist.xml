@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="visio_tti_hr_customize.PayrollDashboardChecklist" owl="1">
+        <div class="o_payroll_dashboard_panel shadow-sm border rounded p-3 bg-white h-100">
+            <h3 class="o_dashboard_card_title mb-3">Payroll Checklist</h3>
+            <ul class="o_dashboard_checklist ps-3 mb-0">
+                <li class="mb-1">1. List of new joiners &amp; leavers</li>
+                <li class="mb-1">2. Increments after probation (if any)</li>
+                <li class="mb-1">3. Probation List (calculated on prorate basis)</li>
+                <li class="mb-1">4. Housekeeping Staff Attendance (Daily Wagers)</li>
+                <li class="mb-1">5. Mess Lists (Addition &amp; Deletion)</li>
+                <li class="mb-1">6. Loan &amp; advances deduction</li>
+                <li class="mb-1">7. Mobile deduction</li>
+                <li class="mb-1">8. Salary vouchers to be disbursed</li>
+                <li class="mb-1">9. Salary Tax to be updated if applicable</li>
+            </ul>
+        </div>
+    </t>
+</templates>

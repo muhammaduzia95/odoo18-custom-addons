@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_account_multi_payments" model="ir.sequence">
+        <field name="name">Multi Payments</field>
+        <field name="code">account.multi.payments</field>
+        <field name="prefix">MPAY/</field>
+        <field name="padding">5</field>
+    </record>
+
+    <record id="seq_invoice_punjab" model="ir.sequence">
+        <field name="name">Punjab Invoice</field>
+        <field name="code">invoice.punjab</field>
+        <field name="prefix">P-</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_invoice_sindh" model="ir.sequence">
+        <field name="name">Sindh Invoice</field>
+        <field name="code">invoice.sindh</field>
+        <field name="prefix">S-</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_invoice_kpk" model="ir.sequence">
+        <field name="name">KPK Invoice</field>
+        <field name="code">invoice.kpk</field>
+        <field name="prefix">K-</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_invoice_intl" model="ir.sequence">
+        <field name="name">International Invoice</field>
+        <field name="code">invoice.international</field>
+        <field name="prefix">I-</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_invoice_cancelled" model="ir.sequence">
+        <field name="name">Cancelled Invoice</field>
+        <field name="code">invoice.cancelled</field>
+        <field name="prefix">C-</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+</odoo>

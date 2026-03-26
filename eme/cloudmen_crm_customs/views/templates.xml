@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_crm_teams_clients_types"
+            model="ir.ui.view">
+        <field name="name">client.types.crm</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']"
+                   position="after">
+                <field name="client_type" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

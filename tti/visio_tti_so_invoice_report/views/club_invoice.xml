@@ -1,0 +1,301 @@
+<!--tti\visio_tti_so_invoice_report\views\club_invoice.xml-->
+<odoo>
+
+    <template id="club_invoice">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <t t-set="sale_order" t-value="o.sale_order_ids[:1]"/>
+                        <!-- Header Section -->
+                        <div class="d-flex justify-content-between" style="margin-bottom: 40px; font-size:12px;">
+                            <div>
+                                <span>Bill To :</span>
+                                <br/>
+                                <!-- Manufacturer Name -->
+                                <t t-if="sale_order and sale_order.partner_id">
+                                    <t t-if="sale_order.partner_id.name">
+                                        <span t-field="sale_order.partner_id.name"/>
+                                    </t>
+                                    <br/>
+                                    <!-- NTN and STRN -->
+                                    <t t-if="sale_order.partner_id.vat">
+                                        NTN:
+                                        <span t-field="sale_order.partner_id.vat"/>
+                                    </t>
+                                    <t t-if="sale_order.partner_id.company_registry">
+                                        STRN:
+                                        <span t-field="sale_order.partner_id.company_registry"/>
+                                    </t>
+                                    <br/>
+                                    <!-- Address -->
+                                    <t t-if="sale_order.partner_id.street">
+                                        <span t-field="sale_order.partner_id.street"/>
+                                    </t>
+                                    <t t-if="sale_order.partner_id.street2">
+                                        ,
+                                        <span t-field="sale_order.partner_id.street2"/>
+                                    </t>
+                                    <t t-if="sale_order.partner_id.city">
+                                        ,
+                                        <span t-field="sale_order.partner_id.city"/>
+                                    </t>
+                                    <t t-if="sale_order.partner_id.zip">
+                                        ,
+                                        <span t-field="sale_order.partner_id.zip"/>
+                                    </t>
+                                    <t t-if="sale_order.partner_id.country_id">
+                                        ,
+                                        <span t-field="sale_order.partner_id.country_id.name"/>
+                                    </t>
+                                </t>
+                                <br/>
+                                <!-- Applicant Info -->
+                                <t t-if="sale_order and sale_order.tti_pi_applicant">
+                                    <t t-if="sale_order.tti_pi_applicant.name">
+                                        <span t-field="sale_order.tti_pi_applicant.name"/>
+                                    </t>
+                                    <br/>
+                                    <t t-if="sale_order.tti_pi_applicant.phone">
+                                        <span t-field="sale_order.tti_pi_applicant.phone"/>
+                                    </t>
+                                </t>
+                            </div>
+                            <div>
+                                <!-- Invoice Date -->
+                                Invoice Date :
+                                <t t-if="o.invoice_date">
+                                    <span t-esc="o.invoice_date.strftime('%d/%m/%Y')"/>
+                                </t>
+                                <br/>
+                                <!-- Payment Terms -->
+                                <!-- Payment Terms :
+                                <t t-if="o.invoice_payment_term_id">
+                                    <span t-field="o.invoice_payment_term_id.name"/>
+                                </t>
+                                <br/>
+                                Payment due by :
+                                <t t-if="o.invoice_date_due">
+                                    <span t-esc="o.invoice_date_due.strftime('%d/%m/%Y')"/>
+                                </t> -->
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="color:#2E619B;">Sales Tax Invoice
+                                <t t-if="o.name">
+                                    <t t-esc="o.name"/>
+                                </t>
+                            </h2>
+                        </div>
+
+                        <table class="table table-sm" style="width: 100%; border-collapse: collapse; font-size:12px;">
+                            <thead>
+                                <t t-set="tax_label" t-value="'Sale Tax'"/>
+                                <t t-set="first_tax"
+                                   t-value="(o.sale_order_ids and o.sale_order_ids[0].order_line and o.sale_order_ids[0].order_line[0].tax_id and o.sale_order_ids[0].order_line[0].tax_id.amount) or 0"/>
+                                <t t-if="first_tax">
+                                    <t t-set="tax_label" t-value="'Sale Tax ' + str(int(first_tax)) + '%'"/>
+                                </t>
+                                <tr style="background-color: #2E619B; color:white;">
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center; white-space:nowrap;">
+                                        Sr #
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center; white-space:nowrap;">
+                                        Report #
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center;">
+                                        Work Order Date
+                                    </th>
+                                    <th style="padding: 8px; width:15%; border: 1px solid black; color:white; text-align:center;">
+                                        Test Name
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center;">
+                                        Style Number
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center; white-space:nowrap;">
+                                        PO #
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center;">
+                                        Gross Total USD
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center;">
+                                        Gross Total PKR
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center;">
+                                        <span t-esc="tax_label"/>
+                                    </th>
+                                    <th style="padding: 8px; border: 1px solid black; color:white; text-align:center;">
+                                        Total PKR
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Initialize totals variables -->
+                                <t t-set="total_cross_us" t-value="0"/>
+                                <t t-set="total_cross_prr" t-value="0"/>
+                                <t t-set="total_tax" t-value="0"/>
+                                <t t-set="total_amount" t-value="0"/>
+                                <t t-set="exchange_rate" t-value="1"/>
+
+                                <!-- Table Rows -->
+                                <tr t-foreach="o.sale_order_ids" t-as="so" style="border: 1px solid black;">
+                                    <t t-set="product_names" t-value="[]"/>
+                                    <t t-foreach="so.order_line" t-as="line">
+                                        <t t-if="line.product_template_id and (not product_names or len(product_names) &lt; 2)">
+                                            <t t-set="product_names"
+                                               t-value="product_names + [line.product_template_id.name]"/>
+                                        </t>
+                                    </t>
+                                    <t t-set="exchange_rate" t-value="so.tti_dollar_exchange_rate or 1"/>
+                                    <!-- Serial Number -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align:center;">
+                                        <span t-esc="so_index + 1"/>
+                                    </td>
+                                    <!-- Report Number -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align:center; white-space:nowrap;">
+                                        <t t-if="so.name">
+                                            <span t-field="so.name"/>
+                                        </t>
+                                    </td>
+                                    <!-- Order Date -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align:center;">
+                                        <t t-if="so.date_order">
+                                            <span t-esc="so.date_order.strftime('%d/%m/%Y')"/>
+                                        </t>
+                                    </td>
+                                    <!--<td style="padding: 8px; border: 1px solid black; text-align:left;">-->
+                                    <!--    <span t-esc="' / '.join(product_names)"/>-->
+                                    <!--</td>-->
+
+                                    <td style="padding: 8px; border: 1px solid black; text-align:left;">
+                                        <span t-esc="(' / '.join(product_names)[:50] + '...') if len(' / '.join(product_names)) > 50 else ' / '.join(product_names)"/>
+                                    </td>
+
+                                    <!-- Style Number -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align:left; white-space:nowrap;">
+                                        <t t-if="so.tti_si_style_no">
+                                            <span t-field="so.tti_si_style_no"/>
+                                        </t>
+                                    </td>
+                                    <!-- PO Number -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align:center;">
+                                        <t t-if="so.tti_si_po">
+                                            <span t-field="so.tti_si_po"/>
+                                        </t>
+                                    </td>
+                                    <!-- Cross Total US -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <t t-if="so.amount_untaxed and exchange_rate">
+                                            <span t-esc="(so.amount_untaxed / exchange_rate)"
+                                                  t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            <t t-set="total_cross_us"
+                                               t-value="total_cross_us + (so.amount_untaxed / exchange_rate)"/>
+                                        </t>
+                                    </td>
+                                    <!-- Cross Total PRR -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <t t-if="so.amount_untaxed">
+                                            <span t-esc="so.amount_untaxed"
+                                                  t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            <t t-set="total_cross_prr" t-value="total_cross_prr + so.amount_untaxed"/>
+                                        </t>
+                                    </td>
+                                    <!-- Sale Tax -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <t t-if="so.amount_tax">
+                                            <span t-esc="so.amount_tax"
+                                                  t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            <t t-set="total_tax" t-value="total_tax + so.amount_tax"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span>0.00</span>
+                                        </t>
+                                    </td>
+                                    <!-- Total PRR -->
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <t t-if="so.amount_total">
+                                            <span t-esc="so.amount_total"
+                                                  t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                            <t t-set="total_amount" t-value="total_amount + so.amount_total"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <!-- Totals Row -->
+                                <tr style="font-weight: bold; border-top: 2px solid black;">
+                                    <td colspan="6" style="padding: 8px; border: 1px solid black; text-align: right;">
+                                        Total
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <span t-esc="total_cross_us"
+                                              t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <span t-esc="total_cross_prr"
+                                              t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <span t-esc="total_tax"
+                                              t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td style="padding: 8px; border: 1px solid black; text-align: center;">
+                                        <span t-esc="total_amount"
+                                              t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 20px; border:1px solid #2E619B; width:40%; font-size:12px;">
+                            <p style="background-color:#2E619B; color:white; padding:5px;">
+                                <span>Special Notes or Instructions</span>
+                            </p>
+
+                            <t t-set="sale_orders"
+                               t-value="[line.sale_line_ids.order_id for line in o.line_ids if line.sale_line_ids]"/>
+                            <t t-if="len(sale_orders) &gt; 0">
+                                <t t-set="first_order" t-value="sale_orders[0]"/>
+                                <p style="padding:5px;">
+                                    - Exchange Rate (USD to PKR):
+                                    <t t-esc="first_order.tti_dollar_exchange_rate"
+                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </p>
+                            </t>
+                            <t t-else="">
+                                <p style="padding:5px;">
+                                    - Exchange Rate (USD to PKR): 0
+                                </p>
+                            </t>
+
+                        </div>
+
+                        <div style="margin-top:50px;">
+                            <span>PNTN: P1355241-4 HS CODE # 9816.0000 &amp; 98.17</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between" style="margin-top: 200px;">
+                            <div style="width:40%">
+                                <!--                                <span>Barcode/QR Code (which returns report number)</span>-->
+                            </div>
+                            <div style="width:40%; border-top:1px solid black;">
+                                <span>Signature</span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_club_invoice" model="ir.actions.report">
+        <field name="name">TTI Club Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_so_invoice_report.club_invoice</field>
+        <field name="report_file">visio_tti_so_invoice_report.club_invoice</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="visio_tti_so_invoice_report.paperformat_custom_saleorder"/>
+    </record>
+
+</odoo>

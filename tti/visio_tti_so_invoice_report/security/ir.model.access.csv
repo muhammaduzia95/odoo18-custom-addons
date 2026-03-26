@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_party_invoice_detail_wizard,access.party.invoice.detail.wizard,model_party_invoice_detail_wizard,,1,1,1,1
+

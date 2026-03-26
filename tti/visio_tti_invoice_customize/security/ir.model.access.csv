@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_multi_payments,access_account_multi_payments,model_account_multi_payments,,1,1,1,1
+access_reusable_invoice_sequence,access_reusable_invoice_sequence,model_reusable_invoice_sequence,,1,1,1,1
+access_account_multi_payment_line,access_account_multi_payment_line,model_account_multi_payment_line,,1,1,1,1

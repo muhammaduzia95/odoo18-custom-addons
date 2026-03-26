@@ -1,0 +1,187 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_payment_journal_report\report\payment_recovery_pdf.xml-->
+
+<odoo>
+
+    <!-- Proxy Template -->
+    <template id="payment_recovery_pdf">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="docs"/>
+            <t t-call="visio_tti_payment_journal_report.payment_recovery_pdf_template"/>
+        </t>
+    </template>
+
+    <!-- MAIN PDF TEMPLATE -->
+    <template id="payment_recovery_pdf_template">
+
+        <div class="page">
+
+            <!-- ===== TITLE ===== -->
+            <h2 style="text-align:center; font-weight:bold; margin-bottom:0;">
+                TTI Testing Laboratories
+            </h2>
+            <h3 style="text-align:center; margin-top:0; font-weight:bold;">
+                Recovery Detail
+            </h3>
+
+            <!-- ===== DATE RANGE ===== -->
+            <p style="text-align:center; margin-top:10px;">
+                <strong>Date From:</strong>
+                <t t-esc="date_from.strftime('%d %b, %Y')"/>
+                &#160;&#160;&#160;&#160;&#160;
+                <strong>Date To:</strong>
+                <t t-esc="date_to.strftime('%d %b, %Y')"/>
+            </p>
+
+            <!-- ===== LOOP SECTIONS ===== -->
+            <t t-foreach="sections" t-as="sec">
+                <div style="margin-top:25px;">
+                    <h4 style="font-size:12px; font-weight:bold; background-color:#EEE; padding:5px;">
+                        <t t-esc="sec['title']"/>
+                    </h4>
+
+                    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                        <thead>
+                            <tr style="background-color:#d9d9d9; font-weight:bold;">
+                                <th style="border:1px solid black; padding:4px; width:60px;">ID</th>
+                                <th style="border:1px solid black; padding:4px; width:70px;">Date</th>
+                                <th style="border:1px solid black; padding:4px; width:150px;">Customer Name</th>
+                                <th style="border:1px solid black; padding:4px; width:80px;">Instrument #</th>
+                                <th style="border:1px solid black; padding:4px; width:80px;">Bill No</th>
+                                <th style="border:1px solid black; padding:4px; width:70px;">Amount</th>
+                                <th style="border:1px solid black; padding:4px; width:70px;">Sale Tax.</th>
+                                <th style="border:1px solid black; padding:4px; width:75px;">Invoice Tax</th>
+                                <th style="border:1px solid black; padding:4px; width:80px;">Total Amount</th>
+                                <th style="border:1px solid black; padding:4px; width:100px;">Comments</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <t t-foreach="sec['rows']" t-as="p">
+                                <tr>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        <t t-esc="p['id']"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        <t t-esc="p['date']"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        <t t-esc="p['customer']"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        <t t-esc="p['instr_no']"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        <t t-esc="p['bill_no']"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px; text-align:right;">
+                                        <t t-esc="'{:,.2f}'.format(p['amount'])"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px; text-align:right;">
+                                        <t t-esc="'{:,.2f}'.format(p['sale_tax'])"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px; text-align:right;">
+                                        <t t-esc="'{:,.2f}'.format(p['income_tax'])"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px; text-align:right;">
+                                        <t t-esc="'{:,.2f}'.format(p['total_amount'])"/>
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        <t t-esc="p['comment']"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <!-- SUBTOTAL ROW -->
+                            <tr>
+                                <td colspan="5"
+                                    style="border:1px solid black; padding:4px; text-align:right; font-weight:bold;">
+                                    Subtotal:
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right; font-weight:bold;">
+                                    <t t-esc="'{:,.2f}'.format(sec['subtotal']['amount'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right; font-weight:bold;">
+                                    <t t-esc="'{:,.2f}'.format(sec['subtotal']['sale_tax'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right; font-weight:bold;">
+                                    <t t-esc="'{:,.2f}'.format(sec['subtotal']['income_tax'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right; font-weight:bold;">
+                                    <t t-esc="'{:,.2f}'.format(sec['subtotal']['total_amount'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px;"></td>
+                            </tr>
+
+                            <!-- GRAND TOTAL ONLY UNDER LAST SECTION -->
+                            <tr t-if="sec.get('is_last')">
+                                <td colspan="5"
+                                    style="border:1px solid black; padding:4px; text-align:right; font-weight:bold;">
+                                    Grand Total:
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right;">
+                                    <t t-esc="'{:,.2f}'.format(grand_totals['amount'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right;">
+                                    <t t-esc="'{:,.2f}'.format(grand_totals['sale_tax'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right;">
+                                    <t t-esc="'{:,.2f}'.format(grand_totals['income_tax'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px; text-align:right;">
+                                    <t t-esc="'{:,.2f}'.format(grand_totals['total_amount'])"/>
+                                </td>
+                                <td style="border:1px solid black; padding:4px;"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+
+
+        </div>
+
+        <!-- Footer content (will appear on each page) -->
+        <div style="page-break-inside: avoid;">
+            <t t-call="visio_tti_payment_journal_report.payment_recovery_pdf_footer"/>
+        </div>
+
+    </template>
+
+    <!-- ======= FOOTER FOR PDF ======= -->
+    <template id="payment_recovery_pdf_footer">
+        <div class="footer" style="width:100%; font-size:10px; text-align:center; color:#555;">
+            Page
+            <span class="page"/>
+            of
+            <span class="topage"/>
+        </div>
+    </template>
+
+
+    <!-- Paper Format (Landscape) -->
+    <record id="paperformat_payment_recovery" model="report.paperformat">
+        <field name="name">Payment Recovery Report</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">8</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- REPORT ACTION -->
+    <record id="action_payment_recovery_pdf" model="ir.actions.report">
+        <field name="name">Payment Recovery PDF</field>
+        <field name="model">payment.recovery.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_payment_journal_report.payment_recovery_pdf</field>
+        <field name="report_file">visio_tti_payment_journal_report.payment_recovery_pdf</field>
+        <field name="paperformat_id" ref="visio_tti_payment_journal_report.paperformat_payment_recovery"/>
+        <field name="print_report_name">'Payment_Recovery_%s' % (object.date_from)</field>
+    </record>
+
+
+</odoo>

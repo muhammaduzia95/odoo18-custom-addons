@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tti_attendance_portal_user,tti.attendance.portal.request user,model_tti_attendance_portal_request,base.group_user,1,1,1,1
+access_tti_attendance_approval_user,tti.hr.attendance.approval user,model_tti_hr_attendance_approval,base.group_user,1,1,1,1

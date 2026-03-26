@@ -1,0 +1,42 @@
+<!-- D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_attendance_portal\security\attendance_portal_rules.xml -->
+<odoo>
+
+    <!-- For Portal Marketing Employees -->
+    <record id="group_marketing_attendance_portal" model="res.groups">
+        <field name="name">Access Marketing Attendance Portal</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- For Portal Managers -->
+    <record id="group_manager_approval_portal" model="res.groups">
+        <field name="name">Access Manager Approval Portal</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="rule_tti_attendance_portal_request_admin_all" model="ir.rule">
+        <field name="name">Attendance Portal Request: Admin All</field>
+        <field name="model_id" ref="visio_tti_attendance_portal.model_tti_attendance_portal_request"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+    </record>
+
+    <!-- Record Rule: Own + Team -->
+    <record id="rule_tti_attendance_portal_request_own_and_team" model="ir.rule">
+        <field name="name">Attendance Portal Request: Own + Team</field>
+        <field name="model_id" ref="visio_tti_attendance_portal.model_tti_attendance_portal_request"/>
+        <field name="domain_force">
+            [
+            '|',
+            ('employee_id', '=', user.employee_id.id),
+            '&amp;',
+            ('employee_id.parent_id', '=', user.employee_id.id),
+            ('employee_id.parent_id', '!=', False)
+            ]
+        </field>
+
+        <!-- Apply rule only to users who have portal access group -->
+        <field name="groups" eval="[(4, ref('visio_tti_attendance_portal.group_attendance_portal_request'))]"/>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,321 @@
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <!--        <xpath expr="//div[1]" position="before">-->
+        <!--            <div>-->
+        <!--                <img src="/cloudmen_sales_sections/static/src/img/img.png" alt=""/>-->
+        <!--            </div>-->
+        <!--        </xpath>-->
+
+
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <div class="row">
+                <div class="col-2">
+                    <!--                    <t t-set="address">-->
+                    <div t-field="doc.partner_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    <p t-if="doc.partner_id.vat">
+                        <t t-if="doc.company_id.account_fiscal_country_id.vat_label"
+                           t-out="doc.company_id.account_fiscal_country_id.vat_label"/>
+                        <t t-else="">Tax ID</t>:
+                        <span t-field="doc.partner_id.vat"/>
+                    </p>
+                    <!--                    </t>-->
+                    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id
+                             and doc.partner_invoice_id != doc.partner_id
+                             or doc.partner_shipping_id != doc.partner_invoice_id">
+                        <t t-set="information_block">
+                            <strong>
+                                <t t-if="doc.partner_shipping_id == doc.partner_invoice_id">
+                                    Invoicing and Shipping Address:
+                                </t>
+                                <t t-else="">
+                                    Invoicing Address:
+                                </t>
+                            </strong>
+                            <div t-field="doc.partner_invoice_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                                <strong>Shipping Address:</strong>
+                                <div t-field="doc.partner_shipping_id"
+                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            </t>
+                        </t>
+                    </t>
+                </div>
+                <div class="col-10">
+
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='page']/div[@id='informations']" position="replace">
+            <div class="row " id="informations">
+
+
+                <ul class="list-unstyled mt-4 mb-2" style="line-height: 1.8;">
+                    <li t-if="doc.date_order">
+                        <strong style="display: inline-block; width: 150px; text-align: left; color:black">
+                            <t t-if="doc.state in ['draft', 'sent']">Quotation Date:</t>
+                            <t t-else="">Order Date:</t>
+                        </strong>
+                        <span t-field="doc.date_order" t-options='{"widget": "date"}'></span>
+                    </li>
+                    <li t-if="doc.validity_date and doc.state in ['draft', 'sent']">
+                        <strong style="display: inline-block; width: 150px; text-align: left; color:black">Expiration:
+                        </strong>
+                        <span t-field="doc.validity_date"></span>
+                    </li>
+                    <li t-if="doc.user_id.name">
+                        <strong style="display: inline-block; width: 150px; text-align: left; color:black">
+                            Salesperson:
+                        </strong>
+                        <span t-field="doc.user_id.name"></span>
+                    </li>
+                </ul>
+
+
+            </div>
+
+        </xpath>
+        <xpath expr="//div[@class='page']/h2" position="replace">
+            <div class="row">
+                <div class="col-6">
+                </div>
+                <div class="col-6">
+                    <h2 class="mt-4" style="text-align: right ;color:black">
+                        <span t-if="env.context.get('proforma', False) or is_pro_forma" style="color:black">Pro-Forma
+                            Invoice #
+                        </span>
+                        <span t-elif="doc.state in ['draft','sent']" style="color:black">Quotation #</span>
+                        <span t-else="" style="color:black">Order #</span>
+                        <span t-field="doc.name" style="color:black">SO0000</span>
+                    </h2>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//thead/tr/th[@name='th_taxes']" position="replace">
+        </xpath>
+        <xpath expr="//tbody" position="replace">
+            <tbody class="sale_tbody">
+
+                <t t-set="current_subtotal" t-value="0"/>
+
+                <t t-foreach="lines_to_report" t-as="line">
+
+                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+
+                    <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                        <t t-if="not line.display_type">
+                            <td name="td_name">
+                                <span t-field="line.name">Bacon Burger</span>
+                            </td>
+                            <td name="td_quantity" class="text-end">
+                                <span t-field="line.product_uom_qty">3</span>
+                                <span t-field="line.product_uom">units</span>
+                                <span t-if="line.product_packaging_id">
+                                    (
+                                    <span t-field="line.product_packaging_qty" t-options='{"widget": "integer"}'/>
+                                    <span t-field="line.product_packaging_id"/>)
+                                </span>
+                            </td>
+                            <t t-if="doc.show_pricing_in_report">
+                                <td name="td_priceunit" class="text-end">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                            </t>
+                            <td t-if="display_discount" class="text-end">
+                                <span t-field="line.discount">-</span>
+                            </td>
+                            <t t-set="taxes"
+                               t-value="', '.join([(tax.invoice_label or tax.name) for tax in line.tax_id])"/>
+                            <!--                            <td name="td_taxes"-->
+                            <!--                                t-attf-class="text-end {{ 'text-nowrap' if len(taxes) &lt; 10 else '' }}">-->
+                            <!--                                <span t-out="taxes">Tax 15%</span>-->
+                            <!--                            </td>-->
+
+                            <t t-if="doc.show_pricing_in_report">
+                                <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                    <span t-field="line.price_subtotal">27.00</span>
+                                </td>
+                            </t>
+
+                        </t>
+                        <t t-elif="line.display_type == 'line_section'">
+                            <td name="td_section_line" colspan="99">
+                                <span t-field="line.name">A section title</span>
+                            </td>
+                            <t t-set="current_section" t-value="line"/>
+                            <t t-set="current_subtotal" t-value="0"/>
+                        </t>
+                        <t t-elif="line.display_type == 'line_note'">
+                            <td name="td_note_line" colspan="99">
+                                <div style="float: left; width: 50%;">
+                                    <span t-field="line.name">A note, whose content usually applies to the section or
+                                        product above.
+                                    </span>
+                                </div>
+                                <div style="float: right; width: 50%; text-align: right;">
+                                    <strong>
+                                        <strong class="mr16">Subtotal</strong>
+
+                                        <span
+                                                t-out="line.note_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        />
+                                    </strong>
+                                </div>
+                                <div style="clear: both;"></div> <!-- Clear floats -->
+                            </td>
+                        </t>
+                        <!--                            <t t-elif="line.display_type == 'line_note'">-->
+                        <!--                                <td name="td_note_line_subtotal" colspan="99">-->
+                        <!--                                    <span t-field="line.note_subtotal">A note, whose content usually applies to the section or product above.</span>-->
+                        <!--                                </td>-->
+                        <!--                            </t>-->
+                    </tr>
+
+
+                    <!--                    <t t-if="doc.show_pricing_in_report">-->
+                    <!--                        <tr class="is-subtotal text-end">-->
+                    <!--                            <td name="td_section_subtotal" colspan="99">-->
+                    <!--                                <strong class="mr16">Subtotal</strong>-->
+                    <!--                                <span-->
+                    <!--                                        t-out="current_subtotal"-->
+                    <!--                                        t-options='{"widget": "monetary", "display_currency": doc.currency_id}'-->
+                    <!--                                >31.05-->
+                    <!--                                </span>-->
+                    <!--                            </td>-->
+                    <!--                        </tr>-->
+
+                    <!--                    </t>-->
+
+
+                    <!--                    <t t-if="current_section and (line_last or lines_to_report[line_index+1].display_type == 'line_section') and not line.is_downpayment">-->
+                    <!--                    </t>-->
+                    <t t-if="current_section and (line_last or lines_to_report[line_index+1].display_type == 'line_section') and not line.is_downpayment">
+                        <tr class="is-subtotal text-end">
+                            <td name="td_section_subtotal" colspan="99">
+                                <strong class="mr16">Subtotal</strong>
+                                <span
+                                        t-out="current_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                >31.05
+                                </span>
+                            </td>
+                        </tr>
+                    </t>
+
+                </t>
+            </tbody>
+        </xpath>
+
+
+        <!-- Unit Price Header -->
+        <xpath expr="//thead/tr/th[@name='th_priceunit']" position="replace">
+            <t t-if="doc.show_pricing_in_report">
+                <th name="th_priceunit" class="text-end">Unit Price</th>
+            </t>
+        </xpath>
+
+        <!-- Subtotal Header -->
+        <xpath expr="//thead/tr/th[@name='th_subtotal']" position="replace">
+            <t t-if="doc.show_pricing_in_report">
+                <th name="th_subtotal" class="text-end">Subtotal</th>
+            </t>
+        </xpath>
+
+
+        <!-- Unit Price in Body -->
+        <!--        <xpath expr="//td[@name='td_priceunit']" position="replace">-->
+        <!--            <t t-if="doc.show_pricing_in_report">-->
+        <!--                <td name="td_priceunit" class="text-end">-->
+        <!--                    <span t-field="line.price_unit"/>-->
+        <!--                </td>-->
+        <!--            </t>-->
+        <!--        </xpath>-->
+
+
+        <!--        <xpath expr="//tr[@class='is-subtotal text-end']" position="replace">-->
+        <!--            <t t-if="doc.show_pricing_in_report">-->
+        <!--                <tr class="is-subtotal text-end">-->
+        <!--                    <td name="td_section_subtotal" colspan="99">-->
+        <!--                        <strong class="mr16">Subtotal</strong>-->
+        <!--                        <span-->
+        <!--                                t-out="current_subtotal"-->
+        <!--                                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'-->
+        <!--                        >31.05-->
+        <!--                        </span>-->
+        <!--                    </td>-->
+        <!--                </tr>-->
+
+        <!--            </t>-->
+        <!--        </xpath>-->
+
+        <!-- Subtotal in Body -->
+        <!--        <xpath expr="//td[@name='td_subtotal']" position="replace">-->
+        <!--            <t t-if="doc.show_pricing_in_report">-->
+        <!--                <td name="td_subtotal" class="text-end">-->
+        <!--                    <span t-field="line.price_subtotal"/>-->
+        <!--                </td>-->
+        <!--            </t>-->
+        <!--        </xpath>-->
+        <xpath expr="//div[@name='so_total_summary']" position="replace">
+            <t t-if="doc.show_pricing_in_report">
+                <div class="clearfix" name="so_total_summary">
+                    <div id="total" class="row" name="total">
+                        <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                            <table class="table table-sm table-borderless">
+                                <!-- Tax totals -->
+                                <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                                <t t-call="sale.document_tax_totals"/>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+
+
+        <!--        <xpath expr="//table[1]" position="after">-->
+        <!--            <t t-set="current_section" t-value="None"/>-->
+        <!--            <t t-set="total_qty" t-value="0"/>-->
+        <!--            <t t-set="total_price" t-value="0.0"/>-->
+        <!--            <t t-if="doc.show_pricing_in_report">-->
+        <!--                <table style="-->
+        <!--    border:  1px solid black;-->
+        <!--    width: 100%;-->
+        <!--    text-align: center;-->
+        <!--">-->
+        <!--                    <tr>-->
+        <!--                        <td style="background: #E5E5E5;font-weight: bold;border:  1px solid black;padding: 5px;">-->
+        <!--                            Category-->
+        <!--                        </td>-->
+        <!--                        <td style="background: #E5E5E5;font-weight: bold;border:  1px solid black;padding: 5px;">Total-->
+        <!--                            Qty-->
+        <!--                        </td>-->
+        <!--                        <td style="background: #E5E5E5;font-weight: bold;border:  1px solid black;padding: 5px;">Total-->
+        <!--                            Amount-->
+        <!--                        </td>-->
+        <!--                    </tr>-->
+        <!--                    <t t-if="doc.order_line">-->
+        <!--                        <t t-foreach="doc.order_line" t-as="line">-->
+        <!--                            <t t-if="line.display_type == 'line_section'">-->
+        <!--                                <tr>-->
+        <!--                                    <td style="border: 1px solid black;padding: 5px;">-->
+        <!--                                        <span t-field="line.name">A section title</span>-->
+        <!--                                    </td>-->
+        <!--                                    <td style="border: 1px solid black;padding: 5px;">-->
+        <!--                                        <span t-field="line.category_total_qty">A section qty</span>-->
+        <!--                                    </td>-->
+        <!--                                    <td style="border: 1px solid black;padding: 5px;">-->
+        <!--                                        <span t-field="line.category_subtotal">A section price</span>-->
+        <!--                                    </td>-->
+        <!--                                </tr>-->
+        <!--                            </t>-->
+        <!--                        </t>-->
+        <!--                    </t>-->
+        <!--                </table>-->
+        <!--            </t>-->
+        <!--        </xpath>-->
+
+    </template>
+</odoo>

@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+        <record id="sale_order_form_view_inherit" model="ir.ui.view">
+            <field name="name">sale.order.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="before">
+                    <field name="has_order_lines" invisible="1"/>
+                    <button name="copy_order_lines" invisible="has_order_lines == 0" class="oe_highlight"
+                            string="Copy Order Lines"
+                            type="object"/>
+
+                </xpath>
+<!--                <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_template_id']"-->
+<!--                       position='after'>-->
+<!--                    <field name="section_id"-->
+<!--                           domain="[('display_type', '=', 'line_section'),('order_id','=',parent.id)]"/>-->
+<!--                </xpath>-->
+
+            </field>
+        </record>
+        <record id="copy_order_line_form_view" model="ir.ui.view">
+            <field name="name">copy_order_line.form</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="100"/>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+
+                            <h3>
+                                Select section you need to copy it.
+                            </h3>
+                            <br/>
+                        </div>
+                        <group>
+                            <field name="section_id"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="confirm_copy_lines" string="Confirm" type="object" class="btn-primary"/>
+                        <button special="cancel" string="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

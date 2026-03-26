@@ -1,0 +1,284 @@
+<odoo>
+    <template id="party_invoice_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-foreach="buyer_groups" t-as="group">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div style="text-align: center; border-bottom:1px solid black; margin-bottom:20px;">
+                                <h3>Party Invoice Detail</h3>
+                                <p>
+                                    <strong>From Date:</strong>
+                                    <t t-esc="o.date_from.strftime('%d-%m-%y')"/>
+                                    <strong style="margin-left:30px;">To Date:</strong>
+                                    <t t-esc="o.date_to.strftime('%d-%m-%y')"/>
+                                </p>
+                            </div>
+
+                            <table class="table table-sm"
+                                   style="width:100%; font-size:11px; border: 1px solid black; border-collapse: collapse; margin-top: 10px;">
+                                <tr>
+                                    <t t-set="first_so"
+                                       t-value="group.get('sale_orders')[0] if group.get('sale_orders') else None"/>
+
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <strong>Company Name :</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-esc="manufacturer.name"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <strong>Buyer Name :</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;" colspan="2">
+                                        <t t-if="group.get('buyer')">
+                                            <t t-esc="group.get('buyer').name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <strong>Contact Person :</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-if="first_so and first_so.tti_pi_applicant">
+                                            <t t-esc="first_so.tti_pi_applicant.name"/>
+                                        </t>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;" colspan="2"></td>
+                                    <td style="border: 1px solid black; padding: 5px;">%</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <strong>Cell Number :</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-if="first_so and first_so.tti_pi_applicant.phone">
+                                            <t t-esc="first_so.tti_pi_applicant.phone"/>
+                                        </t>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;" colspan="2">Sales Tax With
+                                        Holding Agent
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <strong>Email Address:</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-esc="manufacturer.email or ''"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;" colspan="2">Income Tax With
+                                        Holding Agent
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <strong>NTN:</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-esc="manufacturer.vat or ''"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;" colspan="3"></td>
+                                </tr>
+                            </table>
+
+                            <table class="text-align-center"
+                                   style="width:100%; font-size:11px; border: 1px solid black; border-collapse: collapse;">
+                                <thead class="bg-secondary">
+                                    <tr>
+                                        <th style="border: 1px solid black; padding: 3px;">Sr #</th>
+                                        <th style="border: 1px solid black; padding: 3px;">Date</th>
+                                        <th style="border: 1px solid black; padding: 3px;">Invoice #</th>
+                                        <th style="border: 1px solid black; padding: 3px;">Reference #</th>
+                                        <th style="border: 1px solid black; padding: 3px;">Agent</th>
+                                        <th style="border: 1px solid black; padding: 3px;">Description</th>
+                                        <th style="border: 1px solid black; padding: 3px;">SO Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="sr" t-value="1"/>
+                                    <t t-foreach="group.get('sale_orders')" t-as="so">
+                                        <t t-foreach="so.invoice_ids" t-as="inv">
+                                            <tr>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="sr"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="inv.invoice_date.strftime('%d-%m-%y')"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="inv.name"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="so.name"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="so.tti_pi_agent_id.name"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="so.tti_si_description"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 3px; text-align: center;">
+                                                    <t t-esc="so.amount_total"
+                                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="sr" t-value="sr + 1"/>
+                                        </t>
+                                    </t>
+                                </tbody>
+                                <t t-set="total_amount" t-value="sum(group.get('invoices').mapped('amount_total'))"/>
+                                <t t-set="outstanding_amount"
+                                   t-value="sum(group.get('invoices').mapped('amount_residual'))"/>
+                                <t t-set="invoice_count" t-value="len(group.get('invoices'))"/>
+
+                                <tfoot class="bg-secondary">
+                                    <tr style="border:1px solid black;">
+                                        <td style="padding: 5px; border:1px solid black; text-align: center;">
+                                            <strong>Total Invoices</strong>
+                                        </td>
+                                        <td style=" padding: 5px; text-align: center; border:1px solid black;">
+                                            <t t-esc="invoice_count"/>
+                                        </td>
+                                        <td colspan="3" style="padding: 5px; border:1px solid black;">
+                                        </td>
+                                        <td style="padding: 5px; border:1px solid black; text-align: center;">
+                                            <strong>INVOICE TOTAL :</strong>
+                                        </td>
+                                        <td style=" padding: 5px; text-align: center; border:1px solid black;">
+                                            <t t-esc="total_amount"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style=" padding: 5px; border:1px solid black;">
+                                        </td>
+                                        <td colspan="2" style=" padding: 5px; border:1px solid black;">
+                                            <strong>Total Out Standing Balance :</strong>
+                                        </td>
+                                        <td colspan="2"
+                                            style=" padding: 5px; text-align: center; border:1px solid black;">
+                                            <t t-esc="credit"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+                            <table class="table table-sm"
+                                   style="width:100%; font-size:11px; border: 1px solid black; border-collapse: collapse; margin-top: 30px;">
+                                <thead class="bg-secondary">
+                                    <tr>
+                                        <th style="border: 1px solid black; padding: 5px;">Sr#</th>
+                                        <th style="border: 1px solid black; padding: 5px;">Total Invoices</th>
+                                        <th style="border: 1px solid black; padding: 5px;">Received By</th>
+                                        <th style="border: 1px solid black; padding: 5px;">Signature</th>
+                                        <th style="border: 1px solid black; padding: 5px;">Buyer / Agent / Self</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px;">1</td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px;">2</td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px;">3</td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px;">4</td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px;">5</td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="d-flex justify-content-between"
+                                 style="width: 100%; font-size: 11px; margin-top: 30px; display: flex; justify-content: space-between;">
+                                <!-- Left: Label -->
+                                <div class=" d-flex justify-content-center"
+                                     style="width: 20%; border-top:1px solid black; margin-top:20px;">
+                                    <strong>Textile Testing Laboratories</strong>
+                                </div>
+
+                                <!-- Right: Receiving Box -->
+                                <div style="width: 50%; border: 1px solid black; padding: 10px;">
+                                    <strong style="text-decoration: underline;">Receiving:</strong>
+                                    <br/>
+                                    <br/>
+
+                                    <div class=" d-flex" style="display: flex; justify-content: space-between;">
+                                        <p style="margin-right:150px;">Received By:</p>
+                                        <p>Stamp:</p>
+                                    </div>
+                                    <br/>
+
+                                    <div>Designation:</div>
+                                    <br/>
+
+                                    <div class="d-flex" style="display: flex; justify-content: space-between;">
+                                        <p style="margin-right:170px;">Date:</p>
+                                        <p>Signature:</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_custom_saleorder" model="report.paperformat">
+        <field name="name">Custom Sale Order Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">55</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="report_party_invoice_detail_pdf" model="ir.actions.report">
+        <field name="name">Party Invoice Detail</field>
+        <field name="model">party.invoice.detail.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_so_invoice_report.party_invoice_template</field>
+        <field name="report_file">visio_tti_so_invoice_report.party_invoice_template</field>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="visio_tti_so_invoice_report.paperformat_custom_saleorder"/>
+    </record>
+
+</odoo>

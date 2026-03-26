@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_journal_entries" model="report.paperformat">
+            <field name="name">Journal Entries Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="journal_entry_report_id" model="ir.actions.report">
+            <field name="name">Print Journal Entries</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bi_print_journal_entries.journal_entry_report_template_id</field>
+            <field name="report_file">bi_print_journal_entries.journal_entry_report_template_id</field>
+            <field name="print_report_name">'Journal Entry'</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="bi_print_journal_entries.paperformat_journal_entries"/>
+        </record>
+
+<!--        <record id="receipt_voucher_report_id" model="ir.actions.report">-->
+<!--            <field name="name">Print Receipt Voucher</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">bi_print_journal_entries.receipt_voucher_report_template_id</field>-->
+<!--            <field name="report_file">bi_print_journal_entries.receipt_voucher_report_template_id</field>-->
+<!--            <field name="print_report_name">'Receipt Voucher'</field>-->
+<!--            <field name="binding_model_id" ref="account.model_account_move"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--            <field name="paperformat_id" ref="bi_print_journal_entries.paperformat_journal_entries"/>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

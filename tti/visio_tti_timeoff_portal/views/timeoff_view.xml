@@ -1,0 +1,88 @@
+<odoo>
+    <template id="timeoff_view_page" name="Leave Detail View">
+        <t t-call="website.layout">
+            <link rel="stylesheet" href="/visio_tti_timeoff_portal/static/src/css/timeoff_portal.css"/>
+            <div id="wrap" class="timeoff-form-container">
+                <div style="width:50%">
+                    <div class="mb-4">
+                        <a href="/my/timeoffs" class="btn-back">
+                            <i class="fa fa-arrow-left me-2"></i>Back to Time Offs
+                        </a>
+                    </div>
+                    <div class="card-header-blue">
+                        <h2 class="h5 mb-0">Time Off Details</h2>
+                    </div>
+                    <div class="">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Employee</th>
+                                <td>
+                                    <t t-esc="leave.employee_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Leave Type</th>
+                                <td>
+                                    <t t-esc="leave.holiday_status_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>
+                                    <t t-esc="leave.state.title()"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Start Date</th>
+                                <td>
+                                    <t t-esc="leave.date_from.strftime('%Y-%m-%d %H:%M') if leave.date_from else ''"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>End Date</th>
+                                <td>
+                                    <t t-esc="leave.date_to.strftime('%Y-%m-%d %H:%M') if leave.date_to else ''"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Duration</th>
+                                <td>
+                                    <t t-esc="int(leave.number_of_days)"/>
+                                    day(s)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>
+                                    <span t-esc="leave.private_name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Attachments</th>
+                                <td>
+                                    <t t-if="leave.supported_attachment_ids">
+                                        <ul>
+                                            <t t-foreach="leave.supported_attachment_ids" t-as="att">
+                                                <li>
+                                                    <a t-att-href="'/web/content/%s?download=true' % att.id"
+                                                       target="_blank">
+                                                        <i class="fa fa-paperclip me-1"></i>
+                                                        <t t-esc="att.name"/>
+                                                    </a>
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </t>
+                                    <t t-if="not leave.supported_attachment_ids">
+                                        No attachments uploaded.
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

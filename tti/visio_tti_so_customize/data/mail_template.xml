@@ -1,0 +1,289 @@
+<odoo>
+    <record id="mail_template_sale_order" model="mail.template">
+        <field name="name">SO Mail Template</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+<!--        <field name="email_from">"{{ object.user_id.name }}" &lt;{{ (object.user_id.email_formatted) }}&gt;-->
+<!--        </field>-->
+        <field name="email_to">{{ object.acknowledgement_email_list }}</field>
+        <field name="subject">Acknowledgement of Sample Receipt – Report No {{ object.name }} </field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+                <p>Dear <strong><t t-out="object.partner_id.name"/></strong>,
+                </p>
+                <p>Thank you for giving us the opportunity to test your products.</p>
+                <p>We acknowledge the receipt of your sample. Please find below the details along with the expected test
+                    report delivery timeline:
+                </p>
+
+                <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+                <div style="margin-bottom: 15px;">
+                    <p>
+                        <strong>Manufacturer:</strong>
+                        <t t-out="object.partner_id.name"/>
+                        <br/>
+                        <strong>Applicant:</strong>
+                        <t t-out="object.tti_pi_applicant.name or N/A"/>
+                        <br/>
+                        <strong>Buyer:</strong>
+                        <t t-out="object.tti_pi_buyer.name or N/A"/>
+                        <br/>
+                        <strong>Report No.:</strong>
+                        <t t-out="object.name or N/A"/>
+                        <br/>
+                        <strong>Sample Receiving Date/Time:</strong>
+                        <t t-out="object.create_date.strftime('%d/%m/%y') or N/A"/>
+                        <br/>
+                        <strong>Expected Report Delivery:</strong>
+                        <t t-out="object.commitment_date.strftime('%d/%m/%y') or N/A"/>
+                    </p>
+                </div>
+
+                <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+                <h3 style="color: #2E69A6; margin-bottom: 10px;">Invoice &amp; Payment:</h3>
+                <p>Please find the attached sale order. To ensure timely delivery of the test report, we request you to
+                    arrange payment at your earliest convenience.
+                </p>
+                <p>Any discrepancy in the sale order must be reported <strong>on the same working day</strong> of
+                    receipt of this email. Otherwise, the sale order and invoice will be deemed correct, testing will
+                    proceed accordingly, and your organization will be liable for the invoiced amount.
+                </p>
+                <p>Also attached is a copy of our <strong>Terms &amp; Conditions</strong> for your reference.
+                </p>
+
+                <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+                <h3 style="color: #2E69A6; margin-bottom: 10px;">Withholding Tax (WHT) Compliance:</h3>
+                <p>Please share the relevant <strong>Withholding Tax Certificates / CPRs</strong> at:
+                </p>
+                <p>📧
+                    <strong>Creditcontrol2@ttilabs.net</strong>
+                </p>
+                <p>
+                    <strong>As per Section 153(1)(b):</strong>
+                    <br/>
+                    <em>"Where tax is collected/deducted by a person other than the Federal/Provincial Government, it
+                        must be deposited in the Government Treasury or a designated bank within 7 days from the end of
+                        the week (ending every Sunday)."
+                    </em>
+                </p>
+                <p>
+                    <strong>Note:</strong>
+                    CPRs must be submitted within <strong>30 days</strong> of deduction. Failure to do so will result in
+                    the amount being adjusted against your next invoice.
+                </p>
+
+                <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+                <p>
+                    <strong>Disclaimer:</strong>
+                    <br/>
+                    Final testing charges on the Invoice may vary from this sale order based on actual testing
+                    performed, any changes in the test requisition, or addition/removal of tests.
+                </p>
+
+                <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+                <p>Thank you for choosing <strong>Textile Testing International</strong>.
+                </p>
+
+                <p>Best regards,
+                    <br/>
+                    <strong>Customer Services</strong>
+                    <br/>
+                    Textile Testing International
+                    <br/>
+                    ISO 17025 Accredited Lab
+                    <br/>
+                    347-S, Quaid-e-Azam Industrial Estate
+                    <br/>
+                    Kot Lakhpat, Lahore -- 54500, Pakistan
+                    <br/>
+                    Tel: (92-42) 111-786-001 | Fax: (92-42) 3515-4555
+                    <br/>
+                    📧 customerservices@ttilabs.net | 🌐
+                    <a href="https://ttilabs.net/" style="color: #2E69A6;">www.ttilabs.net</a>
+                </p>
+
+                <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+                <p style="font-size: 0.9em; color: #666;">
+                    <em>Note: This is a system-generated message and does not require a signature.</em>
+                </p>
+            </div>
+
+            <hr style="border: 1px solid #e0e0e0; margin: 20px 0;"/>
+
+            <div style="font-size: 0.9em; color: #555;">
+                <h3 style="color: #2E69A6; margin-bottom: 15px;">TERMS AND CONDITIONS FOR TESTING</h3>
+
+                <ol style="padding-left: 20px; margin-bottom: 20px;">
+                    <li style="margin-bottom: 10px;">Textile Testing International will conduct tests in accordance with
+                        and subject to the terms and the conditions herein contained. The conditions may only be
+                        modified
+                        by a variation expressed in writing and signed on behalf of the company by a Director and no
+                        other action on the part of Textile Testing International or its employees or agents shall be
+                        construed as an acceptance of any other terms and conditions.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">It shall be the responsibility of the client to ascertain and
+                        notify Textile Testing International of the standards with which any sample submitted for
+                        testing must comply in any country or territory in which the sample concerned is intended to be
+                        sold. In default of specific instructions Textile Testing International will adopt the test
+                        methods and standards considered most appropriate. When the test method proposed by the customer
+                        is considered to be inappropriate or out of date, the customer is communicated accordingly for
+                        approval.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">The client will ensure that clear instructions are provided to
+                        Textile Testing International in due time to enable the required services to be performed
+                        effectively. Any deviation required by the customer shall not affect the validity of results and
+                        acceptable to customer and Tit.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">In case of any deviation from the contract, Tti will inform the
+                        customer through proper mean.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Textile Testing International with subject to the clients
+                        requirements test any sample submitted to it or sampled by Textile Testing
+                        International from bulk to ascertain its conformity or otherwise with contract description or
+                        sample. In no circumstances wil t Textile
+                        Testing International render any opinion as to the fitness of any sample from the purpose for
+                        which it is said to be intended unless in
+                        any specific case Textile Testing International is requested so to do and agrees so to do in
+                        writing.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">A Test Report issued by Textile Testing International shall refer
+                        only to the sample actually tested and shall not refer or be deemed to
+                        refer to bulk from which such a sample may be said to have been obtained.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Tti will ensure confidentiality of information obtained in the
+                        laboratory ac tivities and the proprietary rights of clients are protected. Test
+                        reports issued by Textile Testing International are subject to the condition that they are not
+                        to be made public or used in c onnection
+                        with or for the purpose of any advertising promotional or publicity undertaking or material
+                        whatsoever without the express consent in
+                        writing of hereto first obtained.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">In situations where Tti is required by law or competent authority
+                        to release confidential information, the client is notified , unless
+                        prohibited by law, of the information provided.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">In the event that any Test Report issued by the Textile Testing
+                        International is required for use in connection with or for e vidence in
+                        any Court or Arbitration proceedings, Tti Testing Laboratories will render all assistance and
+                        explanation reasonably required in
+                        connection wherewith all costs and expenses incurred by Textile Testing International in giving
+                        such assistance or explanatio ns shall
+                        be borne by the client to whose order the Test Report in question was prepared.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Tti observes confidentiality of information about the client
+                        obtained indirectly, such as complainant or regulators and the i nformation
+                        provider (source) identity shall also be kept confidential unless agreed.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">In no circumstance will the issuing of any Test Report by Textile
+                        Testing International operate or be deemed or purport to involve
+                        Textile Testing International as a party or agent in any other way in any relationship
+                        contractual or otherwise between the c lient for
+                        whom the Test Report shall have been prepared and any other party whom so ever.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">In the event that any test report shall be proven inaccurate and
+                        that inaccuracy thereof shall have been caused by the act or default of
+                        Textile Testing International or its technicians or agents then and in any such case the
+                        liability of Textile Testing International shall be
+                        limited to retesting or refunding to client of whom the Test Report shalt have made free of
+                        interest the fee paid to Textile Testing
+                        International.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">In the process of testing Textile Testing International may use any
+                        alternate method or input which had been tested through internal
+                        testing to have the same effect. Due to unavailability or unavoidable circumstances.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Samples received at Textile Testing International without
+                        sufficient information to proceed with testing and samples for which the
+                        client does not give a clear consent to bear the cost of the required or requested testing, will
+                        be held and stored for a max imum of 30
+                        days after which they would be disposed.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">The Textile Testing International shall be entitled at its
+                        discretion to delegate the performance of the whole or any part of the services
+                        contracted for with the principal to any agent or subcontractor.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Every Officer, employee, agent or subcontractor of Textile Testing
+                        International shall have the benefit of the limitation of liability and
+                        the indemnities contained in the general conditions. So far as relates to such limitation and
+                        indemnities, any contract enter ed into by
+                        the Textile Testing International is entered into not only its own behalf but also as agent and
+                        trusty for every such person as
+                        aforesaid.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">If the requirements of the client necessitate the analysis of
+                        sample by the principal or by any 3rd party, Textile Testing In ternational
+                        will pass on the result of the analysis but without responsibility for its accuracy. Where the
+                        Textile Testing International is on ly able to
+                        witness an analysis by the principal or be any 3rd party the Textile Testing International will
+                        provide confirmation, if such be the case
+                        that a correct sample has been analysed but will not otherwise be responsible for the accuracy
+                        of such analysis.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Tti reserves the right to file a suite in the court of law to
+                        recover the due amount in the case of non -payment in 65 days.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Samples for testing will be disposed off at the discretion of
+                        Textile Testing International after expiry of 30 days or mentio ned
+                        otherwise, from the date of test report, unless a written request and pick up arrangements are
+                        made by client for their return.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Payment Terms: Test charges need to be paid in advance.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">On the request of Client, Textile Testing International may forward
+                        Samples/Test Reports to the Clients or to the buyer or agent of the Client and all costs
+                        involved in such a request to be borne by the Client.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">This report shall not be reproduced except in full without prior
+                        authorization from Textile Testing International.
+                    </li>
+
+                    <li style="margin-bottom: 10px;">Statement of conformity and measurement uncertainty will only be
+                        provided where required and agreed by the client. On the basis of provided specification,
+                        standard with the application of clearly defined decision rule.
+                    </li>
+                </ol>
+
+                <p style="margin-bottom: 5px;">347-S, Quaid-e-Azam Industrial Estate, Kot Lakhpat, Lahore- 54770
+                    Pakistan.
+                </p>
+                <p style="margin-bottom: 5px;">UAN: +92 42 111786001 | URL:
+                    <a href="https://ttilabs.net/" style="color: #2E69A6;">www.ttilabs.net</a>
+                </p>
+
+                <hr style="border-top: 1px dashed #ccc; margin: 15px 0;"/>
+
+                <p style="font-size: 0.8em; color: #777; text-align: center;">
+                    <strong>ISO/IEC 17025 Accredited Lab | ICPSC Accredited Lab | ISO/IEC 17020 Accredited Inspection
+                        Agency | EPA Certified Lab
+                    </strong>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_payment_journal_report\views\account_payment_register_view.xml-->
+<odoo>
+    <record id="view_account_payment_register_wizard_inherit" model="ir.ui.view">
+        <field name="name">account.payment.register.form.inherit.category</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Insert Payment Mode after AMOUNT -->
+            <xpath expr="//form//group/group[@name='group2']" position="inside">
+
+                <field name="payment_category_pr" string="Payment Mode"  required="1"/>
+                <field name="cash_reference_pr" invisible="payment_category_pr != 'cash_pr'"/>
+                <field name="cheque_number_pr" invisible="payment_category_pr != 'cheque_pr'"/>
+                <field name="online_transaction_id_pr" invisible="payment_category_pr != 'online_pr'"/>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

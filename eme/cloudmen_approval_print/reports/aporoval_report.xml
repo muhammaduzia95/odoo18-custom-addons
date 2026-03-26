@@ -1,0 +1,337 @@
+<odoo>
+    <record id="paperformat_approval_report"
+            model="report.paperformat">
+        <field name="name">Paperformat Approval Document</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">45</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <template id="layout_approval_report">
+
+        <div class="header">
+            <img src="/cloudmen_approval_print/static/src/img/img.png" alt="Logo"
+                 style="width: 100%; height: auto;"/>
+        </div>
+
+        <div class="article" style="padding-top: 25px;">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer">
+            <img src="/cloudmen_approval_print/static/src/img/img_1.png" alt="Logo"
+                 style="width: 100%; height: auto;"/>
+
+        </div>
+    </template>
+
+
+    <template id="template_approval_report">
+        <t t-call="web.html_container">
+            <t t-call="cloudmen_approval_print.layout_approval_report">
+                <div class="page">
+                    <t t-foreach="docs" t-as="doc">
+                        <table style="
+    border:  1px solid black;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+">
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px;">
+                                        MATERIAL REQUISITION
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="
+    border:  1px solid black;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 20px;
+">
+                            <tbody>
+                                <tr>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+">Project Name:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-out="doc.x_studio_project.name"></t>
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+">Date:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-out="doc.date_confirmed"></t>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+">Project Ref No.:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-out="doc.x_studio_project.name"></t>
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+">MR No.:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-out="doc.name"></t>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="
+    border:  1px solid black;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+">
+                            <tbody>
+                                <tr>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">S. NO.
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">MATERIAL DESCRIPTION
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">Brand
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">UoM
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">QTY
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">AGREEMENT / BOQ / SUBMITTALREF
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    font-weight: bold;
+">Material Required Date:
+                                    </td>
+                                </tr>
+
+                                <t t-set="order_count" t-value="0"/>
+                                <t t-foreach="doc.product_line_ids" t-as="line">
+                                    <t t-set="order_count"
+                                       t-value="order_count + 1"/>
+
+                                    <tr>
+                                        <td style=" padding: 10px; ">
+                                            <t t-esc="line_index + 1 "/>
+                                        </td>
+                                        <td style=" padding: 10px; ">
+                                            <t t-out="line.description"/>
+
+                                        </td>
+                                        <td style=" padding: 10px; ">
+                                            <t t-out="line.product_id.categ_id.name"></t>
+                                        </td>
+                                        <td style=" padding: 10px; ">
+                                            <t t-out="line.product_uom_id.name"/>
+                                        </td>
+                                        <td style=" padding: 10px; ">
+                                            <t t-out="line.quantity"/>
+                                        </td>
+                                        <td style=" padding: 10px; ">
+                                            <t t-out="line.product_id.default_code"></t>
+                                        </td>
+                                        <td style="padding: 10px; white-space: nowrap;">
+                                            <t t-esc="format_date(line.x_studio_material_required_date, 'dd-MM-yyyy')"/>
+                                        </td>
+
+                                    </tr>
+
+                                </t>
+
+                            </tbody>
+                        </table>
+                        <table style="
+    width: 100%;
+    margin-bottom: 15px;
+">
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px;white-space: nowrap;border: 1px solid white;width: 10%;font-weight: bold;">
+                                        Requested by:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-out="doc.request_owner_id.name"></t>
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+    font-weight: bold;
+">Approved by:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-foreach="doc.approver_ids" t-as="approve">
+                                            <span t-out="approve.user_id.name"/>
+                                        </t>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+    font-weight: bold;
+">Contact No:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        Contact Test
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+    font-weight: bold;
+">Signature and Date:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    width: 10%;
+    font-weight: bold;
+">Signature and Date:
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+">
+                                        <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    color: white;
+">white_field
+                                    </td>
+                                    <td style="
+    padding: 10px;
+    white-space: nowrap;
+    border: 1px solid white;
+    color: white;
+">white_field
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="report_approval_report" model="ir.actions.report">
+        <field name="name">Approval Document</field>
+        <field name="model">approval.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cloudmen_approval_print.template_approval_report</field>
+        <field name="report_file">cloudmen_approval_print.template_approval_report</field>
+        <field name="print_report_name">'Approval - %s' % object.name</field>
+        <!--        <field name="print_report_name">'Expenses - %s - %s' % (object.employee_id.name, (object.name).replace('/', ''))-->
+        <!--        </field>-->
+        <!--        <field name="attachment">'certification.pdf'</field>-->
+        <!--        <field name="attachment">'ISR-' + object.name + '.pdf'</field>-->
+        <!--        <field name="attachment_use">True</field>-->
+        <field name="binding_model_id" ref="approvals.model_approval_request"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="cloudmen_approval_print.paperformat_approval_report"/>
+        <!--        <field name="groups_id" eval="[(4, ref('sale.group_proforma_sales'))]"/>-->
+        <!--        <field name="multi">True</field>-->
+    </record>
+</odoo>

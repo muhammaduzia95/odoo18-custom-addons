@@ -1,0 +1,35 @@
+<odoo>
+  <!-- Wizard Form -->
+  <record id="view_tti_dashboard_wizard_form" model="ir.ui.view">
+    <field name="name">tti.dashboard.wizard.form</field>
+    <field name="model">tti.dashboard.wizard</field>
+    <field name="arch" type="xml">
+      <form string="TTI Dashboard Filters" create="0" edit="1">
+        <group>
+          <group>
+            <field name="month_ids" widget="many2many_tags" placeholder="Select month(s)"/>
+            <field name="year_ids" widget="many2many_tags" placeholder="Select year(s)"/>
+          </group>
+          <group>
+            <field name="category_ids" widget="many2many_tags" placeholder="Select category(ies)"/>
+            <field name="subcategory_ids" widget="many2many_tags" placeholder="Select subcategory(ies)"/>
+            <field name="zone_ids" widget="many2many_tags" placeholder="Select zone(s)"/>
+          </group>
+        </group>
+        <footer>
+          <button name="action_open_dashboard" type="object" class="btn-primary" string="Open Dashboard"/>
+          <button string="Close" class="btn-secondary" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <!-- Window Action to open the Wizard -->
+  <record id="action_tti_dashboard_wizard" model="ir.actions.act_window">
+    <field name="name">TTI Dashboard</field>
+    <field name="res_model">tti.dashboard.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    <field name="context">{}</field>
+  </record>
+</odoo>

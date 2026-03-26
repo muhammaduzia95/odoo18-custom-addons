@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Visio TTI SO & Invoice Report",
+    'summary': "custom report of sale order and invoice",
+    'description': """custom report of sale order and invoice""",
+    'author': "Visiomate",
+    'website': "https://www.visiomate.com",
+    'application': True,
+    'installable': True,
+    'auto_install': False,
+    'category': 'Uncategorized',
+    'version': '0.1',
+    'sequence': -250,
+    'license': 'LGPL-3',
+    'depends': ['base', 'sale', 'sale_management', 'sale_pdf_quote_builder', 'sales_team', 'product', 'purchase',
+                'account', 'visio_tti_exel_reports', 'contacts',
+                'visio_tti_so_customize', 'visio_tti_partner_customize', 'visio_tti_invoice_customize'],
+
+    'data': [
+        'security/ir.model.access.csv',
+        'views/custom_header.xml',
+        'views/custom_footer.xml',
+        'views/sale_order_report.xml',
+        'views/invoice_report.xml',
+        'views/club_invoice.xml',
+        'wizard/party_invoice_detail.xml',
+        'report/party_invoice_detail.xml',
+        'report/multi_payments.xml',
+    ],
+    'demo': [],
+}

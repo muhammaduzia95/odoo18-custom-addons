@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_project_tags_list" model="ir.ui.view">
+        <field name="name">po.project.tags.tree</field>
+        <field name="model">po.project.tags</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_project_tags" model="ir.actions.act_window">
+        <field name="name">Project Tags</field>
+        <field name="res_model">po.project.tags</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_tti_testing_purchase" name="TTI Testing Menu" parent="purchase.menu_purchase_config" />
+    <menuitem id="menu_project_tags" name="Project Tags" parent="visio_tti_po_customize.menu_tti_testing_purchase"
+              action="action_project_tags"/>
+
+</odoo>

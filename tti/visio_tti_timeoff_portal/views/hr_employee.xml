@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_hr_employee_form_inherit_add_hr" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.add.hr</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[2]/field[@name='parent_id']" position="after">
+                <field name="hr" widget="many2one_avatar_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_leave_type_form_inherit_portal" model="ir.ui.view">
+        <field name="name">hr.leave.type.form.portal.inherit</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@class='oe_title']" position="after">
+                <group>
+                    <field name="is_portal"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

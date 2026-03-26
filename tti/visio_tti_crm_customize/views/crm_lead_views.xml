@@ -1,0 +1,148 @@
+<odoo>
+
+    <record id="view_crm_lead_form_tti_crm_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.tti.crm.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='internal_notes']" position="before">
+                <page string="Tti Lead Info">
+                    <group col="3">
+                        <group>
+                            <field name="tti_lead_id"/>
+                            <field name="tti_last_modified_time"/>
+                        </group>
+                        <group>
+                            <field name="tti_salesperson_name"/>
+                            <field name="tti_salesperson_email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="tti_start_time"/>
+                            <field name="tti_completion_time"/>
+                        </group>
+                    </group>
+                    <group string="Testing and Visit Details" col="3">
+                        <group>
+                            <field name="tti_purpose_of_visit"/>
+                            <field name="tti_client_type" widget="radio" options="{'horizontal': True}"/>
+                        </group>
+                        <group>
+                            <field name="tag_ids" string="Testing Segment" widget="many2many_tags"
+                                   options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="tti_testing_category"/>
+                        </group>
+                        <group>
+                            <!--                            <field name="tti_client_name" invisible="tti_client_type == 'new'"/>-->
+                            <field name="partner_id" widget="res_partner_many2one" string="Contact"
+                                   invisible="tti_client_type == 'new'"
+                                   context="{'res_partner_search_mode': type == 'opportunity' and 'customer' or False, 'default_name': contact_name or partner_name, 'default_street': street, 'default_is_company': type == 'opportunity' and contact_name == False, 'default_company_name': type == 'opportunity' and partner_name, 'default_street2': street2, 'default_city': city,                                         'default_title': title,                                         'default_state_id': state_id,                                         'default_zip': zip,                                         'default_country_id': country_id,                                         'default_function': function,                                         'default_phone': phone,                                         'default_mobile': mobile,                                         'default_email': email_from, 'default_user_id': user_id, 'default_team_id': team_id, 'default_website': website, 'default_lang': lang_code, 'show_vat': True,}"/>
+                            <field name="description" string="Visit Details" placeholder="Add a visit details..."
+                                   options="{'collaborative': true}" invisible="tti_client_type == 'new'"/>
+                        </group>
+                    </group>
+                    <group string="Client Details" col="3" invisible="tti_client_type == 'existing'">
+                        <group>
+                            <field name="partner_name"/>
+                            <label for="street_page_lead" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" id="street_page_lead" placeholder="Street..."
+                                       class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                       options="{&quot;no_open&quot;: True}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="contact_name" id="contact_name_page_lead"/>
+                            <field name="email_from" string="Email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="phone" string="Phone" widget="phone"/>
+                            <field name="mobile" string="Mobile" widget="phone"/>
+                            <field name="description" string="Visit Details" placeholder="Add a visit details..."
+                                   options="{'collaborative': true}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm.crm_case_kanban_view_leads" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.lead</field>
+        <field name="model">crm.lead</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <kanban highlight_color="color" default_group_by="stage_id"
+                    class="o_kanban_small_column o_opportunity_kanban" on_create="quick_create"
+                    quick_create_view="crm.quick_create_opportunity_form"
+                    archivable="false" sample="1" js_class="crm_kanban">
+                <field name="stage_id" options='{"group_by_tooltip": {"requirements": "Description"}}'/>
+                <field name="probability"/>
+                <field name="active"/>
+                <field name="company_currency"/>
+                <field name="recurring_revenue_monthly"/>
+                <field name="team_id"/>
+                <field name="tti_client_type" invisible="1"/>
+                <field name="tti_purpose_of_visit" invisible="1"/>
+                <field name="bg_color" invisible="1"/>
+                <progressbar field="activity_state"
+                             colors='{"planned": "success", "today": "warning", "overdue": "danger"}'
+                             sum_field="expected_revenue" recurring_revenue_sum_field="recurring_revenue_monthly"
+                             help="This bar allows to filter the opportunities based on scheduled activities."/>
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable">
+                            <a role="menuitem" type="open" class="dropdown-item">Edit</a>
+                        </t>
+                        <t t-if="widget.deletable">
+                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <field name="color" widget="kanban_color_picker"/>
+                    </t>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card"
+                             t-att-style="'background-color: ' + record.bg_color.raw_value + ';'">
+                            <t t-set="lost_ribbon"
+                               t-value="!record.active.raw_value and record.probability and record.probability.raw_value == 0"/>
+                            <widget name="web_ribbon" title="lost" bg_color="text-bg-danger"
+                                    invisible="probability &gt; 0 or active"/>
+                            <field class="fw-bold fs-5" name="name"/>
+                            <div>
+                                <t t-if="record.expected_revenue.raw_value">
+                                    <field name="expected_revenue" widget="monetary"
+                                           options="{'currency_field': 'company_currency'}"/>
+                                    <span t-if="record.recurring_revenue and record.recurring_revenue.raw_value"
+                                          groups="crm.group_use_recurring_revenues">+
+                                    </span>
+                                </t>
+                                <t t-if="record.recurring_revenue and record.recurring_revenue.raw_value">
+                                    <field class="me-1" name="recurring_revenue" widget="monetary"
+                                           options="{'currency_field': 'company_currency'}"
+                                           groups="crm.group_use_recurring_revenues"/>
+                                    <field name="recurring_plan" groups="crm.group_use_recurring_revenues"/>
+                                </t>
+                            </div>
+                            <field name="partner_id" class="text-truncate"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="lead_properties" widget="properties"/>
+                            <footer class="pt-1">
+                                <div class="d-flex mt-auto align-items-center">
+                                    <field name="priority" widget="priority" groups="base.group_user" class="me-2"/>
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"
+                                       class="ms-auto"/>
+                            </footer>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

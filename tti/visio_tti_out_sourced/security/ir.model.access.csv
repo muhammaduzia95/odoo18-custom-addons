@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_out_sourced_sample_user,access.out.sourced.sample,model_out_sourced_sample,,1,1,1,1

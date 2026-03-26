@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tti_lims_tests_status_logs_tree" model="ir.ui.view">
+            <field name="name">tti.so.lims.tests.status.logs.list</field>
+            <field name="model">tti.so.lims.tests.status.logs</field>
+            <field name="arch" type="xml">
+                <list string="LIMS Test Status" edit="0" delete="0" create="0">
+                    <field name="date"/>
+                    <field name="write_date"/>
+                    <field name="name"/>
+                    <field name="sale_order_id"/>
+                    <field name="order_id"/>
+                    <field name="product_name"/>
+                    <field name="status"/>
+                    <field name="tti_lims_test_id" optional="hide"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_lims_tests_status_logs_form" model="ir.ui.view">
+            <field name="name">tti.so.lims.tests.status.logs.form</field>
+            <field name="model">tti.so.lims.tests.status.logs</field>
+            <field name="arch" type="xml">
+                <form string="LIMS Test Status" readonly="1" edit="0" delete="0" create="0">
+                    <sheet>
+                        <div>
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="sale_order_id"/>
+                                <field name="product_name"/>
+                                <field name="tti_lims_test_id"/>
+                            </group>
+                            <group>
+                                <field name="write_date"/>
+                                <field name="order_id"/>
+                                <field name="status"/>
+                                <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_lims_tests_status_logs_search" model="ir.ui.view">
+            <field name="name">tti.so.lims.tests.status.logs.search</field>
+            <field name="model">tti.so.lims.tests.status.logs</field>
+            <field name="arch" type="xml">
+                <search string="LIMS Test Status">
+                    <field name="name"/>
+                    <group string="Group By">
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_lims_tests_status_logs" model="ir.actions.act_window">
+            <field name="name">LIMS Tests Status</field>
+            <field name="res_model">tti.so.lims.tests.status.logs</field>
+            <field name="view_id" ref="view_tti_lims_tests_status_logs_search"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a LIMS Test Status
+                </p>
+                <p></p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

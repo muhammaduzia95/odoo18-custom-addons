@@ -1,0 +1,68 @@
+<!-- D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_missed_attendance\views\missed_attendance_views.xml -->
+<odoo>
+
+    <!-- Group Root Menu -->
+    <record id="group_missed_attendance_menu" model="res.groups">
+        <field name="name">Attendance / Missed Attendance</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Sub Menu -->
+    <record id="group_missed_attendance_request" model="res.groups">
+        <field name="name">Missed Attendance / Request</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Action Approve -->
+    <record id="group_attendance_approve_menu" model="res.groups">
+        <field name="name">Missed Attendance / Attendance Approve Button</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- List View -->
+    <record id="view_missed_attendance_tree" model="ir.ui.view">
+        <field name="name">missed.attendance.request.list</field>
+        <field name="model">missed.attendance.request</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="false">
+                <field name="employee_id" readonly="1"/>
+                <field name="check_in" readonly="1"/>
+                <field name="check_out" readonly="1"/>
+                <field name="reason" readonly="1"/>
+                <field name="state" readonly="1"/>
+
+                <!-- Approve button -->
+                <button name="action_approve"
+                        type="object"
+                        string="Approve"
+                        class="btn btn-link text-success"
+                        invisible="state != 'draft'"
+                        groups="visio_tti_missed_attendance.group_attendance_approve_menu"/>
+
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_missed_attendance_request" model="ir.actions.act_window">
+        <field name="name">Missed Attendance</field>
+        <field name="res_model">missed.attendance.request</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Root Menu -->
+    <menuitem id="menu_hr_missed_attendance_root"
+              name="Missed Attendance"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="50"
+              groups="visio_tti_missed_attendance.group_missed_attendance_menu"/>
+
+    <!-- Sub Menu -->
+    <menuitem id="menu_missed_attendance_requests"
+              name="Requests"
+              parent="menu_hr_missed_attendance_root"
+              action="action_missed_attendance_request"
+              groups="visio_tti_missed_attendance.group_missed_attendance_request"/>
+
+
+</odoo>

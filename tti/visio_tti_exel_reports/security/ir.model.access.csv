@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tti_report_wizard,access_tti_report_wizard,model_tti_report_wizard,base.group_user,1,1,1,1
+access_eurofins_sales_report_wizard,access_eurofins_sales_report_wizard,model_eurofins_sales_report_wizard,base.group_user,1,1,1,1
+access_sales_tax_report_wizard,sales.tax.report.wizard,model_sales_tax_report_wizard,,1,1,1,1
+access_recovery_report_wizard,recovery.report.wizard,model_recovery_report_wizard,base.group_user,1,1,1,1

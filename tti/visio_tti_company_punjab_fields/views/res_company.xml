@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="group_bank_info_access" model="res.groups">
+        <field name="name">Bank Info Access</field>
+        <field name="category_id" ref="visio_tti_so_customize.module_category_tti_so_customize"/>
+    </record>
+
+    <record id="view_company_form_inherit_bank_fields" model="ir.ui.view">
+        <field name="name">res.company.form.bank.fields</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert after the Branches page -->
+            <xpath expr="//notebook/page[@name='branches']" position="after">
+                <page string="Bank Information" groups="visio_tti_company_punjab_fields.group_bank_info_access">
+                    <group string="Punjab">
+                        <field name="bank_name"/>
+                        <field name="account_title"/>
+                        <field name="swift_code"/>
+                        <field name="branch_code"/>
+                        <field name="account_no"/>
+                        <field name="iban"/>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,40 @@
+<!--tti\visio_tti_exel_reports\wizard\recovery_report.xml-->
+<odoo>
+
+    <record id="view_recovery_report_tti_wizard" model="ir.ui.view">
+        <field name="name">recovery.report.wizard.form</field>
+        <field name="model">recovery.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Recovery Report">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="holding_tax"/>
+                    </group>
+                    <group>
+                        <field name="date_to"/>
+                        <field name="commission"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_excel_report" type="object" string="Download Excel" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_recovery_report_tti_wizard" model="ir.actions.act_window">
+        <field name="name">Recovery Report</field>
+        <field name="res_model">recovery.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_recovery_report_tti"
+              name="Recovery Report"
+              parent="visio_tti_exel_reports.menu_tti_eurofins_reports"
+              action="action_recovery_report_tti_wizard"
+              sequence="30"/>
+
+</odoo>

@@ -1,0 +1,186 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\eme\visio_eme_custom_invoice\report\custom_footer.xml-->
+<odoo>
+
+    <!-- Default Footer -->
+    <template id="eme_custom_footer">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 10px; padding-top: 10px;">
+            <div style="border-top:1px solid #808080; margin-bottom:15px;">
+                <!--<div style="font-size:14px; border-top:2px solid #333; padding-top:8px; margin-top:10px;">-->
+                <div style="font-size:12px; padding-top:8px; margin-top:10px;">
+                    <table style="width:100%; border-color:white;">
+                        <tr>
+                            <td style="width:40%; color:#808080; vertical-align:top;">
+                                <p style="margin:2px 0;">
+                                    <strong>Beneficiary Name:</strong>
+                                    E M E Aquatic Systems LLC – SPC
+                                </p>
+                                <p style="margin:2px 0;">
+                                    <strong>Bank Name:</strong>
+                                    Abu Dhabi Commercial Bank
+                                </p>
+                                <p style="margin:2px 0;">
+                                    <strong>Branch:</strong>
+                                    Salam St. <strong>Swift Code:</strong> ADCBAEAA
+                                </p>
+                            </td>
+                            <td style="width:60%; color:#808080; vertical-align:top; text-align:right;">
+                                <p style="margin:2px 0;">AED – <strong>A/C#:</strong> 257172020001
+                                    <strong><span></span>IBAN No.:
+                                    </strong>
+                                    AE680030000257172020001
+                                </p>
+                                <p style="margin:2px 0;">USD – <strong>A/C#:</strong> 257172021001
+                                    <strong><span></span>IBAN No.:
+                                    </strong>
+                                    AE340030000257172021001
+                                </p>
+                                <p style="margin:2px 0;">JPY – <strong>A/C#:</strong> 257172323001
+                                    <strong><span></span>IBAN No.:
+                                    </strong>
+                                    AE480030000257172323001
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Cover Footer (only for cover page) -->
+    <template id="eme_cover_footer">
+        <div t-attf-class="footer o_company_#{company.id}_layout" style="font-size: 16px; padding-top: 10px;">
+            <div style="border-top:1px solid #808080; margin-top:15px; margin-bottom:15px;">
+                <div style="font-size:16px; padding-top:8px; margin-top:10px;">
+
+                    <div style="text-align:center; padding-top:6px;">
+                        Swimming Pools | Water Features | Spas | Aquatic Systems | Mitsubishi Water Tanks
+                    </div>
+
+                    <div style="text-align:center; padding-top:4px;">
+                        E M E Aquatic Systems L.L.C – S.P.C | info@eme-me.com | +971 (0) 2 677 5022
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Footer Router  -->
+    <template id="eme_footer_router">
+
+        <!-- Cover page must win FIRST -->
+        <t t-if="is_cover_page">
+            <t t-call="visio_eme_custom_invoice.eme_cover_footer"/>
+        </t>
+
+        <t t-elif="is_delivery_note">
+            <t t-call="visio_eme_custom_invoice.eme_delivery_note_footer"/>
+        </t>
+
+        <t t-elif="is_goods_receipt">
+            <t t-call="visio_eme_custom_invoice.eme_goods_receipt_note_footer"/>
+        </t>
+
+        <t t-elif="is_issue_note">
+            <t t-call="visio_eme_custom_invoice.eme_material_issue_note_footer"/>
+        </t>
+
+        <t t-elif="is_material_return">
+            <t t-call="visio_eme_custom_invoice.eme_material_return_note_footer"/>
+        </t>
+
+        <t t-elif="is_proforma_service">
+            <t t-call="visio_eme_custom_invoice.eme_proforma_invoice_service_footer"/>
+        </t>
+
+        <t t-elif="is_quotation">
+            <t t-call="visio_eme_custom_invoice.eme_quotation_footer"/>
+        </t>
+
+        <t t-elif="is_purchase_order">
+            <t t-call="visio_eme_custom_invoice.eme_purchase_order_footer"/>
+        </t>
+
+        <t t-elif="is_rfq">
+            <t t-call="visio_eme_custom_invoice.eme_rfq_footer"/>
+        </t>
+
+        <t t-elif="is_supplier_invoice">
+            <t t-call="visio_eme_custom_invoice.eme_supplier_invoice_footer"/>
+        </t>
+
+        <t t-elif="is_tax_credit">
+            <t t-call="visio_eme_custom_invoice.eme_tax_credit_note_footer"/>
+        </t>
+
+        <t t-elif="is_tax_debit">
+            <t t-call="visio_eme_custom_invoice.eme_tax_debit_note_footer"/>
+        </t>
+
+        <t t-elif="is_tax_invoice">
+            <t t-call="visio_eme_custom_invoice.eme_tax_invoice_service_footer"/>
+        </t>
+
+        <t t-elif="is_material_request">
+            <t t-call="visio_eme_custom_invoice.eme_material_request_footer"/>
+        </t>
+
+        <t t-else="">
+            <t t-call="visio_eme_custom_invoice.eme_custom_footer"/>
+        </t>
+
+    </template>
+
+
+    <!-- Standard Layout -->
+    <template id="eme_external_layout_standard_footer" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+    <!-- Boxed Layout -->
+    <template id="eme_external_layout_boxed_footer" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+    <!-- Bold Layout -->
+    <template id="eme_external_layout_bold_footer" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+    <!-- Striped Layout -->
+    <template id="eme_external_layout_striped_footer" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+    <!-- Bubble Layout -->
+    <template id="eme_external_layout_bubble_footer" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+    <!-- Wave Layout -->
+    <template id="eme_external_layout_wave_footer" inherit_id="web.external_layout_wave">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+    <!-- Folder Layout -->
+    <template id="eme_external_layout_folder_footer" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.eme_footer_router"/>
+        </xpath>
+    </template>
+
+</odoo>

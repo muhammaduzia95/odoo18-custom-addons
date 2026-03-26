@@ -1,0 +1,47 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_marketing_attendance_portal\views\marketing_attendance_views.xml-->
+<odoo>
+
+    <!-- Group Menu -->
+    <record id="group_marketing_attendance_menu" model="res.groups">
+        <field name="name">Attendance / Missed Attendance / Marketing Request</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- List View -->
+    <record id="view_marketing_attendance_list" model="ir.ui.view">
+        <field name="name">marketing.attendance.request.list</field>
+        <field name="model">marketing.attendance.request</field>
+        <field name="arch" type="xml">
+            <list create="false">
+                <field name="employee_id" readonly="1"/>
+                <field name="check_in" readonly="1"/>
+                <field name="check_out" readonly="1"/>
+                <field name="reason" readonly="1"/>
+                <field name="state" readonly="1"/>
+
+                <!-- Approve button -->
+                <button name="action_verify"
+                        type="object"
+                        string="Verify"
+                        class="btn btn-link text-success"
+                        invisible="state != 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_marketing_attendance_request" model="ir.actions.act_window">
+        <field name="name">Marketing Attendance</field>
+        <field name="res_model">marketing.attendance.request</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Sub Menu (reuse EXISTING root menu) -->
+    <menuitem id="menu_marketing_attendance_requests"
+              name="Marketing Requests"
+              parent="visio_tti_missed_attendance.menu_hr_missed_attendance_root"
+              action="action_marketing_attendance_request"
+              groups="visio_tti_marketing_attendance_portal.group_marketing_attendance_menu"
+              sequence="60"/>
+
+</odoo>

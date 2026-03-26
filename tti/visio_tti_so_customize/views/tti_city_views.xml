@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Tti City -->
+        <record id="view_tti_city_tree" model="ir.ui.view">
+            <field name="name">tti.city.list</field>
+            <field name="model">tti.city</field>
+            <field name="arch" type="xml">
+                <list string="City" editable="bottom">
+                    <field name="code" optional="hide" readonly="1"/>
+                    <field name="name"/>
+                    <field name="country_id" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_city_form" model="ir.ui.view">
+            <field name="name">tti.city.form</field>
+            <field name="model">tti.city</field>
+            <field name="arch" type="xml">
+                <form string="City">
+                    <sheet>
+                        <group>
+                            <field name="code"  readonly="1"/>
+                            <field name="name"/>
+                            <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_city_search" model="ir.ui.view">
+            <field name="name">tti.city.search</field>
+            <field name="model">tti.city</field>
+            <field name="arch" type="xml">
+                <search string="City">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="country_id"/>
+                    <group string="Group By">
+                        <filter name="groupby_country" string="Country" context="{'group_by': 'country_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_parcel_cities" model="ir.actions.act_window">
+            <field name="name">City</field>
+            <field name="res_model">tti.city</field>
+            <field name="view_id" ref="view_tti_city_tree"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Parcel City
+                </p><p>
+                    Cities belong to countries and are part of your parcels.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

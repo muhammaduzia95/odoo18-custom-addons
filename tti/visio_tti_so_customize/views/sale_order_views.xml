@@ -1,0 +1,935 @@
+<odoo>
+    <data>
+
+        <record id="view_sale_order_filter_product_code" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit.product.code</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/group" position="inside">
+                    <field name="order_line" string="Test Code"/>
+                    <field name="tti_test_report_line_ids" string="Package Code"/>
+                </xpath>
+                <xpath expr="//search/field[@name='partner_id']" position="before">
+                    <field name="quotation_num" string="Quotation NO"/>
+                    <field name="sale_order_no" string="Sale Order NO"/>
+                </xpath>
+                <xpath expr="//search/field[@name='partner_id']" position="after">
+                    <field name="tti_pi_buyer" string="Buyer"/>
+                    <field name="tti_si_category" string="Category"/>
+                    <field name="tti_si_sub_category" string="Sub Category"/>
+                    <field name="partner_zone_id" string="City Zone"/>
+                </xpath>
+                <xpath expr="//search/filter[@name='my_sale_orders_filter']" position="after">
+                    <separator/>
+                    <filter string="Quotation Done" name="quotation_done" domain="[('state','=','quotation_done')]"/>
+                </xpath>
+                <xpath expr="//search/group" position="inside">
+                    <filter string="Category" name="tti_si_category" domain="[]"
+                            context="{'group_by': 'tti_si_category'}"/>
+                    <filter string="Sub Category" name="tti_si_sub_category" domain="[]"
+                            context="{'group_by': 'tti_si_sub_category'}"/>
+                    <filter string="City Zone" name="partner_zone_id" domain="[]"
+                            context="{'group_by': 'partner_zone_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_form_inherit_sale_pdf_quote_builder_tti_hide" model="ir.ui.view">
+            <field name="name">sale.order.form.pdf.quote.builder.tti.hide</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='pdf_quote_builder']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_discount_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.discount.form.remove.amount</field>
+            <field name="model">sale.order.discount</field>
+            <field name="inherit_id" ref="sale.sale_order_line_wizard_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/div/div/group/label[@for='discount_amount']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_allow_fixed_discount</attribute>
+                </xpath>
+                <xpath expr="//sheet/div/div/group/field[@name='discount_amount']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_allow_fixed_discount</attribute>
+                </xpath>
+                <xpath expr="//sheet/div/div/group/field[@name='tax_ids']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_allow_fixed_discount</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_form_tti_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.tti.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <div name="button_box" position="inside">
+                    <button type="object"
+                            class="oe_stat_button"
+                            name="action_open_tti_parcel_ids"
+                            icon="fa-list"
+                            invisible="not tti_parcel_id">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Parcels</span>
+                        </div>
+                    </button>
+                    <button name="action_view_tti_so_lims_tests_status" type="object" class="oe_stat_button"
+                            icon="fa-list">
+                        LIMS Tests Status (<field name="tti_so_lims_tests_status_count"/>)
+                    </button>
+                </div>
+
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='partner_details']/field[@name='partner_id']"
+                       position="after">
+                    <!--                    <div class="o_address_format">-->
+                    <!--                        <field name="partner_street" placeholder="Street..." class="o_address_street"/>-->
+                    <!--                        <field name="partner_street2" placeholder="Street 2..." class="o_address_street"/>-->
+                    <!--                        <field name="partner_city" placeholder="City" class="o_address_city"/>-->
+                    <!--                        <field name="partner_state_id" class="o_address_state" placeholder="State"/>-->
+                    <!--                        <field name="partner_zip" placeholder="ZIP" class="o_address_zip"/>-->
+                    <!--                        <div name="partner_address_country" class="d-flex justify-content-between">-->
+                    <!--                            <field name="partner_country_id" placeholder="Country" class="o_address_country"/>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                </xpath>
+
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='partner_details']/field[@name='partner_id']"
+                       position="attributes">
+                    <!--                    <attribute name="context">{'search_default_type_company': 1, 'search_default_tti_manufacture': 1}-->
+                    <!--                    </attribute>-->
+                    <!--                    <attribute name="domain">-->
+                    <!--                        [-->
+                    <!--                        ('parent_id', '=', False) , ('tti_company_category', '=', 'manufacture' )-->
+                    <!--                        ]-->
+                    <!--                    </attribute>-->
+
+                    <!--                    <attribute name="domain">[('parent_id', '=', False) , (company_id '&amp;' ['|',-->
+                    <!--                        ('company_id', '=', False),-->
+                    <!--                        ('company_id', 'parent_of', company_id)]-->
+                    <!--                        ) '|' ['|',-->
+                    <!--                        ('company_id', '=', False),-->
+                    <!--                        ('company_id', 'parent_of', '')-->
+                    <!--                        ]-->
+                    <!--                        ]-->
+                    <!--                    </attribute>-->
+                </xpath>
+
+                <xpath expr="//sheet" position="inside">
+                    <field name="user_has_group_tti_enable_so_price" invisible="1"/>
+                    <field name="user_has_group_tti_allow_taxes" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/div/field[@name='pricelist_id']"
+                       position="attributes">
+                    <attribute name="readonly">not user_has_group_tti_enable_so_price or locked or hide_lock_btns
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']"
+                       position="attributes">
+                    <attribute name="readonly">locked or hide_lock_btns</attribute>
+                </xpath>
+
+                <xpath expr="//sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']"
+                       position="after">
+                    <field name="commitment_date" readonly="locked or hide_lock_btns" required="1"/>
+                    <field name="client_order_ref" readonly="locked or hide_lock_btns"/>
+                </xpath>
+
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="readonly">not user_has_group_tti_enable_so_price</attribute>
+                </xpath>
+
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='tax_id']"
+                       position="attributes">
+                    <attribute name="readonly">not user_has_group_tti_allow_taxes</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='discount']"
+                       position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_apply_discounts</attribute>
+                </xpath>
+
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/div[@name='so_button_below_order_lines']/button[@name='action_open_discount_wizard']"
+                       position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_apply_discounts</attribute>
+                </xpath>
+
+                <xpath expr="//header/button[@name='action_draft']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//header/button[@name='action_confirm']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>
+                </xpath>
+
+                <xpath expr="//header/button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>
+                </xpath>
+
+                <!--                <xpath expr="//header/button[@name='action_quotation_send']" position="attributes">-->
+                <!--                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>-->
+                <!--                </xpath>-->
+
+                <!--                <xpath expr="//header/button[@name='action_quotation_send'][2]" position="attributes">-->
+                <!--                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team,sale.group_proforma_sales-->
+                <!--                    </attribute>-->
+                <!--                </xpath>-->
+
+                <!--                <xpath expr="//header/button[@name='action_quotation_send'][3]" position="attributes">-->
+                <!--                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team,sale.group_proforma_sales-->
+                <!--                    </attribute>-->
+                <!--                </xpath>-->
+
+                <xpath expr="//header/button[@name='action_quotation_send'][4]" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>
+                </xpath>
+
+                <xpath expr="//header/button[@name='action_unlock']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>
+                    <attribute name="invisible">not locked</attribute>
+                    <!--                    <attribute name="invisible">not locked or hide_lock_btns</attribute>-->
+                </xpath>
+
+                <xpath expr="//header/t/button[@name='action_lock']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>
+                    <!--                    <attribute name="invisible">locked or state != 'sale' or hide_lock_btns</attribute>-->
+                    <attribute name="invisible">locked or state != 'sale'</attribute>
+                </xpath>
+
+                <!-- Not in use -->
+                <!--                <xpath expr="//header/button[@name='action_unlock']" position="attributes">-->
+                <!--                    <attribute name="groups">visio_tti_so_customize.group_tti_so_lock_unlock</attribute>-->
+                <!--                    <attribute name="invisible">not locked</attribute>-->
+                <!--                </xpath>-->
+
+                <!--                <xpath expr="//header/t/button[@name='action_lock']" position="attributes">-->
+                <!--                    <attribute name="groups">visio_tti_so_customize.group_tti_so_lock_unlock</attribute>-->
+                <!--                    <attribute name="invisible">locked or state != 'sale'</attribute>-->
+                <!--                </xpath>-->
+
+                <xpath expr="//header/button[@name='action_preview_sale_order']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_sales_team</attribute>
+                </xpath>
+
+                <xpath expr="//header/button[@id='create_invoice']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_allow_invoice_creation</attribute>
+                </xpath>
+
+                <xpath expr="//header/button[@name='action_cancel']" position="attributes">
+                    <attribute name="groups">visio_tti_so_customize.group_tti_so_allow_cancel_so</attribute>
+                    <attribute name="confirm">Do you want to cancel this sale order?</attribute>
+                </xpath>
+
+                <xpath expr="//header" position="inside">
+                    <field name="hide_lock_btns" invisible="1"/>
+                    <button name="action_quotation_done" id="sale_order_quotation_done" string="Quotation Done"
+                            type="object" data-hotkey="q"
+                            invisible="state not in ['draft', 'sent']"
+                            groups="visio_tti_so_customize.group_tti_so_quotation_team"
+                            class="btn-primary"/>
+                    <button name="action_quotation_approved" id="sale_order_quotation_approved"
+                            string="Quotation Approved"
+                            type="object" data-hotkey="q"
+                            invisible="state not in ['quotation_done']"
+                            groups="visio_tti_so_customize.group_tti_so_quotation_team"
+                            class="btn-primary"/>
+                    <!--                    <button name="action_sale_order_sent_to_lims" id="sale_order_sent_to_lims" string="Send to LIMS"-->
+                    <!--                            type="object" data-hotkey="v"-->
+                    <!--                            groups="visio_tti_so_customize.group_tti_so_sales_team"-->
+                    <!--                            invisible="state != 'sale' or locked or tti_lims_api_response_check"-->
+                    <!--                            class="btn-primary"/>-->
+                    <button name="action_attach_report" type="object" class="oe_highlight"
+                            groups="visio_tti_so_customize.group_tti_display_update_so_btn"
+                            invisible="state != 'sale'" string="Attach LIMS Reports"/>
+                    <!--                    <button name="action_approved_now" data-hotkey="q" string="Approve" type="object"-->
+                    <!--                            groups="visio_tti_so_customize.group_tti_so_sales_team"-->
+                    <!--                            invisible="state != 'sent_to_lims'"/>-->
+                    <button name="action_confirm_now" data-hotkey="q" string="Confirm" type="object"
+                            groups="visio_tti_so_customize.group_tti_so_sales_team"
+                            context="{'validate_analytic': True}" invisible="state != 'quotation_approved'"/>
+                    <button name="action_update_sale_order" id="update_sale_order" string="Update Sale Order"
+                            groups="visio_tti_so_customize.group_tti_so_sales_team"
+                            type="object" data-hotkey="u"
+                            invisible="locked or not tti_lims_api_response_check or state in ['cancel']"
+                            class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            confirm="Do you want to cancel this sale order?"
+                            groups="visio_tti_so_customize.group_tti_so_allow_cancel_so"
+                            invisible="state not in ['sent_to_lims'] or not id or locked" data-hotkey="x"/>
+
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='other_information']/group/group[@name='sale_shipping']/div/field[@name='commitment_date']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='other_information']/group/group[@name='sale_shipping']/label[@for='commitment_date']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//sheet" position="inside">
+                    <field name="tti_pi_buyer_test_packages" invisible="1"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='other_information']//field[@name='user_id']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='customer_signature']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='optional_products']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id'][1]" position="replace">
+                    <field name="partner_id" widget="" string="Customer"
+                           required="1"
+                           domain="[('parent_id', '=', False),('tti_company_category', '=', 'manufacture' ) , ('company_id', '=', company_id)]"
+                           context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_tti_company_category': 'manufacture' , 'search_default_type_company': 1, 'search_default_tti_manufacture': 1}"
+                           placeholder="Type to find a customer..."
+                           readonly="locked or hide_lock_btns"/>
+                    <span class="fw-bold">Address</span>
+                    <div class="o_address_format">
+                        <field name="partner_street" class="o_address_street"/>
+                        <field name="partner_street2" class="o_address_street"/>
+                        <field name="partner_city" class="o_address_city"/>
+                        <field name="partner_state_id" options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                               class="o_address_state"/>
+                        <field name="partner_zip" class="o_address_zip"/>
+                        <field name="partner_country_id" class="o_address_country"
+                               options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
+                    </div>
+                    <!--                    <field name="credit" readonly="1"/>-->
+                    <field name="total_receivable" readonly="1"/>
+                    <field name="tti_branch" widget="res_partner_many2one" required="1"
+                           domain="[('company_id', '=', company_id) , ('tti_company_category', '=', 'branch')]"
+                           options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                           context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_tti_company_category': 'branch'}"
+                           placeholder="Type to find a branch..."
+                           readonly="1"
+
+                    />
+                    <field name="quotation_num" force_save="1"/>
+                    <field name="sale_order_no"/>
+                    <!--                    <field name="barcode"/>-->
+                </xpath>
+
+                <!--                <xpath expr="//notebook" position="before">-->
+                <!--                    <field name="sale_order_properties" widget="properties"/>-->
+                <!--                </xpath>-->
+
+                <xpath expr="//field[@name='date_order'][1]" position="attributes">
+                    <attribute name="string">Report Delivery Date</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order'][2]" position="attributes">
+                    <attribute name="string">Report Delivery Date</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']"
+                       position="attributes">
+                    <attribute name="readonly">locked or hide_lock_btns</attribute>
+                    <attribute name="create">not locked or not hide_lock_btns</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='order_lines']" position="attributes">
+                    <attribute name="string">Test Selection</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="before">
+                    <field name="test_type" string="Type"/>
+                    <field name="default_code" string="Code"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//control//create[@name='add_product_control']"
+                       position="attributes">
+                    <attribute name="string">Add a Test or Package</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="attributes">
+                    <attribute name="placeholder">Type to find a test / package...</attribute>
+                    <attribute name="options">{'no_open': True, 'no_create': True , 'no_edit': True}</attribute>
+                    <attribute name="string">Test / Package</attribute>
+                    <attribute name="column_invisible">parent.tti_pi_buyer_test_packages</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']"
+                       position="attributes">
+                    <attribute name="placeholder">Type to find a test / package...</attribute>
+                    <attribute name="options">{'no_open': True, 'no_create': True , 'no_edit': True}</attribute>
+                    <attribute name="string">Test / Package</attribute>
+                    <attribute name="column_invisible">parent.tti_pi_buyer_test_packages</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']" position="after">
+                    <field name="product_template_id" string="Test / Package" readonly="not product_updatable"
+                           required="not display_type and not is_downpayment"
+                           context="{'partner_id': parent.partner_id, 'quantity': product_uom_qty, 'pricelist': parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id, 'default_list_price': price_unit, 'default_uom_id': product_uom, }"
+                           options="{'no_open': True, 'no_create': True, 'no_edit': True}"
+                           optional="show"
+                           domain="[('sale_ok', '=', True), '|', ('id', 'in', parent.tti_pi_buyer_test_packages), ('test_type', '=', 'test_report')]"
+                           widget="sol_product_many2one"
+                           placeholder="Type to find a test / package..."
+                           column_invisible="not parent.tti_pi_buyer_test_packages"
+                    />
+                    <field name="new_unique_number" column_invisible="1"/>
+
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']" position="attributes">
+                    <attribute name="string">Rate</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="before">
+                    <field name="tti_test_method" string="Method" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']" position="after">
+                    <field name="price_unit_rate" string="$ Rate" force_save="1" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']" position="after">
+                    <field name="comments"/>
+                    <field name="composites"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']" position="after">
+                    <separator string="Test Reports" invisible="not tti_test_report_line_ids"/>
+                    <field name="tti_test_report_line_ids" widget="sol_o2m" mode="list"
+                           invisible="not tti_test_report_line_ids"
+                           readonly="locked">
+                        <list string="Test Reports" editable="bottom" delete="0" create="0">
+                            <field name="sequence" widget="handle"/>
+                            <field name="unique_number" column_invisible="1"/>
+                            <field name="new_unique_number" column_invisible="1"/>
+                            <field name="order_id" readonly="1" column_invisible="1"/>
+                            <field name="package_id" readonly="1" column_invisible="1"/>
+                            <field name="default_code" string="Code"/>
+                            <field name="test_report" domain="[('test_type', '=', 'test_report')]"
+                                   widget="sol_product_many2one"
+                                   options="{'no_edit': True, 'no_create': True, 'no_open': True}" readonly="1"/>
+                            <field name="name" string="Method" widget="sol_text" readonly="1" optional="show"/>
+                            <field name="qty" string="Qty"/>
+                            <field name="uom_id" optional="hide"/>
+                            <field name="list_price" string="Rate"/>
+                            <field name="list_price_rate" string="$ Rate"/>
+                            <!--                            <field name="list_price_usd" string="$ Rate"/>-->
+                            <field name="total_cost" string="Total"/>
+                            <field name="comments"/>
+                            <field name="composites"/>
+                        </list>
+                    </field>
+                    <group invisible="not tti_test_report_line_ids">
+                        <group>
+                            <field name="grand_total"/>
+                        </group>
+                    </group>
+                </xpath>
+
+                <xpath expr="//group[@name='note_group']" position="before">
+                    <group string="Charges">
+                        <group>
+                            <label for="tti_express_charges"/>
+                            <div class="d-flex">
+                                <field name="tti_express_charges" class="oe_inline oe_small"
+                                       readonly="locked or hide_lock_btns"/>
+                                /
+                                <field name="tti_express_charges_prcnt" class="oe_inline oe_small"
+                                       style="width: 2.5rem;" widget="percentage"
+                                       readonly="locked or hide_lock_btns"/>
+                            </div>
+
+                            <label for="tti_shuttle_service_charges"/>
+                            <div class="d-flex">
+                                <field name="tti_shuttle_service_charges" class="oe_inline oe_small"
+                                       readonly="locked or hide_lock_btns"/>
+                                /
+                                <field name="tti_shuttle_service_charges_prcnt" class="oe_inline oe_small"
+                                       style="width: 2.5rem;" widget="percentage"
+                                       readonly="locked or hide_lock_btns"/>
+                            </div>
+
+                            <label for="tti_import_duty_charges"/>
+                            <div class="d-flex">
+                                <field name="tti_import_duty_charges" class="oe_inline oe_small"
+                                       readonly="locked or hide_lock_btns"/>
+                                /
+                                <field name="tti_import_duty_charges_prcnt" class="oe_inline oe_small"
+                                       style="width: 2.5rem;" widget="percentage"
+                                       readonly="locked or hide_lock_btns"/>
+                            </div>
+
+                            <label for="tti_courier_charges"/>
+                            <div class="d-flex">
+                                <field name="tti_courier_charges" class="oe_inline oe_small"
+                                       readonly="locked or hide_lock_btns"/>
+                                /
+                                <field name="tti_courier_charges_prcnt" class="oe_inline oe_small"
+                                       style="width: 2.5rem;" widget="percentage"
+                                       readonly="locked or hide_lock_btns"/>
+                            </div>
+
+                            <label for="tti_travelling_charges"/>
+                            <div class="d-flex">
+                                <field name="tti_travelling_charges" class="oe_inline"
+                                       readonly="locked or hide_lock_btns"/>
+                                /
+                                <field name="tti_travelling_charges_prcnt" class="oe_inline oe_small"
+                                       style="width: 2.5rem;" widget="percentage"
+                                       readonly="locked or hide_lock_btns"/>
+                            </div>
+                            <field name="total_taxble_amount"/>
+                        </group>
+                        <group class="oe_subtotal_footer" style="border-top: none;">
+                            <field name="tti_express_charges" readonly="1" widget="monetary" colspan="2"/>
+                            <field name="tti_shuttle_service_charges" readonly="1" widget="monetary" colspan="2"/>
+                            <field name="tti_import_duty_charges" readonly="1" widget="monetary" colspan="2"/>
+                            <field name="tti_courier_charges" readonly="1" widget="monetary" colspan="2"/>
+                            <field name="tti_travelling_charges" readonly="1" widget="monetary" colspan="2"/>
+                            <field name="tti_total_charges" class="oe_subtotal_footer_separator " readonly="1"
+                                   widget="monetary" colspan="2"/>
+                        </group>
+                    </group>
+
+                </xpath>
+
+                <!--                <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_template_id']"-->
+                <!--                       position="attributes">-->
+                <!--                    <attribute name="options">{'no_open': True, 'no_create_edit': True}</attribute>-->
+                <!--                </xpath>-->
+
+                <xpath expr="//notebook/page[@name='order_lines']" position="before">
+                    <page string="Client/Sample Info" name="tti_client_sample_info">
+                        <group string="Header info" col="3">
+                            <group>
+                                <field name="name" string="Performa Invoice" readonly="1"/>
+                                <field name="create_date" string="Sample Date"/>
+                                <field name="tti_reference_no" invisible="1"
+                                       readonly="locked"/>
+                                <field name="tti_parcel_id"
+                                       domain="[('state', '=', 'posted') , ('company_id', '=', company_id)]"
+                                       readonly="locked or hide_lock_btns"
+                                       widget="many2many_tags"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <!--                                <field name="tti_date_order_search"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved']"/>-->
+                                <field name="tti_currency_from" string="Currency" invisible="1"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       readonly="locked"/>
+                                <field name="tti_copy_from"
+                                       readonly="locked or hide_lock_btns"/>
+                            </group>
+                            <group>
+                                <field name="commitment_date" string="Report Delivery Date"
+                                       readonly="locked or hide_lock_btns"/>
+                                <field name="tti_exchange_rate" invisible="1" readonly="1"/>
+                                <field name="tti_dollar_exchange_rate" force_save="1" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Party Information" col="3">
+                            <group>
+                                <!--                                <field name="tti_pi_manufacturer" readonly="state in ['sale', 'cancel']"/>-->
+                                <field name="partner_id" widget="" string="Manufacturer"
+                                       required="1"
+                                       domain="[('parent_id', '=', False),('tti_company_category', '=', 'manufacture' ) , ('company_id', '=', company_id) ]"
+                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_tti_company_category': 'manufacture' , 'search_default_type_company': 1, 'search_default_tti_manufacture': 1}"
+                                       placeholder="Type to find a manufacturer..."
+                                       readonly="locked or hide_lock_btns"/>
+                                <field name="tti_pi_applicant" required="1"
+                                       domain="[('parent_id', '=', partner_id),('tti_company_category', '=', 'applicant') , ('company_id', '=', company_id)]"
+                                       context="{'res_partner_search_mode': 'customer', 'default_parent_id': partner_id, 'default_company_type': 'person', 'default_tti_company_category': 'applicant'}"
+                                       placeholder="Type to find a applicant..."
+                                       readonly="locked or hide_lock_btns"/>
+                                <field name="tti_pi_agent_id" widget=""
+                                       domain="[('tti_company_category', '=', 'agent') , ('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_tti_company_category': 'agent'}"
+                                       placeholder="Type to find a Agent..."
+                                       readonly="locked or hide_lock_btns"
+                                />
+                                <!--                                <field name="tti_pi_to_report" readonly="locked"/>-->
+                                <field name="tti_pi_report_to_manufacturer"
+                                       domain="[('parent_id', '=', False),('tti_company_category', '=', 'manufacture' ) , ('company_id', '=', company_id) ]"
+                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_tti_company_category': 'manufacture' , 'search_default_type_company': 1, 'search_default_tti_manufacture': 1}"
+                                       placeholder="Type to find a manufacturer..."
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       readonly="locked or hide_lock_btns"
+                                />
+                            </group>
+                            <group>
+                                <!--                                <field name="tti_pi_address" readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved' , 'quotation_done']" />-->
+                                <field name="partner_street" readonly="1"/>
+                                <field name="tti_pi_buyer" required="1"
+                                       widget=""
+                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True,'default_company_type': 'company', 'default_tti_company_category': 'buyer'}"
+                                       placeholder="Type to find a buyer..."
+                                       readonly="locked or hide_lock_btns"/>
+                                <field name="tti_pi_email_cc" widget="email"
+                                       readonly="locked or hide_lock_btns"/>
+                                <field name="tti_pi_email" widget="email"
+                                       readonly="locked or hide_lock_btns"/>
+                            </group>
+                            <group>
+                                <field name="partner_zone_id" readonly="1"/>
+                                <!-- <field name="partner_zone" readonly="1"/> -->
+                                <!--                                <field name="tti_pi_code"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved' , 'quotation_done']"/>-->
+                                <field name="tti_pi_brand_id" placeholder="Type to find a brand..."
+                                       widget=""
+                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True, 'default_parent_id': tti_pi_buyer, 'default_company_type': 'person', 'default_tti_company_category': 'brand'}"
+                                       domain="[('parent_id', '=', tti_pi_buyer), ('tti_company_category', '=', 'brand') , ('company_id', '=', company_id)]"
+                                       readonly="locked or hide_lock_btns"/>
+                                <!--                                <field name="tti_pi_submitted_by"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved']"/>-->
+                            </group>
+                        </group>
+                        <group string="Sample Information" col="3">
+                            <group>
+                                <field name="tti_si_category" placeholder="Type to find a category..."
+                                       domain="[('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       readonly="locked"
+                                       required="1"/>
+                                <field name="category_type" invisible="0" readonly="1"/>
+                                <field name="tti_si_end_use"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"
+                                       readonly="locked"/>
+                                <field name="tti_fiber_si" widget="char"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'food', 'pharma']"
+                                       readonly="locked"/>
+                                <!--                                <field name="tti_si_fiber"-->
+                                <!--                                       options="{'no_open': True}"-->
+                                <!--                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'food', 'pharma']"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved']"/>-->
+                                <field name="tti_si_design" invisible="category_type in ['petroleum', 'food', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_order_qty"
+                                       invisible="category_type in ['petroleum', 'wne', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_po" invisible="category_type in ['petroleum']"
+                                       readonly="locked"/>
+                                <field name="tti_si_dye_stuff" domain="[('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'food', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_size"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"
+                                       readonly="locked"/>
+                                <field name="tti_si_protocol"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_p_report"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'pharma']"
+                                       string="P. Report"
+                                       readonly="locked"/>
+                                <field name="tti_si_care_inst" invisible="category_type in ['inspection', 'petroleum']"
+                                       readonly="locked"/>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_1_name" placeholder="Label 1 Name"
+                                           readonly="locked"/>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_1_value" placeholder="Label 1 Value"
+                                           readonly="locked"/>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_3_name" placeholder="Label 3 Name"
+                                           readonly="locked"/>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_3_value" placeholder="Label 3 Value"
+                                           readonly="locked"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="tti_si_sub_category" required="1"
+                                       domain="[('tti_si_category', '=', tti_si_category) , ('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       context="{'default_tti_si_category': tti_si_category,}"
+                                       placeholder="Type to find a sub category"
+                                       readonly="locked"/>
+                                <!--                                <field name="tti_si_product_type"-->
+                                <!--                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"-->
+                                <!--                                       context="{'default_tti_si_category': tti_si_category,}"-->
+                                <!--                                       placeholder="Type to find a product type"-->
+                                <!--                                       invisible="category_type in ['petroleum', 'wne']"-->
+                                <!--                                       readonly="state in ['sale', 'cancel']"/>-->
+                                <!--                                <field name="tti_si_material"-->
+                                <!--                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'food', 'pharma']"-->
+                                <!--                                       readonly="state in ['sale', 'cancel']"/>-->
+                                <field name="tti_si_fabric"
+                                       invisible="category_type in ['petroleum', 'wne', 'food', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_style_no"
+                                       invisible="category_type in ['petroleum', 'food', 'pharma']"
+                                       readonly="locked"/>
+
+                                <field name="tti_si_material" string="MFG"
+                                       invisible="category_type not in ['food', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_fabric" invisible="category_type not in ['food', 'pharma']"
+                                       string="EXP"
+                                       readonly="locked"/>
+                                <field name="tti_si_style_no" invisible="category_type not in ['food', 'pharma']"
+                                       string="Batch"
+                                       readonly="locked"/>
+
+                                <field name="tti_si_colour" invisible="category_type in ['petroleum', 'wne']"
+                                       readonly="locked"/>
+                                <field name="tti_si_destination"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"
+                                       readonly="locked"/>
+                                <!--                                <field name="tti_si_test_no"-->
+                                <!--                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved']"/>-->
+                                <field name="tti_si_season" invisible="category_type in ['inspection', 'petroleum']"
+                                       readonly="locked"/>
+                                <!--                                <field name="tti_si_product_category" invisible="category_type in ['inspection', 'wne']"-->
+                                <!--                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved' , 'quotation_done']"/>-->
+                                <field name="tti_si_product_category_text"
+                                       invisible="category_type in ['inspection', 'wne']"
+                                       readonly="locked"/>
+                                <field name="tti_si_select_partner" invisible="category_type in ['inspection']"
+                                       required="1" force_save="1"
+                                       readonly="locked or state not in ['draft','sent','quotation_done','quotation_approved']"/>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_2_name" placeholder="Label 2 Name"
+                                           readonly="locked"/>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_2_value" placeholder="Label 2 Value"
+                                           readonly="locked"/>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_4_name" placeholder="Label 4 Name"
+                                           readonly="locked"/>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <field name="tti_si_label_4_value" placeholder="Label 4 Value"
+                                           readonly="locked"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="tti_si_description" required="1" readonly="locked"/>
+                                <field name="tti_si_weight" invisible="category_type in ['inspection']"
+                                       readonly="locked"/>
+                                <!--                                <field name="tti_si_code"-->
+                                <!--                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"-->
+                                <!--                                       string="Code"-->
+                                <!--                                       readonly="state in ['sale', 'cancel']"/>-->
+                                <field name="tti_si_uom" invisible="category_type in ['inspection', 'wne', 'pharma']"
+                                       domain="[('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       readonly="locked"/>
+                                <field name="tti_si_construction"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"
+                                       readonly="locked"/>
+                                <field name="tti_si_model_no" invisible="category_type in ['inspection', 'wne']"
+                                       readonly="locked"/>
+                                <field name="tti_si_style"
+                                       invisible="category_type in ['inspection', 'petroleum', 'food', 'pharma']"
+                                       readonly="locked"/>
+
+                                <field name="tti_si_dosage_form" domain="[('company_id', '=', company_id)]"
+                                       invisible="category_type not in ['pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_manufacturer"
+                                       invisible="category_type not in ['pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_sampling_date"
+                                       invisible="category_type not in ['pharma']"
+                                       readonly="locked"/>
+
+                                <field name="tti_si_article_no"
+                                       invisible="category_type in ['wne', 'food', 'pharma', 'petroleum']"
+                                       readonly="locked"/>
+                                <field name="tti_si_program" domain="[('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'food', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_origin" invisible="category_type in ['inspection', 'wne']"
+                                       options="{'no_edit': True, 'no_create': True, 'no_open': True}"
+                                       readonly="locked"/>
+                                <field name="tti_si_dept" widget="char"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"
+                                       readonly="locked"/>
+                                <!--                                <field name="tti_si_department"-->
+                                <!--                                       options="{ 'no_open': True}"-->
+                                <!--                                       invisible="category_type in ['inspection', 'petroleum', 'wne']"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved']"/>-->
+                                <!--                                <field name="tti_si_department"-->
+                                <!--                                       string="Unit No:"-->
+                                <!--                                       invisible="category_type not in ['wne']"-->
+                                <!--                                       readonly="state in ['sale', 'cancel' , 'sent_to_lims' , 'approved']"/>-->
+                                <field name="tti_si_article_name"
+                                       invisible="category_type in ['inspection', 'petroleum', 'wne', 'pharma']"
+                                       readonly="locked"/>
+                                <field name="tti_si_vr_no" invisible="category_type in ['inspection', 'pharma']"
+                                       string="V. R. No"
+                                       readonly="locked"/>
+                                <field name="tti_si_sp_inst" invisible="category_type in ['inspection']"
+                                       readonly="locked"/>
+                            </group>
+                        </group>
+                        <group string="Contact Information">
+                            <group>
+                                <field name="tti_ci_mobile_no"
+                                       readonly="locked or hide_lock_btns"/>
+                            </group>
+                        </group>
+                        <separator string="Emails"/>
+                        <field name="sale_email_ids"
+                               readonly="locked or hide_lock_btns">
+                            <list editable="bottom">
+                                <control>
+                                    <create name="add_email_control" string="Add a Email"/>
+                                </control>
+                                <field name="email" required="1" widget="email"/>
+                                <field name="emails_to_receive" widget="radio" options="{'horizontal': true}"/>
+                            </list>
+                        </field>
+
+                        <!--                            <group string="Internal">-->
+                        <!--                                <field name="tti_ci_email1" readonly="state in ['sale', 'cancel']"/>-->
+                        <!--                                <field name="tti_ci_email2" readonly="state in ['sale', 'cancel']"/>-->
+                        <!--                            </group>-->
+                        <!--                            <group string="Manufacturer">-->
+                        <!--                                <field name="tti_ci_email3" readonly="state in ['sale', 'cancel']"/>-->
+                        <!--                                <field name="tti_ci_email4" readonly="state in ['sale', 'cancel']"/>-->
+                        <!--                            </group>-->
+                        <!--                            <group string="Buyer">-->
+                        <!--                                <field name="tti_ci_email5" readonly="state in ['sale', 'cancel']"/>-->
+                        <!--                                <field name="tti_ci_email6" readonly="state in ['sale', 'cancel']"/>-->
+                        <!--                            </group>-->
+
+                    </page>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='order_lines']" position="before">
+
+                    <page string="Component Breakdown" name="tti_component_breakdown">
+                        <group>
+                            <group>
+                                <field name="tti_okeo_image_id" invisible="1"/>
+                                <field name="tti_image_comp_breakdown_id" invisible="1"/>
+                                <field name="tti_okeo_image_name" invisible="1"/>
+                                <field name="tti_image_comp_breakdown_name" invisible="1"/>
+
+                                <field name="tti_okeo_image" filename="tti_okeo_image_name"
+                                       readonly="locked"/>
+                                <field name="tti_image_comp_breakdown" filename="tti_image_comp_breakdown_name"
+                                       readonly="locked"/>
+                                <field name="tti_remarks"
+                                       readonly="locked"/>
+
+                            </group>
+                            <group>
+                                <field name="tti_no_of_samples"
+                                       readonly="locked"/>
+                                <field name="tti_no_of_material"
+                                       readonly="locked"/>
+                                <div invisible="state in ['cancel', 'sale'] or locked">
+                                    <button name="action_generate_tti_so_component_breakdown_ids" type="object"
+                                            class="btn btn-primary"
+                                            readonly="locked"
+                                            icon="fa-refresh">Generate breakdown
+                                    </button>
+                                </div>
+                            </group>
+                            <group colspan="12" string="Breakdown" invisible="not tti_so_component_breakdown_ids">
+                                <field name="tti_so_component_breakdown_ids" nolabel="1"
+                                       domain="[('company_id', '=', company_id)]"
+                                       readonly="locked">
+                                    <list editable="bottom" create="0">
+                                        <field name="sequence" widget="handle" optional="show"/>
+                                        <field name="tti_sample" readonly="1"/>
+                                        <field name="tti_material_no" readonly="1"/>
+                                        <field name="tti_component_description"/>
+                                        <field name="tti_material_type"/>
+                                        <field name="tti_remarks"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </group>
+                    </page>
+
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='order_lines']" position="after">
+
+                    <page string="Image Upload" name="tti_image_upload">
+                        <group>
+                            <field name="tti_attachment_ids" context="{'default_public': True}"
+                                   widget="many2many_binary" nolabel="1" colspan="2"
+                                   readonly="locked"/>
+                        </group>
+                    </page>
+
+                    <page string="Care Label Upload" name="tti_care_label_upload">
+                        <group>
+                            <group>
+                                <field name="tti_care_label_image_one_id" invisible="1"/>
+                                <field name="tti_care_label_image_two_id" invisible="1"/>
+                                <field name="tti_care_label_image_three_id" invisible="1"/>
+                                <field name="tti_care_label_image_four_id" invisible="1"/>
+                                <field name="tti_care_label_image_five_id" invisible="1"/>
+                                <field name="tti_care_label_image_six_id" invisible="1"/>
+
+                                <field name="tti_care_label_image_one_name" invisible="1"/>
+                                <field name="tti_care_label_image_two_name" invisible="1"/>
+                                <field name="tti_care_label_image_three_name" invisible="1"/>
+                                <field name="tti_care_label_image_four_name" invisible="1"/>
+                                <field name="tti_care_label_image_five_name" invisible="1"/>
+                                <field name="tti_care_label_image_six_name" invisible="1"/>
+
+                                <field name="tti_care_label_image_one" filename="tti_care_label_image_one_name"
+                                       readonly="locked"/>
+                                <field name="tti_care_label_image_two" filename="tti_care_label_image_two_name"
+                                       readonly="locked"/>
+                                <field name="tti_care_label_image_three" filename="tti_care_label_image_three_name"
+                                       readonly="locked"/>
+                                <field name="tti_care_label_image_four" filename="tti_care_label_image_four_name"
+                                       readonly="locked"/>
+                                <field name="tti_care_label_image_five" filename="tti_care_label_image_five_name"
+                                       readonly="locked"/>
+                                <field name="tti_care_label_image_six" filename="tti_care_label_image_six_name"
+                                       readonly="locked"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Report URLs" name="report_urls">
+                        <field name="report_urls_html" readonly="1"/>
+                    </page>
+
+                    <page string="LIMS API Response" groups="base.group_no_one">
+                        <field name="tti_lims_api_response" widget="text" placeholder="Response...." readonly="1"/>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_sale_order_tree_tti_inherit" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherit.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list/field[@name='partner_id']" position="after">
+                    <field name="tti_pi_buyer"/>
+                    <field name="tti_si_category"/>
+                    <field name="tti_si_sub_category"/>
+                    <field name="tti_si_description"/>
+                    <field name="partner_zone_id" string="City Zone"/>
+                    <field name="total_pkr" sum="total"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

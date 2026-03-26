@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_cs_live_dash\views\tti_cs_live_dashboard_menu.xml-->
+
+
+<odoo>
+    <!-- Client action for CS Live Dashboard -->
+    <record id="action_tti_cs_live_dashboard" model="ir.actions.client">
+        <field name="name">CS Live Dashboard</field>
+        <field name="tag">tti_cs_live_dashboard_action</field>
+    </record>
+
+    <!-- Root menu for TTI Dashboards -->
+    <menuitem id="menu_visio_tti_live_dash_root"
+              name="CS Live Dashboard"
+              web_icon="visio_tti_cs_live_dash,static/description/icon.png"
+              sequence="5"/>
+
+    <!-- CS Dashboard menu item -->
+    <menuitem id="menu_visio_tti_cs_live_dashboard"
+              name="Dashboard"
+              parent="menu_visio_tti_live_dash_root"
+              action="action_tti_cs_live_dashboard"
+              sequence="2"/>
+</odoo>
+

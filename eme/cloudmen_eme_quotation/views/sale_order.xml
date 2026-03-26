@@ -1,0 +1,35 @@
+<odoo>
+
+    <record id="view_sale_order_product_inherit" model="ir.ui.view">
+        <field name="name">sale.order.model.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+<!--                <field name="show_model_in_reports" widget="boolean_toggle"/>-->
+<!--                <field name="show_brand_in_reports" widget="boolean_toggle"/>-->
+                <field name="consultant_id"/>
+                <field name="attention_id"/>
+                <field name="subject"/>
+            </xpath>
+
+            <xpath expr="//field[@name='sale_order_template_id']"
+                   position="after">
+                <field name="details"/>
+            </xpath>
+
+            <!--            <xpath expr="//page[@name='order_lines']/field[@name='order_line']//list//field[@name='name']"-->
+<!--                   position="after">-->
+<!--                <field name="default_code"/>-->
+                <!--<field name="brand"/> #zia comment-->
+<!--            </xpath>-->
+            <!-- <xpath expr="//notebook" position="inside">-->
+            <!-- <page string="Details">-->
+            <!-- <field name = "details"/>-->
+            <!-- </page>-->
+            <!-- </xpath>-->
+
+        </field>
+    </record>
+</odoo>

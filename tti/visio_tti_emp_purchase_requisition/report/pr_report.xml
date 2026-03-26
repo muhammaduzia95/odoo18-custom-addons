@@ -1,0 +1,224 @@
+<odoo>
+    <template id="pr_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <div class="d-flex justify-content-between" style="font-size:12px;">
+                            <div style="text-align: right;">
+                                <span>Tti/PUR/QR-04, Rev 01 15/05/25</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 30px;">
+                            <h2 style="color: #2E619B; margin-bottom: 30px;">
+                                Purchase Requisition #
+                                <t t-esc="o.name"/>
+                            </h2>
+
+                            <table class="table table-sm"
+                                   style="width: 100%; border-collapse: collapse; font-size:12px;">
+                                <tr>
+                                    <td style="padding: 5px;">
+                                        <span>Requisitioner:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.employee_id.name"/>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <span>Requisition Date:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.requisition_date.strftime('%m/%d/%Y') if o.requisition_date else ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;">
+                                        <span>Department:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.dept_id.name if o.dept_id else ''"/>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <span>Received Date:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.receive_date.strftime('%m/%d/%Y') if o.receive_date else ''"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="margin-bottom: 10px;">
+                                Other Information
+                            </h3>
+
+                            <table class="table table-sm"
+                                   style="width: 100%; border-collapse: collapse; font-size:12px;">
+                                <tr>
+                                    <td style="padding: 5px;">
+                                        <span>Approved By:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.requisition_head_id.name if o.requisition_head_id else ''"/>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <span>Approval Date:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.approval_date.strftime('%m/%d/%Y') if o.approval_date else ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;">
+                                        <span>Accepted By:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.confirm_id.name if o.confirm_id else ''"/>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <span>Acceptance Date:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.confirmed_date.strftime('%m/%d/%Y') if o.confirmed_date else ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;">
+                                        <span>Rejected By:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.rejected_user_id.name if o.rejected_user_id else ''"/>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <span>Rejected Date:</span>
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <t t-esc="o.reject_date.strftime('%m/%d/%Y') if o.reject_date else ''"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="margin-bottom: 10px;">
+                                Requisition Lines
+                            </h3>
+
+                            <!--requisition_order_ids-->
+                            <table class="table table-sm"
+                                   style="width: 100%; border-collapse: collapse; font-size:12px;">
+                                <thead class="bg-secondary">
+                                    <tr>
+                                        <th style="border: 1px solid black; text-align: center;" rowspan="2">Sr No.</th>
+                                        <th style="border: 1px solid black; text-align: center;" rowspan="2">Product
+                                            Code
+                                        </th>
+                                        <th style="border: 1px solid black; text-align: center;" rowspan="2">Product Description
+                                        </th>
+                                        <th style="border: 1px solid black; text-align: center;" rowspan="2">QTY</th>
+                                        <th style="border: 1px solid black; text-align: center;" rowspan="2">UoM</th>
+                                        <th style="border: 1px solid black; text-align: center;" colspan="4">History of
+                                            Purchases
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid black; text-align: center;">Last PO</th>
+                                        <th style="border: 1px solid black; text-align: center;">Supplier</th>
+                                        <th style="border: 1px solid black; text-align: center;">Qty</th>
+                                        <th style="border: 1px solid black; text-align: center;">Price (PKR)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-foreach="o.requisition_order_ids" t-as="line">
+                                        <t t-set="po_lines" t-value="env['purchase.order.line'].sudo().search([
+                                        ('product_id', '=', line.product_id.id),
+                                        ('qty_received', '&gt;', 0),
+                                        ('state', 'in', ['purchase', 'done']),
+                                        ], order='date_order desc', limit=1)"/>
+
+                                        <tr>
+                                            <td style="border: 1px solid black; text-align: center; height: 30px; vertical-align: middle;"
+                                                >
+                                                <t t-esc="index"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: left; height: 30px; vertical-align: middle;"
+                                                >
+                                                <t t-esc="line.product_id.default_code or line.product_id.barcode or  ''"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: left; height: 30px; vertical-align: middle;"
+                                               >
+                                                <t t-esc="line.product_id.name or ''"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center; height: 30px; vertical-align: middle;"
+                                               >
+                                                <t t-esc="line.quantity or ''"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center; height: 30px; vertical-align: middle;"
+                                                >
+                                                <t t-esc="line.uom or ''"/>
+                                            </td>
+                                            <!-- First PO line -->
+                                            <td style="border: 1px solid black; text-align: left; height: 30px;">
+                                                <t t-if="po_lines and len(po_lines) >= 1">
+                                                    <span>
+                                                        <t t-esc="po_lines[0].order_id.name"/>
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <t t-esc="po_lines[0].order_id.date_order.strftime('%d/%m/%y')"/>
+                                                    </span>
+                                                </t>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: left; height: 30px; vertical-align: middle;">
+                                                <t t-if="po_lines and len(po_lines) >= 1"
+                                                   t-esc="po_lines[0].partner_id.name"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center; height: 30px; vertical-align: middle;">
+                                                <t t-if="po_lines and len(po_lines) >= 1"
+                                                   t-esc="po_lines[0].qty_received"/>
+                                            </td>
+                                            <td class="text-center" style="border: 1px solid black; height: 30px;vertical-align: middle;">
+                                                <span t-if="po_lines and len(po_lines) >= 1" t-field="po_lines.price_unit"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_custom_pr" model="report.paperformat">
+        <field name="name">PR Report Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_pr" model="ir.actions.report">
+        <field name="name">Purchase Requisition Report</field>
+        <field name="model">employee.purchase.requisition</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_emp_purchase_requisition.pr_report_template</field>
+        <field name="report_file">visio_tti_emp_purchase_requisition.pr_report_template</field>
+        <field name="print_report_name">'PR Report - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="visio_tti_emp_purchase_requisition.model_employee_purchase_requisition"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="visio_tti_emp_purchase_requisition.paperformat_custom_pr"/>
+    </record>
+</odoo>

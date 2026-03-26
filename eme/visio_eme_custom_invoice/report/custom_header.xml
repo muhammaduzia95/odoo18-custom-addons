@@ -1,0 +1,394 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\eme\visio_eme_custom_invoice\report\custom_header.xml-->
+<odoo>
+
+    <!--  PROFORMA INVOICE  -->
+    <template id="performa_invoice_service">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+                <img t-if="company.logo" style="width:180px; height:130px;" class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>PROFORMA INVOICE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  TAX CREDIT NOTE  -->
+    <template id="tax_credit_note">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+                <img t-if="company.logo" style="width:180px; height:130px;" class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>TAX CREDIT NOTE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  TAX DEBIT NOTE  -->
+    <template id="tax_debit_note">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+                <img t-if="company.logo" style="width:180px; height:130px;" class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>TAX DEBIT NOTE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  MATERIAL ISSUE NOTE  -->
+    <template id="material_issue_note">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+                <img t-if="company.logo" style="width:180px; height:130px;" class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>MATERIAL ISSUE NOTE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  DELIVERY NOTE  -->
+    <template id="delivery_note">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+                <img t-if="company.logo" style="width:180px; height:130px;" class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>DELIVERY NOTE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  SUPPLIER INVOICE  -->
+    <template id="supplier_invoice_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+                <img t-if="company.logo" style="width:180px; height:130px;" class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>SUPPLIER INVOICE</strong>
+                </h2>
+            </div>
+        </div>
+    </template>
+
+    <!--  GOODS RECEIPT NOTE  -->
+    <template id="goods_receipt_note_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>GOODS RECEIPT NOTE</strong>
+                </h2>
+            </div>
+        </div>
+    </template>
+
+    <!--  PURCHASE ORDER  -->
+    <template id="purchase_order_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <!-- Company Logo -->
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <!-- PURCHASE ORDER HEADING -->
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>PURCHASE ORDER</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  REQUEST FOR QUOTATION  -->
+    <template id="rfq_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <!-- Company Logo -->
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <!-- RFQ HEADING -->
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>REQUEST FOR QUOTATION</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  MATERIAL REQUEST  -->
+    <template id="material_request_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <!-- Company Logo -->
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <!-- MATERIAL REQUEST HEADING -->
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>MATERIAL REQUEST</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  TAX INVOICE  -->
+    <template id="tax_invoice_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <!-- Company Logo -->
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <!-- TAX INVOICE HEADING -->
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>TAX INVOICE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!-- MATERIAL RETURN NOTE -->
+    <template id="material_return_note_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:0px;"
+             class="border-top-0">
+
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <!-- Company Logo -->
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <!-- MATERIAL RETURN NOTE HEADING -->
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>MATERIAL RETURN NOTE</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  QUOTATION  -->
+    <template id="quotation_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-left:13mm; padding-right:13mm;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <img t-if="company.logo"
+                     style="width:180px; height:130px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+                <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; text-align: right; color: black;white-space: nowrap;">
+                    <strong>QUOTATION</strong>
+                </h2>
+
+            </div>
+        </div>
+    </template>
+
+    <!--  COVER PAGE HEADER  -->
+    <template id="cover_header">
+
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="padding-bottom: 10px; padding-top: 20px; padding-left:13mm; padding-right:13mm;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; padding:0px; justify-content: space-between; align-items: center;">
+
+                <img t-if="company.logo"
+                     style="width:180px; height:180px; margin-bottom:20px;"
+                     class="o_company_logo_small"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo"/>
+
+
+            </div>
+        </div>
+
+    </template>
+
+    <template id="eme_external_layout_standard" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+
+            <!-- Cover page must win FIRST -->
+            <t t-if="is_cover_page">
+                <t t-call="visio_eme_custom_invoice.cover_header"/>
+            </t>
+            <t t-elif="is_tax_credit">
+                <t t-call="visio_eme_custom_invoice.tax_credit_note"/>
+            </t>
+            <t t-elif="is_tax_debit">
+                <t t-call="visio_eme_custom_invoice.tax_debit_note"/>
+            </t>
+            <t t-elif="is_issue_note">
+                <t t-call="visio_eme_custom_invoice.material_issue_note"/>
+            </t>
+            <t t-elif="is_delivery_note">
+                <t t-call="visio_eme_custom_invoice.delivery_note"/>
+            </t>
+            <t t-elif="is_supplier_invoice">
+                <t t-call="visio_eme_custom_invoice.supplier_invoice_header"/>
+            </t>
+            <t t-elif="is_goods_receipt">
+                <t t-call="visio_eme_custom_invoice.goods_receipt_note_header"/>
+            </t>
+            <t t-elif="is_purchase_order">
+                <t t-call="visio_eme_custom_invoice.purchase_order_header"/>
+            </t>
+            <t t-elif="is_rfq">
+                <t t-call="visio_eme_custom_invoice.rfq_header"/>
+            </t>
+            <t t-elif="is_material_request">
+                <t t-call="visio_eme_custom_invoice.material_request_header"/>
+            </t>
+            <t t-elif="is_tax_invoice">
+                <t t-call="visio_eme_custom_invoice.tax_invoice_header"/>
+            </t>
+            <t t-elif="is_material_return">
+                <t t-call="visio_eme_custom_invoice.material_return_note_header"/>
+            </t>
+            <t t-elif="is_quotation">
+                <t t-call="visio_eme_custom_invoice.quotation_header"/>
+            </t>
+            <t t-else="">
+                <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+            </t>
+
+        </xpath>
+    </template>
+
+    <!--  Replacing the original headers  -->
+    <template id="eme_external_layout_boxed" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+        </xpath>
+    </template>
+
+    <template id="eme_external_layout_bold" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+        </xpath>
+    </template>
+
+    <template id="eme_external_layout_striped" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+        </xpath>
+    </template>
+
+    <template id="eme_external_layout_bubble" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+        </xpath>
+    </template>
+
+    <template id="eme_external_layout_wave" inherit_id="web.external_layout_wave">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+        </xpath>
+    </template>
+
+    <template id="eme_external_layout_folder" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_eme_custom_invoice.performa_invoice_service"/>
+        </xpath>
+    </template>
+
+</odoo>

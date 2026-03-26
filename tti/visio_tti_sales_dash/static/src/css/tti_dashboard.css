@@ -1,0 +1,92 @@
+/* D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_sales_dash\static\src\css\tti_dashboard.css */
+
+/* General card styling */
+.tti_dashboard_container .card {
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+.tti_dashboard_container .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 10px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* KPI text */
+.card h5 {
+    font-weight: 600;
+    margin-top: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.card p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #0253e8; /* blue accent for numbers */
+}
+
+/* Table inside cards */
+.card table.table {
+    margin-bottom: 0;
+}
+
+.card table td {
+    padding: 6px 8px;
+    vertical-align: middle;
+}
+
+/* Section headings */
+h5 {
+    font-weight: 600;
+    color: #444;
+}
+
+/* Division-wise Contribution chart */
+#sales_bar_chart_right,
+#sales_line_chart,
+#partner_pie_chart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Scroll container fix */
+.o_action_manager {
+    overflow: auto !important;
+}
+
+/* Dashboard container */
+.oh_dashboards {
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #fff;
+    max-height: -webkit-fill-available;
+}
+
+/* Highlight active row in tables */
+.table-active td {
+    background-color: #f8f9fa !important;
+    font-weight: bold;
+}
+
+/* Utility alignment */
+.align_center {
+    text-align: center;
+}

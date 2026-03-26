@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_invoice_daily_summary_wizard,access_invoice_daily_summary_wizard,model_invoice_daily_summary_wizard,,1,1,1,1
+access_daily_summary_wizard,daily.summary.wizard,model_daily_summary_wizard,,1,1,1,1
+access_daily_ledger_wizard,daily.ledger.wizard,model_daily_ledger_wizard,,1,1,1,1

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hr_payroll.Dashboard" t-inherit="hr_payroll.Dashboard" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[contains(@class, 'col-12 col-lg-7 row p-0 pe-3 pe-lg-0 m-0 h-100')]/div[contains(@class, 'row g-0 g-md-3 mt-0 h-100 pe-0')]/div[contains(@class, 'col-12 col-md-6 mb-3 mb-md-0 o_payroll_dashboard_panel')][1]"
+               position="after">
+            <div class="col-12 col-md-6 mb-3 mb-md-0 o_payroll_dashboard_panel">
+                <PayrollDashboardChecklist/>
+            </div>
+        </xpath>
+    </t>
+</templates>

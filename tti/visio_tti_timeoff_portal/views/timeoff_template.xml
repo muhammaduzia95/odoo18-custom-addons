@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="timeoff_page" name="My Time Offs">
+        <t t-call="website.layout">
+
+            <div id="wrap" class="timeoff-portal-container">
+                <div class="timeoff-main-div">
+                    <h1 class="timeoff-header">My Time Offs</h1>
+
+                    <!-- Leave Balances Section -->
+                    <div class="timeoff-card mb-4">
+                        <div class="card-header-blue d-flex justify-content-between align-items-center">
+                            <div class="leave-balance">
+                                <p class="leave-balance">My Leave Balances</p>
+                            </div>
+                            <div>
+                                <a href="/my/timeoff/request" class="timeoff-btn-primary">
+                                    <i style="color:#007bff" class="fa fa-plus-circle me-2"></i>New Time Off
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <t t-if="not allocations">
+                                <div class="alert alert-info">
+                                    No leave allocations found.
+                                </div>
+                            </t>
+
+                            <t t-if="allocations">
+                                <div class="row" style="padding:20px;">
+                                    <t t-foreach="allocations" t-as="alloc">
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="timeoff-type-card">
+                                                <div class="card-body">
+                                                    <h3 class="leave-type-title">
+                                                        <i class="fa fa-calendar-check me-2"></i>
+                                                        <t t-esc="alloc['leave_type']"/>
+                                                    </h3>
+                                                    <div class="timeoff-progress mb-3">
+                                                        <div t-attf-class="timeoff-progress-bar {{ 'bg-success' if int(alloc['remaining_days']) > int(alloc['total_allocation'])/2 else 'bg-warning' }}"
+                                                             t-attf-style="width: {{ (int(alloc['remaining_days'])/int(alloc['total_allocation']))*100 if alloc['total_allocation'] > 0 else 0 }}%"
+                                                             role="progressbar"
+                                                             t-att-aria-valuenow="alloc['remaining_days']"
+                                                             t-att-aria-valuemin="0"
+                                                             t-att-aria-valuemax="alloc['total_allocation']">
+                                                        </div>
+                                                    </div>
+                                                    <div class="leave-stats">
+                                                        <span>
+                                                            <strong>Used:</strong>
+                                                            <t t-esc="alloc['used_days'] if alloc['used_days'] == int(alloc['used_days']) else '%.1f' % alloc['used_days']"/>
+                                                            days
+                                                        </span>
+                                                        <span>
+                                                            <strong>Remaining:</strong>
+                                                            <t t-esc="alloc['remaining_days'] if alloc['remaining_days'] == int(alloc['remaining_days']) else '%.1f' % alloc['remaining_days']"/>
+                                                            days
+                                                        </span>
+                                                        <span>
+                                                            <strong>Total:</strong>
+                                                            <t t-esc="int(alloc['total_allocation'])"/>
+                                                            days
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="timeoff-card">
+                        <div class="card-header-blue" style="text-align:center;">
+                            <h2 class="h5 mb-0">
+                                <t t-if="is_manager or is_hr"><i class="fa fa-users me-2"></i>Team Time Off History
+                                </t>
+                                <t t-if="not is_manager and not is_hr"><i class="fa fa-history me-2"></i>My Time Off
+                                    History
+                                </t>
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <t t-if="not timeoffs">
+                                <div class="alert alert-info">
+                                    <t t-if="is_manager or is_hr">No team time off requests found.</t>
+                                    <t t-if="not is_manager and not is_hr">You haven't taken any time off yet.</t>
+                                </div>
+                            </t>
+                            <t t-if="timeoffs">
+                                <div class="table-responsive">
+                                    <div class="scrollable-table-container">
+                                        <table class="timeoff-table">
+                                            <thead>
+                                                <tr>
+                                                    <t t-if="is_manager or is_hr">
+                                                        <th>Employee</th>
+                                                    </t>
+                                                    <th><i class="fa fa-tag me-1"></i>Type
+                                                    </th>
+                                                    <th><i class="fa fa-calendar-day me-1"></i>Start Date
+                                                    </th>
+                                                    <th><i class="fa fa-calendar-day me-1"></i>End Date
+                                                    </th>
+                                                    <th><i class="fa fa-clock me-1"></i>Duration
+                                                    </th>
+                                                    <th><i class="fa fa-info-circle me-1"></i>Status
+                                                    </th>
+                                                    <th><i class="fa fa-calendar-plus me-1"></i>Request Date
+                                                    </th>
+                                                    <t t-if="is_manager or is_hr">
+                                                        <th><i class="fa fa-cogs me-1"></i>Actions
+                                                        </th>
+                                                    </t>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="timeoffs" t-as="timeoff">
+                                                    <tr class="align-middle">
+                                                        <t t-if="is_manager or is_hr">
+                                                            <td>
+                                                                <t t-esc="timeoff['employee_name']"/>
+                                                            </td>
+                                                        </t>
+                                                        <td>
+                                                            <t t-esc="timeoff['type']"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="timeoff['start_date']"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="timeoff['end_date']"/>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-light text-dark">
+                                                                <t t-if="timeoff['duration'] == 0.5">
+                                                                    0.5 days
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <t t-esc="int(timeoff['duration']) if timeoff['duration'] == int(timeoff['duration']) else timeoff['duration']"/>
+                                                                    days
+                                                                </t>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span t-att-class="'badge ' + (
+                                                                'badge-approved' if timeoff['status'] == 'Approved' else
+                                                                'badge-refused' if timeoff['status'] == 'Refused' else
+                                                                'badge-pending' if timeoff['status'] in ['To Approve', 'Second Approval'] else
+                                                                'badge-secondary')">
+                                                                <t t-esc="timeoff['status']"/>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="timeoff['request_date']"/>
+                                                        </td>
+                                                        <t t-if="is_manager or is_hr">
+                                                            <td style="width:25%;">
+                                                                <div class="btn-group-inline">
+                                                                    <t t-if="timeoff['can_approve'] or timeoff['hr_can_approve']">
+                                                                        <form method="post"
+                                                                              t-att-action="'/my/timeoff/approve/%s' % timeoff['id']">
+                                                                            <input type="hidden" name="csrf_token"
+                                                                                   t-att-value="request.csrf_token()"/>
+                                                                            <button type="submit"
+                                                                                    class="btn btn-success btn-sm">
+                                                                                Approve
+                                                                            </button>
+                                                                        </form>
+                                                                        <form method="post"
+                                                                              t-att-action="'/my/timeoff/refuse/%s' % timeoff['id']">
+                                                                            <input type="hidden" name="csrf_token"
+                                                                                   t-att-value="request.csrf_token()"/>
+                                                                            <button type="submit"
+                                                                                    class="btn btn-danger btn-sm">Refuse
+                                                                            </button>
+                                                                        </form>
+                                                                    </t>
+                                                                    <a t-attf-href="/my/timeoff/view/{{ timeoff['id'] }}"
+                                                                       class="btn btn-info btn-sm">View
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </t>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="timeoff_link" name="Timeoff Portal" inherit_id="portal.user_dropdown">
+        <xpath expr="//*[@id='o_logout_divider']" position="before">
+            <a href="/my/timeoffs" role="menuitem" class="dropdown-item ps-3">
+                <i class="fa fa-fw fa-id-card-o me-1 small text-primary text-primary-emphasis"/>
+                Leave Portal
+            </a>
+        </xpath>
+    </template>
+
+    <template id="my_account_link_custom" name="Link to frontend portal" inherit_id="portal.my_account_link">
+        <xpath expr="//a[@href='/my/home']" position="replace">
+            <t t-if="not request.env.user.has_timeoff_group">
+                <a href="/my/home" role="menuitem" class="dropdown-item ps-3">
+                    <i class="fa fa-fw fa-id-card-o me-1 small text-primary text-primary-emphasis"/>
+                    My Account
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="custom_login_redirect" inherit_id="web.login">
+        <xpath expr="//input[@name='redirect']" position="replace">
+            <input type="hidden" name="redirect" value="/my/timeoffs"/>
+        </xpath>
+    </template>
+
+</odoo>

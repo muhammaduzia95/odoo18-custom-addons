@@ -1,0 +1,244 @@
+<odoo>
+    <data>
+
+        <record id="view_country_form_inherit_lims_code" model="ir.ui.view">
+            <field name="name">res.country.form.inherit.lims.code</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group[@name='main_group']/group[@name='country_details']/field[@name='code']"
+                       position="after">
+                    <field name="lims_code" seting="LIMS Code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_form_tti_fields" model="ir.ui.view">
+            <field name="name">res.partner.form.tti.fields</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+<!--                <xpath expr="//field[@name='street']" position="attributes">-->
+<!--                    <attribute name="required">tti_company_category == 'manufacture'</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='street2']" position="attributes">-->
+<!--                    <attribute name="required">tti_company_category == 'manufacture'</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='state_id']" position="attributes">-->
+<!--                    <attribute name="required">tti_company_category == 'manufacture'</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='country_id']" position="attributes">-->
+<!--                    <attribute name="required">tti_company_category == 'manufacture'</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='vat']" position="attributes">-->
+<!--                    <attribute name="required">tti_company_category == 'manufacture'</attribute>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='email']" position="attributes">
+                    <attribute name="required">tti_company_category == 'applicant'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="required">tti_company_category == 'applicant'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='function']" position="attributes">
+                    <attribute name="required">tti_company_category == 'applicant'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_type']" position="after">
+                    <div>
+                        <field name="tti_company_category" widget="radio" options="{'horizontal': True}"/>
+                    </div>
+                    <group>
+                        <field name="code" string="Lims Code" readonly='1' invisible="0"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="tti_city_id" options="{'no_open': True, 'no_create': True, 'no_open': True}"
+                           domain="[('company_id', '=', company_id)]" />
+<!--                           required="tti_company_category == 'manufacture'"/>-->
+                    <field name="tti_city_zone_id"
+                           domain="[('tti_city_id', '=', tti_city_id) , ('company_id', '=', company_id)]"
+                           options="{'no_open': True, 'no_create': True, 'no_open': True}"
+                           context="{'default_tti_city_id': tti_city_id,}" />
+<!--                           required="tti_company_category == 'manufacture'"/>-->
+                    <field name="tti_test_packages" widget="many2many_tags"
+                           invisible="tti_company_category != 'buyer'"
+                           options="{'no_create': True, 'no_open': True}"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='sale']"
+                       position="inside">
+                    <field name="sales_taxes" widget="many2many_tags" domain="[('type_tax_use', '=', 'sale')]"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='purchase']"
+                       position="inside">
+                    <field name="purchase_taxes" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_filter_tti_fields" model="ir.ui.view">
+            <field name="name">res.partner.select.tti.fields</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="code" readonly="1"/>
+                    <field name="tti_company_category"/>
+                    <field name="tti_city_id"/>
+                    <field name="tti_city_zone_id"/>
+                </xpath>
+                <xpath expr="//filter[@name='type_company']" position="after">
+                    <separator/>
+                    <filter string="Default" name="tti_default" domain="[('tti_company_category', '=', 'default')]"/>
+                    <filter string="Branch" name="tti_branch" domain="[('tti_company_category', '=', 'branch')]"/>
+                    <filter string="Manufacture" name="tti_manufacture"
+                            domain="[('tti_company_category', '=', 'manufacture')]"/>
+                    <filter string="Applicant" name="tti_applicant"
+                            domain="[('tti_company_category', '=', 'applicant')]"/>
+                    <filter string="Buyer" name="tti_buyer" domain="[('tti_company_category', '=', 'buyer')]"/>
+                    <filter string="Brand" name="tti_brand" domain="[('tti_company_category', '=', 'brand')]"/>
+                    <filter string="Agent" name="tti_agent" domain="[('tti_company_category', '=', 'agent')]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_partner_action_tti_branch" model="ir.actions.act_window">
+            <field name="name">Branch</field>
+            <field name="res_model">res.partner</field>
+            <field name="path">branch</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_tti_company_category': 'branch',
+                'default_is_company': False, 'default_company_type': 'person', 'default_customer_rank': 1,
+                'search_default_tti_branch': 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new customer in your address book
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <record id="res_partner_action_tti_applicant" model="ir.actions.act_window">
+            <field name="name">Applicant</field>
+            <field name="res_model">res.partner</field>
+            <field name="path">applicant</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_tti_company_category': 'applicant',
+                'default_is_company': False, 'default_company_type': 'person', 'default_customer_rank': 1,
+                'search_default_tti_applicant': 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new applicant in your address book
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to a applicant.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="res_partner_action_tti_buyer" model="ir.actions.act_window">
+            <field name="name">Buyer</field>
+            <field name="res_model">res.partner</field>
+            <field name="path">buyer</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_tti_company_category': 'buyer',
+                'default_is_company': True, 'default_customer_rank': 1, 'search_default_tti_buyer': 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new buyer in your address book
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to a buyer.
+                </p>
+            </field>
+        </record>
+
+        <record id="res_partner_action_tti_agent" model="ir.actions.act_window">
+            <field name="name">Agent</field>
+            <field name="res_model">res.partner</field>
+            <field name="path">agent</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_tti_company_category': 'agent',
+                'default_is_company': False, 'default_customer_rank': 1, 'default_company_type': 'person',
+                'search_default_tti_agent': 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new agent in your address book
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to a agent.
+                </p>
+            </field>
+        </record>
+
+        <record id="res_partner_action_tti_brand" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="res_model">res.partner</field>
+            <field name="path">brand</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_tti_company_category': 'brand',
+                'default_is_company': False, 'default_customer_rank': 1, 'default_company_type': 'person',
+                'search_default_tti_brand': 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new brand in your address book
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to a brand.
+                </p>
+            </field>
+        </record>
+
+        <record id="res_partner_action_tti_manufacture" model="ir.actions.act_window">
+            <field name="name">Manufacture</field>
+            <field name="res_model">res.partner</field>
+            <field name="path">manufacture</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer',
+                'default_tti_company_category': 'manufacture',
+                'default_is_company': True, 'default_customer_rank': 1, 'search_default_tti_manufacture': 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new manufacture in your address book
+                </p>
+                <p>
+                    Odoo helps you easily track all activities related to a manufacture.
+                </p>
+            </field>
+        </record>
+
+
+<!--        <record id="view_country_state_tree_inherit_taxes" model="ir.ui.view">-->
+<!--            <field name="name">res.country.state.tree.inherit.taxes</field>-->
+<!--            <field name="model">res.country.state</field>-->
+<!--            <field name="inherit_id" ref="base.view_country_state_tree"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="code" position="after">-->
+<!--                    <field name="sales_taxes" widget="many2many_tags" options="{'no_create': True}"/>-->
+<!--                    <field name="purchase_taxes" widget="many2many_tags" options="{'no_create': True}"/>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+    </data>
+
+</odoo>

@@ -1,0 +1,6 @@
+<odoo>
+    <!-- Tti Testing -->
+    <record id="group_account_reset_invoice" model="res.groups">
+        <field name="name">Tti Accounting: Allow Reset to Draft Button</field>
+    </record>
+</odoo>

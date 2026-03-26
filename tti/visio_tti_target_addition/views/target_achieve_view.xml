@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ========================= -->
+    <!-- Inherit TREE VIEW         -->
+    <!-- ========================= -->
+    <record id="inherit_view_target_achieve_tree" model="ir.ui.view">
+        <field name="name">target.achieve.tree.inherit.dates</field>
+        <field name="model">target.achieve</field>
+        <field name="inherit_id" ref="visio_tti_so_customize.view_target_achieve_tree"/>
+        <field name="arch" type="xml">
+
+            <!-- Insert new fields AFTER 'categories' -->
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="v_date_from" />
+                <field name="v_date_to" />
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Inherit FORM VIEW        -->
+    <!-- ========================= -->
+    <record id="inherit_view_target_achieve_form" model="ir.ui.view">
+        <field name="name">target.achieve.form.inherit.dates</field>
+        <field name="model">target.achieve</field>
+        <field name="inherit_id" ref="visio_tti_so_customize.view_target_achieve_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Insert new fields AFTER 'categories' -->
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="v_date_from" />
+                <field name="v_date_to" />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

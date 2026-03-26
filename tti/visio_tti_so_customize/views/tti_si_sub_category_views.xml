@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tti_si_sub_category_tree" model="ir.ui.view">
+            <field name="name">tti.si.sub.category.list</field>
+            <field name="model">tti.si.sub.category</field>
+            <field name="arch" type="xml">
+                <list string="Sub Category" editable="bottom">
+                    <field name="code" optional="hide" readonly="1"/>
+                    <field name="name"/>
+                    <field name="tti_si_category" options="{'no_create': True, 'no_open': True}" />
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_si_sub_category_form" model="ir.ui.view">
+            <field name="name">tti.si.sub.category.form</field>
+            <field name="model">tti.si.sub.category</field>
+            <field name="arch" type="xml">
+                <form string="Sub Category">
+                    <sheet>
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="name"/>
+                            <field name="tti_si_category" options="{'no_create': True, 'no_open': True}" domain="[('company_id', '=', company_id)]" />
+                            <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_si_sub_category_search" model="ir.ui.view">
+            <field name="name">tti.si.sub.category.search</field>
+            <field name="model">tti.si.sub.category</field>
+            <field name="arch" type="xml">
+                <search string="Sub Category">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <group string="Group By">
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_si_sub_category" model="ir.actions.act_window">
+            <field name="name">Sub Category</field>
+            <field name="res_model">tti.si.sub.category</field>
+            <field name="view_id" ref="view_tti_si_sub_category_search"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a sub category
+                </p>
+                <p> </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

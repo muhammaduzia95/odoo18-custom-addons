@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\hr_zk_attendance\views\biometric_device_details_views.xml-->
+
+<odoo>
+    <!--Biometric device configuration list view-->
+    <record id="biometric_device_details_view_list" model="ir.ui.view">
+        <field name="name">biometric.device.details.view.list</field>
+        <field name="model">biometric.device.details</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="device_ip"/>
+                <field name="port_number"/>
+            </list>
+        </field>
+    </record>
+    <!--Biometric device configuration form view-->
+    <record id="biometric_device_details_view_form" model="ir.ui.view">
+        <field name="name">biometric.device.details.view.form</field>
+        <field name="model">biometric.device.details</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- Set Time only for raw device mode -->
+                    <button name="action_set_timezone" string=" Set Time"
+                            type="object" class="oe_highlight"
+                            invisible="protocol == 'wdms'"/>
+
+                    <!-- Device-mode download -->
+                    <button name="action_download_attendance"
+                            string="Download Data"
+                            type="object" class="oe_highlight"
+                            invisible="protocol == 'wdms'"/>
+
+                    <!-- WDMS-mode download -->
+                    <button name="action_download_attendance_wdms"
+                            string="Download Data"
+                            type="object" class="oe_highlight"
+                            invisible="protocol != 'wdms'"/>
+
+<!--                    <button name="action_clear_attendance" string="Clear Data"-->
+<!--                            type="object" class="oe_highlight"-->
+<!--                            confirm="Are you sure you want to clear all attendance records from the Odoo?"/>-->
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="address_id"/>
+                            <field name="disable_device_during_sync"/>
+                        </group>
+
+                        <group>
+                            <field name="protocol"/>
+
+                            <!-- IP/Port only visible & required in device mode -->
+                            <field name="device_ip"
+                                   invisible="protocol == 'wdms'"
+                                   required="protocol == 'device'"/>
+                            <field name="port_number"
+                                   invisible="protocol == 'wdms'"
+                                   required="protocol == 'device'"/>
+
+                            <button name="action_test_connection" type="object" class="btn btn-secondary">
+                                <i class="fa fa-fw o_button_icon fa-television"/>
+                                Test Connection
+                            </button>
+                        </group>
+
+                        <!-- WDMS settings block -->
+                        <group invisible="protocol != 'wdms'">
+                            <field name="wdms_base_url" placeholder="http://223.123.42.94:8080"/>
+                            <field name="wdms_username"/>
+                            <field name="wdms_password" password="True"/>
+                            <field name="wdms_static_token" placeholder="(optional: paste JWT token)"/>
+                            <field name="wdms_last_sync" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!--	Action for the biometric device-->
+    <record id="biometric_device_details_action" model="ir.actions.act_window">
+        <field name="name">Biometric Device</field>
+        <field name="res_model">biometric.device.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

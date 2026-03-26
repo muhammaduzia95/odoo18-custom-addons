@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="party_ledger_pdf_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <style>
+                        .table-sm td, .table-sm th {
+                            padding: 0.3rem !important;
+                            font-size: 12px !important;
+                        }
+                        .main-table {
+                            font-size: 12px !important;
+                        }
+                        .main-table td, .main-table th {
+                            padding: 0.2rem !important;
+                            text-align: center;
+                        }
+                        .totals-row {
+                            font-weight: bold;
+                            background-color: #f8f9fa;
+                        }
+                        .opening-row {
+                            font-weight: bold;
+                            background-color: #e9ecef;
+                        }
+                        .summary-table {
+                            margin-top: 20px;
+                            width: 50%;
+                            float: right;
+                        }
+                        .header-info {
+                            margin-bottom: 15px;
+                        }
+                        .header-info table {
+                            width: 100%;
+                        }
+                        .header-info td {
+                            padding: 3px;
+                            font-size: 10px;
+                        }
+                    </style>
+
+                    <h1 style="text-align:center; font-size: 22px; font-weight: bold;">Customer Ledger</h1>
+
+                    <!-- Header Information - Exactly like Excel -->
+                    <div class="header-info">
+                        <table class="table table-sm table-borderless">
+                            <tr>
+                                <td style="width: 50%;">
+                                    <strong><span t-esc="company.name"/></strong><br/>
+                                    <span t-esc="company.street"/><br/>
+                                    <strong>NTN:</strong> <span t-esc="company.vat"/><br/>
+                                    <strong>Period:</strong>
+                                    <span t-esc="docs.date_from.strftime('%d-%b-%Y')"/> to
+                                    <span t-esc="docs.date_to.strftime('%d-%b-%Y')"/>
+                                </td>
+                                <td style="width: 50%; text-align: right;">
+                                    <strong>Client Name:</strong> <span t-esc="partner.name"/><br/>
+                                    <strong>Address:</strong> <span t-esc="full_address"/><br/>
+                                    <strong>NTN:</strong> <span t-esc="partner.vat"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Main Data Table - Exactly like Excel -->
+                    <table class="table table-bordered main-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="text-align: center;">Sr #</th>
+                                <th rowspan="2" style="text-align: center;">Date</th>
+                                <th rowspan="2" style="text-align: center;">Narration</th>
+                                <th rowspan="2" style="text-align: center;">Source Document</th>
+                                <th rowspan="2" style="text-align: center;">Voucher Type</th>
+                                <th rowspan="2" style="text-align: center;">Sale order no</th>
+                                <th rowspan="2" style="text-align: center;">Invoice #</th>
+                                <th rowspan="2" style="text-align: center;">Applicant</th>
+                                <th rowspan="2" style="text-align: center;">Category</th>
+                                <th colspan="3" style="text-align: center; background-color: #f8f9fa;">Invoice</th>
+                                <th colspan="4" style="text-align: center; background-color: #f8f9fa;">Payment</th>
+                                <th rowspan="2" style="text-align: center;">Status</th>
+                                <th rowspan="2" style="text-align: center;">Balance</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">Amount</th>
+                                <th style="text-align: center;">GST</th>
+                                <th style="text-align: center;">Total</th>
+                                <th style="text-align: center;">Chq amount</th>
+                                <th style="text-align: center;">Sale Tax</th>
+                                <th style="text-align: center;">Income Tax</th>
+                                <th style="text-align: center;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Opening Balance Row -->
+                            <tr class="opening-row">
+                                <td colspan="17" style="text-align: center;">Opening</td>
+                                <td><t t-esc="opening_balance" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                            </tr>
+
+                            <!-- Data Rows -->
+                            <t t-foreach="lines" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line['sr']"/></td>
+                                    <td><t t-esc="line['date']"/></td>
+                                    <td style="text-align: center;"><t t-esc="line['narration']"/></td>
+                                    <td style="text-align: center;"><t t-esc="line['source_doc']"/></td>
+                                    <td><t t-esc="line['voucher_type']"/></td>
+                                    <td style="text-align: center;"><t t-esc="line['so_names']"/></td>
+                                    <td><t t-esc="line['invoice_name']"/></td>
+                                    <td style="text-align: center;"><t t-esc="line['applicants']"/></td>
+                                    <td style="text-align: center;"><t t-esc="line['categories']"/></td>
+                                    <td>
+                                        <t t-if="line['amount']">
+                                            <t t-esc="line['amount']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}" />
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="line['gst']">
+                                            <t t-esc="line['gst']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="line['total']">
+                                            <t t-esc="line['total']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="line['chq_amount']">
+                                            <t t-esc="line['chq_amount']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="line['sale_tax']">
+                                            <t t-esc="line['sale_tax']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="line['income_tax']">
+                                            <t t-esc="line['income_tax']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="line['payment_total']">
+                                            <t t-esc="line['payment_total']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </t>
+                                    </td>
+                                    <td><t t-esc="line['status']"/></td>
+                                    <td><t t-esc="line['balance']" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                </tr>
+                            </t>
+
+                            <!-- Totals Row -->
+                            <tr class="totals-row">
+                                <td colspan="9" style="text-align: center;">TOTAL</td>
+                                <td><t t-esc="total_amount" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td><t t-esc="total_gst" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td><t t-esc="total_inv_total" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td><t t-esc="total_cheque" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td><t t-esc="total_sale_tax" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td><t t-esc="total_income_tax" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td><t t-esc="total_payment_total" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                                <td></td>
+                                <td><t t-esc="final_balance" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Summary Section - Exactly like Excel -->
+                    <div class="summary-table">
+                        <table class="table table-bordered table-sm">
+                            <tr>
+                                <td colspan="2" style="font-weight: bold; text-align: left; padding:5px;">Total Invoices:</td>
+                                <td colspan="2" style="text-align: right; padding:5px;"><t t-esc="total_invoices"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="font-weight: bold; text-align: left; padding:5px;">Total Invoice Amount:</td>
+                                <td colspan="2" style="text-align: right; padding:5px;">
+                                    <t t-esc="total_inv_total" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="font-weight: bold; text-align: left; padding:5px;">Total Recovery:</td>
+                                <td colspan="2" style="text-align: right; padding:5px;">
+                                    <t t-esc="total_payment_total" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="font-weight: bold; text-align: left; padding:5px;">Balance:</td>
+                                <td colspan="2" style="text-align: right; font-weight: bold; padding:5px;">
+                                    <t t-esc="final_balance" t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

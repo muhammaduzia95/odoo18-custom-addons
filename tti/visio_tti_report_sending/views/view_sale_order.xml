@@ -1,0 +1,24 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_report_sending\views\view_sale_order.xml-->
+<odoo>
+    <data>
+        <!-- Inherit the Sale Order form -->
+        <record id="view_order_form_send_report_button" model="ir.ui.view">
+            <field name="name">sale.order.form.send.report.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Add the button in header -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_send_report"
+                            string="Send Report"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-paper-plane"
+                            invisible="not can_send_report"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

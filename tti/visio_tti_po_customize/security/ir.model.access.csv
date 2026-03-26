@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_po_project_tags_base,project.tags.base,model_po_project_tags,,1,1,1,1

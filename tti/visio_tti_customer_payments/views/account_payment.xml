@@ -1,0 +1,136 @@
+<odoo>
+    <record id="view_account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        groups="visio_tti_customer_payments.group_hide_make_vendor"
+                        class="btn-primary"
+                        invisible="state != 'draft' or payment_type == 'inbound'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        groups="visio_tti_customer_payments.group_hide_check_vendor"
+                        class="btn-primary"
+                        invisible="state != 'make' or payment_type == 'inbound' "/>
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_make_customer"
+                        invisible="state != 'draft' or payment_type == 'outbound'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_check_customer"
+                        invisible="state != 'make' or payment_type == 'outbound'"/>
+                <button name="action_post" string="Confirm" type="object" class="oe_highlight"
+                        groups="visio_tti_customer_payments.group_hide_confirm_customer"
+                        invisible="state != 'check' or payment_type == 'outbound'" data-hotkey="q"/>
+                <button name="action_download_blank_pdf"
+                        string="Download Cheque"
+                        type="object"
+                        class="btn-primary"
+                        invisible="payment_type != 'outbound'"
+                        icon="fa-download"/>
+            </header>
+            <xpath expr="//sheet/div[@class='oe_title']/h1[1]" position="attributes">
+                <attribute name="invisible">state not in ['draft','make','check']</attribute>
+            </xpath>
+            <xpath expr="//sheet/div[@class='oe_title']/h1[2]" position="attributes">
+                <attribute name="invisible">state in ['draft','make','check']</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_post']" position="attributes">
+                <attribute name="invisible">state != 'check' or payment_type == 'inbound'</attribute>
+                <attribute name="groups">visio_tti_customer_payments.group_hide_confirm_vendor</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_draft']" position="attributes">
+                <attribute name="invisible">state in ['check','make','draft']</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[@name='main_group']/group[@name='group2']" position="inside">
+                <field name="cheque_amount" invisible="payment_type != 'inbound'" readonly="state != 'draft'"/>
+                <field name="income_tax_wh" invisible="payment_type != 'inbound'" readonly="state != 'draft'"/>
+                <field name="income_wh_tax_account"
+                       invisible="payment_type != 'inbound'"
+                       required="income_tax_wh"
+                       options="{'no_open': True,'no_create': True,'no_edit': True}"
+                       readonly="state != 'draft'"
+                       domain="[('account_type', '=', payment_type=='inbound' and ['asset_current' , 'expense' , 'expense_depreciation' , 'expense_direct_cost'] or 'liability_current'), ('company_ids', 'in', company_id)]"/>
+                <field name="sal_tax_wh" invisible="payment_type != 'inbound'" readonly="state != 'draft'"/>
+                <field name="sale_wh_tax_account"
+                       invisible="payment_type != 'inbound'"
+                       required="sal_tax_wh"
+                       options="{'no_open': True,'no_create': True,'no_edit': True}"
+                       readonly="state != 'draft'"
+                       domain="[('account_type', '=', payment_type=='inbound' and ['asset_current' , 'expense' , 'expense_depreciation' , 'expense_direct_cost'] or 'liability_current'), ('company_ids', 'in', company_id)]"/>
+            </xpath>
+
+            <xpath expr="//sheet/group[@name='main_group']/group[@name='group1']/div[@name='amount_div']/field[@name='amount']"
+                   position="replace">
+                <field name="amount" readonly="1" invisible="payment_type != 'inbound'"/>
+                <field name="amount" readonly="state != 'draft'" invisible="payment_type != 'outbound'"/>
+            </xpath>
+
+            <xpath expr="//sheet/group[@name='main_group']/group[@name='group1']/field[@name='memo']"
+                   position="after">
+                <field name="cheque_no" readonly="state != 'draft'" invisible="payment_type != 'inbound'"/>
+                <field name="bill_no" readonly="state != 'draft'" invisible="payment_type != 'inbound'"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_account_payment_tree_inherit" model="ir.ui.view">
+        <field name="name">account.payment.tree.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="payment_type" column_invisible="1"/>
+                <field name="cheque_no"/>
+                <field name="bill_no"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account.action_account_payments" model="ir.actions.act_window">
+        <field name="name">Receipts</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,kanban,form,graph,activity</field>
+        <field name="context">{
+            'default_payment_type': 'inbound',
+            'default_partner_type': 'customer',
+            'search_default_inbound_filter': 1,
+            'default_move_journal_types': ('bank', 'cash'),
+            'display_account_trust': True,
+            }
+        </field>
+        <field name="view_id" ref="account.view_account_payment_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register a payment
+            </p>
+            <p>
+                Payments are used to register liquidity movements. You can process those payments by your own means or
+                by using installed facilities.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_account_payment_search_inherit" model="ir.ui.view">
+        <field name="name">account.payment.search.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="cheque_no" string="Cheque No"/>
+                <field name="bill_no" string="Bill No"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

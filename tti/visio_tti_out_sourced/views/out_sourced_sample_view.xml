@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_out_sourced\views\out_sourced_sample_view.xml-->
+<odoo>
+
+    <!-- List View -->
+    <record id="view_out_sourced_sample_tree" model="ir.ui.view">
+        <field name="name">out.sourced.sample.list</field>
+        <field name="model">out.sourced.sample</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_out_sourced_sample" model="ir.actions.act_window">
+        <field name="name">Out Sourced Samples</field>
+        <field name="res_model">out.sourced.sample</field>
+        <field name="view_mode">list</field>
+        <field name="target">current</field>
+    </record>
+
+
+    <!-- Menu Action Link -->
+    <menuitem id="menu_out_sourced_sample_action"
+              name="Out Sourced Samples"
+              parent="visio_tti_so_customize.menu_tti_config_group"
+              action="action_out_sourced_sample"
+              sequence="50"/>
+</odoo>

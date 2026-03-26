@@ -1,0 +1,33 @@
+<odoo>
+    <record id="view_account_payment_register_inherit" model="ir.ui.view">
+        <field name="name">account.payment.register.form.inherit</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//group/group[@name='group1']" position="inside">
+                <label for="sale_wh_tax"/>
+                <div>
+                    <field name="sale_wh_tax" widget="percentage"
+                           required="sale_wh_tax_account != False" class="oe_inline oe_small"
+                    />
+                    /
+                    <field name="sale_wh_tax_amount" class="oe_inline oe_small"/>
+                </div>
+                <label for="income_wh_tax"/>
+                <div>
+                    <field name="income_wh_tax" widget="percentage" class="oe_inline oe_small"
+                           required="income_wh_tax_account != 'False'"/>
+                    /
+                    <field name="income_wh_tax_amount" class="oe_inline oe_small"/>
+                </div>
+                <field name="sale_wh_tax_account"
+                       required = "sale_wh_tax_amount > 0"
+                       domain="[('account_type', '=', move_type=='out_invoice' and 'asset_current' or 'liability_current')]"/>
+                <field name="income_wh_tax_account"
+                       required = "income_wh_tax_amount > 0"
+                       domain="[('account_type', '=', move_type=='out_invoice' and 'asset_current' or 'liability_current')]"/>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,142 @@
+<odoo>
+    <record id="paperformat_eme_sections"
+            model="report.paperformat">
+        <field name="name">Paperformat Protina Simplified Tax</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <template id="layout_eme_sections">
+
+        <div class="header">
+        </div>
+
+        <div class="article" style="padding-top: 25px;">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer">
+        </div>
+    </template>
+
+
+    <template id="template_eme_sections">
+        <t t-call="web.html_container">
+            <t t-call="cloudmen_sales_sections.layout_eme_sections">
+                <div class="page">
+                    <t t-foreach="docs" t-as="doc">
+                        <!-- بداية لف على الـ order_line -->
+                        <t t-set="current_section" t-value="None"/>
+                        <t t-set="total_qty" t-value="0"/>
+                        <t t-set="total_price" t-value="0.0"/>
+                        <table style="
+    border:  1px solid black;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+">
+                            <tr>
+                                <td style="border:  1px solid black;font-weight: bold;padding: 5px;background: #d2d2d2;">Section</td>
+                                <td style="border:  1px solid black;font-weight: bold;padding: 5px;background: #d2d2d2;">Total Quantity</td>
+                                <td style="border:  1px solid black;font-weight: bold;padding: 5px;background: #d2d2d2;">Total Price</td>
+                            </tr>
+                            <!-- لف على كل الـ order_line -->
+                            <t t-foreach="doc.order_line" t-as="line">
+
+                                <!-- لو السكشن الحالي هو line_section -->
+                                <t t-if="line.display_type == 'line_section'">
+                                    <!-- لو فيه سكشن قبله نعرض تفاصيله -->
+                                    <t t-if="current_section">
+                                        <tr>
+                                            <td style="border:  1px solid black;padding: 5px;font-weight: bold;">
+                                                
+                                                    <t t-esc="current_section"/>
+                                                
+                                            </td>
+                                            <td style="border:  1px solid black;padding: 5px;font-weight: bold;">
+                                                
+                                                    <t t-esc="total_qty"/>
+                                                
+                                            </td>
+                                            <td style="border:  1px solid black;padding: 5px;font-weight: bold;">
+                                                
+                                                    <t t-esc="total_price"/>
+                                                
+                                            </td>
+                                        </tr>
+                                        <!-- إعادة تعيين الكميات والأسعار بعد عرض السكشن -->
+                                        <t t-set="total_qty" t-value="0"/>
+                                        <t t-set="total_price" t-value="0.0"/>
+                                    </t>
+                                    <!-- تعيين السكشن الجديد -->
+                                    <t t-set="current_section" t-value="line.name"/>
+                                </t>
+
+                                <!-- لو الـ display_type مش section، يبقى ده منتج عادي -->
+                                <t t-if="line.display_type != 'line_section'">
+                                    <t t-set="total_qty" t-value="total_qty + line.product_uom_qty"/>
+                                    <t t-set="total_price" t-value="total_price + line.price_subtotal"/>
+                                </t>
+                            </t>
+                            <t t-if="current_section">
+                                <tr>
+                                    <td style="border:  1px solid black;padding: 5px;font-weight: bold;">
+                                        
+                                            <t t-esc="current_section"/>
+                                        
+                                    </td>
+                                    <td style="border:  1px solid black;padding: 5px;font-weight: bold;">
+                                        
+                                            <t t-esc="total_qty"/>
+                                        
+                                    </td>
+                                    <td style="border:  1px solid black;padding: 5px;font-weight: bold;">
+                                        
+                                            <t t-esc="total_price"/>
+                                        
+                                    </td>
+                                </tr>
+                            </t>
+
+                        </table>
+
+
+                        <!-- عرض آخر سكشن بعد الانتهاء من كل الـ order_lines -->
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="report_eme_sections" model="ir.actions.report">
+        <field name="name">Sections Invoice</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cloudmen_sales_sections.template_eme_sections</field>
+        <field name="report_file">cloudmen_sales_sections.template_eme_sections</field>
+        <field name="print_report_name">'Simplified Tax Invoice - %s' % object.name</field>
+        <!--        <field name="print_report_name">'Expenses - %s - %s' % (object.employee_id.name, (object.name).replace('/', ''))-->
+        <!--        </field>-->
+        <!--        <field name="attachment">'certification.pdf'</field>-->
+        <!--        <field name="attachment">'ISR-' + object.name + '.pdf'</field>-->
+        <!--        <field name="attachment_use">True</field>-->
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="cloudmen_sales_sections.paperformat_eme_sections"/>
+        <!--        <field name="groups_id" eval="[(4, ref('sale.group_proforma_sales'))]"/>-->
+        <!--        <field name="multi">True</field>-->
+    </record>
+</odoo>

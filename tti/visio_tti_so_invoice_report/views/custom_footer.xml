@@ -1,0 +1,549 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_so_invoice_report\views\custom_footer.xml-->
+
+<odoo>
+    <template id="tti_custom_footer">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 10px; border-top: 1px solid black; padding-top: 10px;">
+
+            <!-- Top: 3 Columns Section -->
+            <div class="d-flex justify-content-between"
+                 style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+
+                <!--                <t t-esc="o and o._name" />-->
+
+                <!-- Left Column -->
+                <div style="width: 32%;">
+                    <p style="margin: 0;">For account balance inquiries, please contact at:</p>
+                    <p style="margin: 0;">payments@ttilabs.net</p>
+                    <br/>
+                    <p style="margin: 0;">All services provided by Textile Testing International are governed by the
+                        terms and conditions set forth:
+                    </p>
+                    <p style="margin: 0;">ttilabs.net/terms-and-conditions/</p>
+                </div>
+
+                <!-- Middle Column -->
+                <div style="width: 32%;">
+                    <strong>Postal Remittance:</strong>
+                    <br/>
+                    Textile Testing International
+                    <br/>
+                    347-S, Quaid-e-Azam Industrial Estate,
+                    <br/>
+                    Kot Lakhpat
+                    <br/>
+                    Lahore, Punjab 54770
+                    <br/>
+                    Pakistan
+                    <br/>
+                    <br/>
+                    <strong>Make all cheques payable to Textile Testing International</strong>
+                </div>
+
+                <!-- Right Column -->
+                <div style="width: 32%;">
+                    <t t-if="o.partner_id and o.partner_id.state_id and o.partner_id.state_id.name == 'Punjab'">
+                        <strong>Banking Remittance:</strong>
+                        <br/>
+                        <t t-if="o.company_id.bank_name">
+                            <span>
+                                <t t-esc="o.company_id.bank_name"/>
+                            </span>
+                        </t>
+                        <br/>
+                        <strong>Account Title</strong>
+                        <t t-if="o.company_id.account_title">
+                            <span>
+                                <t t-esc="o.company_id.account_title"/>
+                            </span>
+                        </t>
+                        <br/>
+                        <strong>Swift Code</strong>
+                        <t t-if="o.company_id.swift_code">
+                            <span>
+                                <t t-esc="o.company_id.swift_code"/>
+                            </span>
+                        </t>
+                        <br/>
+                        <strong>Branch Code</strong>
+                        <t t-if="o.company_id.branch_code">
+                            <span>
+                                <t t-esc="o.company_id.branch_code"/>
+                            </span>
+                        </t>
+                        <br/>
+                        <strong>Account No</strong>
+                        <t t-if="o.company_id.account_no">
+                            <span>
+                                <t t-esc="o.company_id.account_no"/>
+                            </span>
+                        </t>
+                        <br/>
+                        <strong>IBAN</strong>
+                        <t t-if="o.company_id.iban">
+                            <span>
+                                <t t-esc="o.company_id.iban"/>
+                            </span>
+                        </t>
+                        <br/>
+                        WHIT @ 6%
+                    </t>
+                    <t t-elif="o.partner_id and o.partner_id.state_id and o.partner_id.state_id.name == 'Khyber Pakhtunkhwa'">
+                        <strong>Banking Remittance:</strong>
+                        <br/>
+                        Askari Bank Ltd.
+                        <br/>
+                        <strong>Account Title</strong>
+                        TEXTILE TESTING INTERNATIONAL
+                        <br/>
+                        <strong>Swift Code</strong>
+                        ASCMPKKA
+                        <br/>
+                        <strong>Branch Code</strong>
+                        718
+                        <br/>
+                        <strong>Account No</strong>
+                        3890000024
+                        <br/>
+                        <strong>IBAN</strong>
+                        'PK80 ASCM 000718 3890000024
+                        <br/>
+                        WHIT @ 6%
+                    </t>
+                    <t t-elif="o.partner_id and o.partner_id.state_id and o.partner_id.state_id.name == 'International'">
+                        <strong>Banking Remittance:</strong>
+                        <br/>
+                        Meezan Bank Limited
+                        <br/>
+                        <strong>Account Title</strong>
+                        TEXTILE TESTING INTERNATIONAL
+                        <br/>
+                        <strong>Swift Code</strong>
+                        MEZNPKKA
+                        <br/>
+                        <strong>Branch Code</strong>
+                        0233
+                        <br/>
+                        <strong>Account No</strong>
+                        0110636520
+                        <br/>
+                        <strong>IBAN</strong>
+                        PK21MEZN0002330110636520
+                        <br/>
+                        WHIT @ 6%
+                    </t>
+                    <t t-elif="o.partner_id and o.partner_id.state_id and o.partner_id.state_id.name == 'Sindh'">
+                        <strong>Banking Remittance:</strong>
+                        <br/>
+                        MCB Islamic Bank Limited
+                        <br/>
+                        <strong>Account Title</strong>
+                        TEXTILE TESTING INTERNATIONAL
+                        <br/>
+                        <strong>Swift Code</strong>
+                        MCIBPKKI
+                        <br/>
+                        <strong>Branch Code</strong>
+                        167
+                        <br/>
+                        <strong>Account No</strong>
+                        1671003534640001
+                        <br/>
+                        <strong>IBAN</strong>
+                        PK92 MCIB 1671 0035 3464 0001
+                        <br/>
+                        WHIT @ 6%
+                    </t>
+
+                </div>
+            </div>
+
+            <!-- Centered Thank You -->
+            <div style="text-align: center; font-size: 11px; margin-bottom: 5px;">
+                <strong>We look forward to serving you again!</strong>
+                <br/>
+                In case of queries, reach out to us! +92-(042)-111-786-001 | marketing@ttilabs.net
+            </div>
+
+            <!-- Disclaimer -->
+            <div style="font-size: 9px; color: #888; text-align: center; margin-bottom: 5px;">
+                This is a system generated invoice and does not require a signature.
+                <!-- Hard copy of duly signed invoice
+                will be forwarded shortly. Any discrepancy observed in the invoice may be reported within same working
+                day, otherwise it would be considered final. -->
+            </div>
+
+            <!-- Website + Page Info -->
+            <div class="align-items-center"
+                 style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid black; padding-top: 5px;">
+                <div style="flex: 1; text-align: center;">
+                    <t t-esc="company.website"/>
+                    <br/>
+                    <t t-if="report_type == 'pdf'">
+                        Page
+                        <span class="page"/>
+                        /
+                        <span class="topage"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tti_custom_footer_purchase_order">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 10px; padding-top: 10px;">
+
+            <div style="font-size: 9px; text-align: center; margin-bottom: 5px;">
+                This is a system generated document and does not require a signature
+            </div>
+
+            <!-- Website + Page Info -->
+            <div class="align-items-center"
+                 style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid black; padding-top: 5px;">
+                <div style="flex: 1; text-align: center;">
+                    <span>
+                        <t t-esc="company.website"/>
+                    </span>
+                    <br/>
+                    <br/>
+                    <t t-if="report_type == 'pdf'">
+                        Page
+                        <span class="page"/>
+                        /
+                        <span class="topage"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tti_custom_footer_journal_entries">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 10px; padding-top: 10px;">
+
+            <!-- Website + Page Info -->
+            <div class="align-items-center"
+                 style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid black; padding-top: 5px;">
+                <div style="flex: 1; text-align: center;">
+                    <t t-if="report_type == 'pdf'">
+                        Page
+                        <span class="page"/>
+                        /
+                        <span class="topage"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tti_external_layout_standard_footer" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+
+    </template>
+
+    <!-- Salary Report Footer -->
+<!--    <template id="tti_custom_footer_salary">-->
+<!--        <div t-attf-class="footer o_company_#{company.id}_layout"-->
+<!--             style="font-size: 8px; padding-top: 10px;">-->
+
+<!--            &lt;!&ndash; Website + Page Info &ndash;&gt;-->
+<!--            <div class="align-items-center"-->
+<!--                 style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid black; padding-top: 5px;">-->
+
+<!--                &lt;!&ndash; Left side (website) &ndash;&gt;-->
+<!--                <div style="flex: 1; text-align: left; vertical-align: middle;">-->
+<!--                    <t t-esc="company.website"/>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Center (Page X of XX) &ndash;&gt;-->
+<!--                <div style="flex: 1; text-align: center; vertical-align: middle;">-->
+<!--                    <t t-if="report_type == 'pdf'">-->
+<!--                        Page-->
+<!--                        <span class="page"/>-->
+<!--                        of-->
+<!--                        <span class="topage"/>-->
+<!--                    </t>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Right side (print datetime) &ndash;&gt;-->
+<!--                <div style="flex: 1; text-align: right; vertical-align: middle;">-->
+<!--                    Printed on:-->
+<!--                    <t t-esc="datetime.datetime.now().strftime('%d-%m-%Y %H:%M')"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </template>-->
+
+    <!-- Salary Report Footer -->
+    <template id="tti_custom_footer_salary">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 8px; padding-top: 30px;">
+
+            <!-- Signature lines -->
+            <div style="width:100%; margin-bottom: 20px;">
+                <table style="border-color: white; width:100%; table-layout: fixed; text-align: center; font-size: 10px;">
+                    <tr>
+                        <td style="width:15%; border-top: 1px solid black; padding-top: 2px;">Prepared By<br/>Asst. Manager HR</td>
+                        <td style="width:15%; padding-top: 2px;"></td>
+                        <td style="width:15%; border-top: 1px solid black; padding-top: 2px;">Checked By<br/>Manager HR</td>
+                        <td style="width:15%; padding-top: 2px;"></td>
+                        <td style="width:15%; border-top: 1px solid black; padding-top: 2px;">Checked By<br/>Manager Accounts</td>
+                        <td style="width:15%; padding-top: 2px;"></td>
+                        <td style="width:15%; border-top: 1px solid black; padding-top: 2px;">Reviewed By<br/>GM Accounts &amp; Finance</td>
+                        <td style="width:15%; padding-top: 2px;"></td>
+                        <td style="width:15%; border-top: 1px solid black; padding-top: 2px;">Approved By<br/>CEO</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Website + Page Info -->
+            <div class="align-items-center"
+                 style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid black; padding-top: 5px;">
+
+                <!-- Left side (website) -->
+                <div style="flex: 1; text-align: left; vertical-align: middle;">
+                    <t t-esc="company.website"/>
+                </div>
+
+                <!-- Center (Page X of XX) -->
+                <div style="flex: 1; text-align: center; vertical-align: middle;">
+                    <t t-if="report_type == 'pdf'">
+                        Page
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </t>
+                </div>
+
+                <!-- Right side (print datetime) -->
+                <div style="flex: 1; text-align: right; vertical-align: middle;">
+                    Printed on:
+                    <t t-esc="datetime.datetime.now().strftime('%d-%m-%Y %H:%M')"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <!-- Boxed Layout -->
+    <template id="tti_external_layout_boxed_footer" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <!-- Bold Layout -->
+    <template id="tti_external_layout_bold_footer" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <!-- Striped Layout -->
+    <template id="tti_external_layout_striped_footer" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <!-- Bubble Layout -->
+    <template id="tti_external_layout_bubble_footer" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <!-- Wave Layout -->
+    <template id="tti_external_layout_wave_footer" inherit_id="web.external_layout_wave">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <!-- Folder Layout -->
+    <template id="tti_external_layout_folder_footer" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]" position="replace">
+            <!-- salary report wins first -->
+            <t t-if="is_salary_report">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['purchase.order', 'stock.picking' , 'employee.purchase.requisition']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+
+            <t t-elif="o and o._name == 'account.move' and o.move_type == 'entry'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_journal_entries"/>
+            </t>
+
+            <!-- keep this if you like, but it's no longer required for salary -->
+            <t t-elif="o and o._name == 'hr.payslip'">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_salary"/>
+            </t>
+
+            <t t-elif="o and o._name in ['account.move' , 'sale.order']">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer"/>
+            </t>
+
+            <t t-else="">
+                <t t-call="visio_tti_so_invoice_report.tti_custom_footer_purchase_order"/>
+            </t>
+        </xpath>
+
+    </template>
+
+
+</odoo>

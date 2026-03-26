@@ -1,0 +1,310 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_attendance_portal\views\missed_atten_portal_templates.xml-->
+<odoo>
+
+    <!-- Add Missed Attendance link in portal user dropdown -->
+    <template id="missed_attendance_link" inherit_id="portal.user_dropdown">
+        <xpath expr="//*[@id='o_logout_divider']" position="before">
+            <a href="/my/missed-attendance" role="menuitem" class="dropdown-item ps-3">
+                <i class="fa fa-fw fa-clock-o me-1 small text-primary"></i>
+                Missed Attendance
+            </a>
+        </xpath>
+    </template>
+
+    <!-- List Page -->
+    <template id="missed_attendance_list">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <h3>My Missed Attendance</h3>
+
+                <a href="/my/missed-attendance/new" class="btn btn-primary mb-3">
+                    Apply for Missing Attendance
+                </a>
+
+                <!-- 1) Submitted Missed Attendance Requests -->
+                <h4>Submitted Requests</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="missed_list">
+                            <t t-foreach="missed_list" t-as="req">
+                                <tr>
+                                    <td>
+                                        <t t-esc="req.employee_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-set="req_tz"
+                                           t-value="req.with_context(tz=request.env.user.tz or 'Asia/Karachi')"/>
+                                        <t t-if="req_tz.check_in">
+                                            <span t-field="req_tz.check_in" t-options="{'widget': 'datetime'}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="req_tz.check_out">
+                                            <span t-field="req_tz.check_out" t-options="{'widget': 'datetime'}"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-esc="req.reason"/>
+                                    </td>
+                                    <td>
+                                        <!-- If manager already verified and pushed to HR model, show HR status -->
+                                        <t t-if="req.hr_approval_id">
+                                            <t t-esc="dict(req.hr_approval_id._fields['state'].selection).get(req.hr_approval_id.state)"/>
+                                        </t>
+                                        <!-- Otherwise show portal request status -->
+                                        <t t-else="">
+                                            <t t-esc="dict(req._fields['state'].selection).get(req.state)"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">
+                                    No missed attendance requests yet.
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- 2) This Month Attendance from hr.attendance + Leaves -->
+                <h4 class="mt-4">This Month Attendance</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Employee</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="month_lines">
+                            <t t-foreach="month_lines" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line['date']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="employee and employee.name or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.get('check_in_display') or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.get('check_out_display') or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['leave_text']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">
+                                    No attendance or leave records for this month.
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- 3) Missing Days: No Attendance & No Approved Leave -->
+                <h4 class="mt-4">Missing Attendance Days (No attendance / partial, no leave)</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="missing_days">
+                            <t t-foreach="missing_days" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line['date']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.get('check_in_display') or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.get('check_out_display') or ''"/>
+                                    </td>
+
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">
+                                    No missing days detected for this month.
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- Create Form -->
+    <template id="missed_attendance_create">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <h3>Apply for Missing Attendance</h3>
+
+                <form action="/my/missed-attendance/submit" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token"/>
+
+                    <!-- Date limited to Missing Days -->
+                    <div class="form-group mb-3">
+                        <label>Date</label>
+                        <select name="date" class="form-select" required="required">
+                            <option value="">Select a missing day</option>
+                            <t t-if="missing_days">
+                                <t t-foreach="missing_days" t-as="line">
+                                    <option
+                                            t-att-value="line['date']"
+                                            t-att-data-has-check-in="line['check_in'] and '1' or '0'"
+                                            t-att-data-has-check-out="line['check_out'] and '1' or '0'"
+                                            t-att-data-check-in="line.get('check_in_display') or ''"
+                                            t-att-data-check-out="line.get('check_out_display') or ''"
+                                    >
+                                        <t t-esc="line['date']"/>
+                                    </option>
+                                </t>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Check In Time</label>
+                        <input type="time" name="check_in_time" class="form-control" required="required"/>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Check Out Time</label>
+                        <input type="time" name="check_out_time" class="form-control" required="required"/>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Reason</label>
+                        <textarea name="reason" class="form-control"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Submit Request</button>
+                </form>
+
+                <!-- Small inline JS to toggle which time fields are editable -->
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function () {
+                    var dateSelect = document.querySelector("select[name='date']");
+                    var ciInput = document.querySelector("input[name='check_in_time']");
+                    var coInput = document.querySelector("input[name='check_out_time']");
+                    var form = document.querySelector("form[action='/my/missed-attendance/submit']");
+
+                    function toTime(v) {
+                    if (!v) { return ''; }
+                    v = (v + '').trim();
+                    // Handle "YYYY-MM-DD HH:MM:SS"
+                    if (v.includes(' ')) { v = v.split(' ').pop(); }
+                    // Handle "YYYY-MM-DDTHH:MM:SS"
+                    if (v.includes('T')) { v = v.split('T').pop(); }
+                    // Keep HH:MM
+                    return v.substring(0, 5);
+                    }
+
+                    function updateTimeInputs() {
+                    if (!dateSelect) { return; }
+                    var opt = dateSelect.options[dateSelect.selectedIndex];
+                    if (!opt) { return; }
+
+                    var hasCi = opt.getAttribute('data-has-check-in') === '1';
+                    var hasCo = opt.getAttribute('data-has-check-out') === '1';
+
+                    <!--// ✅ show existing times (if any) and format to HH:MM-->
+                    var existingCi = toTime(opt.getAttribute('data-check-in'));
+                    var existingCo = toTime(opt.getAttribute('data-check-out'));
+                    ciInput.value = existingCi;
+                    coInput.value = existingCo;
+
+                    // reset default behavior
+                    ciInput.readOnly = false;
+                    coInput.readOnly = false;
+                    ciInput.required = true;
+                    coInput.required = true;
+
+                    // Case 1: Check In already exists → show it + lock it, allow Check Out
+                    if (hasCi &amp;&amp; !hasCo) {
+                    ciInput.readOnly = true;
+                    ciInput.required = false;
+                    }
+                    // Case 2: Check Out already exists → show it + lock it, allow Check In
+                    else if (!hasCi &amp;&amp; hasCo) {
+                    coInput.readOnly = true;
+                    coInput.required = false;
+                    }
+                    // Case 3: both exist (rare, but safe) → lock both
+                    else if (hasCi &amp;&amp; hasCo) {
+                    ciInput.readOnly = true;
+                    coInput.readOnly = true;
+                    ciInput.required = false;
+                    coInput.required = false;
+                    }
+                    // Case 4: none exist → both editable (default)
+                    }
+
+                    if (dateSelect) {
+                    dateSelect.addEventListener('change', updateTimeInputs);
+                    updateTimeInputs();
+                    }
+
+                    <!--        // ✅ Validation: Check In must be < Check Out (only if both are filled)-->
+                    if (form) {
+                    form.addEventListener('submit', function (ev) {
+                    var ci = ciInput.value;
+                    var co = coInput.value;
+
+                    if (ci &amp;&amp; co &amp;&amp; ci >= co) {
+                    ev.preventDefault();
+                    alert("Check In time must be earlier than Check Out time.");
+                    }
+                    });
+                    }
+                    });
+                </script>
+
+
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_error">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <div class="alert alert-danger" role="alert">
+                    <t t-esc="error_message"/>
+                </div>
+                <a href="/my/missed-attendance" class="btn btn-secondary">Back</a>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>

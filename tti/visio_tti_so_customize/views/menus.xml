@@ -1,0 +1,107 @@
+<odoo>
+    <data>
+        <record id="action_quotations_custom_tti" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="domain">[("state","in",["draft","sent","quotation_done"])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation
+                </p>
+            </field>
+        </record>
+
+        <record id="action_sale_order_custom_tti" model="ir.actions.act_window">
+            <field name="name">Sale Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="domain">[("state","not in",["draft","sent"])]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="tti_testing_menu" name="TTI Testing Menu" parent="sale.sale_menu_root" sequence="11">
+            <menuitem id="menu_test_report_product_template_action" sequence="10"
+                      groups="visio_tti_so_customize.group_tti_display_tests"
+                      action="visio_tti_so_customize.test_report_product_template_action"
+                      name="Tests"/>
+            <menuitem id="menu_test_package_product_template_action" name="Packages"
+                      sequence="20"
+                      groups="visio_tti_so_customize.group_tti_display_packages"
+                      action="visio_tti_so_customize.test_package_product_template_action"/>
+            <menuitem id="menu_product_pricelists" sequence="30"
+                      name="Pricelists"
+                      groups="visio_tti_so_customize.group_tti_display_pricelists"
+                      action="product.product_pricelist_action2"/>
+            <menuitem id="sale_quotations_menu" name="Quotations" sequence="40"
+                      action="visio_tti_so_customize.action_quotations_custom_tti"
+                      groups="visio_tti_so_customize.group_tti_display_quotations"/>
+            <menuitem id="sale_orders_menu" name="Sale Orders" sequence="50"
+                      action="visio_tti_so_customize.action_sale_order_custom_tti"
+                      groups="visio_tti_so_customize.group_tti_display_sale_orders"/>
+            <menuitem id="menu_action_tti_manufacture" name="Manufacture" sequence="60"
+                      groups="visio_tti_so_customize.group_tti_display_manufacturer"
+                      action="visio_tti_so_customize.res_partner_action_tti_manufacture"/>
+            <menuitem id="menu_action_tti_applicant" name="Applicant" sequence="70"
+                      groups="visio_tti_so_customize.group_tti_display_applicant"
+                      action="visio_tti_so_customize.res_partner_action_tti_applicant"/>
+            <menuitem id="menu_action_tti_buyer" name="Buyer" sequence="80"
+                      groups="visio_tti_so_customize.group_tti_display_buyer"
+                      action="visio_tti_so_customize.res_partner_action_tti_buyer"/>
+            <menuitem id="menu_action_tti_agent" name="Agent" sequence="85"
+                      groups="visio_tti_so_customize.group_tti_display_agents"
+                      action="visio_tti_so_customize.res_partner_action_tti_agent"/>
+            <menuitem id="menu_sale_package_diff" name="SO Package Difference"
+                      sequence="110" groups="visio_tti_so_customize.group_tti_display_package_diff"
+                      action="visio_tti_so_customize.action_so_package_difference_wizard"/>
+        </menuitem>
+
+
+        <menuitem id="menu_tti_config_group" parent="sale.menu_sale_config" name="Tti Testing  Menu" sequence="20">
+
+            <menuitem id="menu_target_achieve"
+                      name="Target Achieved"
+                      action="action_target_achieve"
+                      sequence="5"/>
+            <menuitem id="menu_tti_parcel_courier" name="Parcel Courier" sequence="10"
+                      action="visio_tti_so_customize.action_tti_parcel_courier"/>
+            <menuitem id="menu_tti_parcel_cities" name="City" sequence="20"
+                      action="visio_tti_so_customize.action_tti_parcel_cities"/>
+            <menuitem id="menu_tti_city_zone" name="City Zone" sequence="21"
+                      action="visio_tti_so_customize.action_tti_city_zone"/>
+
+            <menuitem id="menu_action_tti_branch" name="Branch" sequence="22"
+                      action="visio_tti_so_customize.res_partner_action_tti_branch"/>
+
+            <menuitem id="menu_action_tti_brand" name="Brand" sequence="25"
+                      action="visio_tti_so_customize.res_partner_action_tti_brand"/>
+            <menuitem id="menu_tti_division" name="Division" sequence="30"
+                      action="visio_tti_so_customize.action_tti_division"/>
+            <menuitem id="menu_tti_si_category" name="Category" sequence="40"
+                      action="visio_tti_so_customize.action_tti_si_category"/>
+            <menuitem id="menu_tti_si_sub_category" name="Sub Category" sequence="50"
+                      action="visio_tti_so_customize.action_tti_si_sub_category"/>
+            <!--            <menuitem id="menu_tti_si_product_type" name="Product Type" sequence="60" action="visio_tti_so_customize.action_tti_si_product_type"/>-->
+            <menuitem id="menu_tti_si_dye_stuff" name="Dye Stuff" sequence="70"
+                      action="visio_tti_so_customize.action_tti_si_dye_stuff"/>
+            <menuitem id="menu_tti_si_fiber" name="Fiber" sequence="80"
+                      action="visio_tti_so_customize.action_tti_si_fiber"/>
+            <menuitem id="menu_tti_si_uom" name="UOM" sequence="85" action="visio_tti_so_customize.action_tti_si_uom"/>
+            <menuitem id="menu_tti_si_program" name="Program" sequence="90"
+                      action="visio_tti_so_customize.action_tti_si_program"/>
+            <menuitem id="menu_tti_si_dosage_form" name="Dosage Form" sequence="90"
+                      action="visio_tti_so_customize.action_tti_si_dosage_form"/>
+            <menuitem id="menu_tti_si_department" name="Department" sequence="100"
+                      action="visio_tti_so_customize.action_tti_si_department"/>
+            <menuitem id="menu_tti_si_test_group" name="Test Group" sequence="110"
+                      action="visio_tti_so_customize.action_tti_si_test_group"/>
+            <menuitem id="menu_tti_lims_tests_status_logs" name="LIMS Tests Status" sequence="120"
+                      action="visio_tti_so_customize.action_tti_lims_tests_status_logs"/>
+        </menuitem>
+
+    </data>
+</odoo>

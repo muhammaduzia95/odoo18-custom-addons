@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tti_si_test_group_tree" model="ir.ui.view">
+            <field name="name">tti.si.test.group.list</field>
+            <field name="model">tti.si.test.group</field>
+            <field name="arch" type="xml">
+                <list string="Test Group" editable="bottom">
+                    <field name="name"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_si_test_group_form" model="ir.ui.view">
+            <field name="name">tti.si.test.group.form</field>
+            <field name="model">tti.si.test.group</field>
+            <field name="arch" type="xml">
+                <form string="Test Group">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_si_test_group_search" model="ir.ui.view">
+            <field name="name">tti.si.test.group.search</field>
+            <field name="model">tti.si.test.group</field>
+            <field name="arch" type="xml">
+                <search string="Test Group">
+                    <field name="name"/>
+                    <group string="Group By">
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_si_test_group" model="ir.actions.act_window">
+            <field name="name">Test Group</field>
+            <field name="res_model">tti.si.test.group</field>
+            <field name="view_id" ref="view_tti_si_test_group_search"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a test group
+                </p>
+                <p> </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

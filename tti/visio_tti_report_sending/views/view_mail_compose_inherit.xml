@@ -1,0 +1,17 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_report_sending\views\view_mail_compose_inherit.xml-->
+
+<odoo>
+    <record id="view_mail_compose_message_inherit_cc" model="ir.ui.view">
+        <field name="name">mail.compose.message.inherit.cc</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Insert CC below the subject line -->
+            <xpath expr="//field[@name='subject']" position="before">
+                <field name="email_cc" placeholder="Add CC recipients (comma-separated)"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

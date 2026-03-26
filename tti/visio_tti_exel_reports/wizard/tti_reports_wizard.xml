@@ -1,0 +1,82 @@
+<odoo>
+    <record id="view_tti_report_wizard_form" model="ir.ui.view">
+        <field name="name">tti.report.wizard.form</field>
+        <field name="model">tti.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Report">
+                <group>
+                    <group>
+                        <field name="report_type"
+                               readonly="1"/>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="state" widget="radio" options="{'horizontal': True}"
+                               required="1"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group invisible="report_type != 'party_receivable'">
+                        <field name="tax_filter" widget="radio" options="{'horizontal': True}"/>
+                    </group>
+                    <group invisible="report_type != 'party_receivable'">
+                    </group>
+                    <group invisible="report_type != 'party_receivable'">
+                        <field name="category_ids" widget="many2many_tags"/>
+                    </group>
+                    <group invisible="report_type != 'party_ledger'">
+                        <field name="customer_id" required="report_type == 'party_ledger'"/>
+                    </group>
+                    <group invisible="report_type != 'party_receivable'">
+                        <field name="city_zone_ids" widget="many2many_tags"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_report"
+                            type="object"
+                            class="btn-primary"
+                            string="Print Excel Report"/>
+                    <button name="action_print_pdf_report"
+                            type="object"
+                            class="btn-primary"
+                            string="Print PDF Report"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_report_wizard_party_receivable" model="ir.actions.act_window">
+        <field name="name">Party Receivable Report</field>
+        <field name="res_model">tti.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_tti_report_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'party_receivable'}</field>
+    </record>
+
+    <record id="action_open_report_wizard_party_ledger" model="ir.actions.act_window">
+        <field name="name">Party Ledger Report</field>
+        <field name="res_model">tti.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_tti_report_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'party_ledger'}</field>
+    </record>
+
+    <menuitem id="menu_tti_reports"
+              name="TTI Reports"
+              parent="sale.menu_sale_report"
+              sequence="50"/>
+
+    <menuitem id="menu_party_receivable_report"
+              name="Party Receivable Report"
+              parent="menu_tti_reports"
+              action="action_open_report_wizard_party_receivable"
+              sequence="10"/>
+
+    <menuitem id="menu_party_ledger_report"
+              name="Party Ledger Report"
+              parent="menu_tti_reports"
+              action="action_open_report_wizard_party_ledger"
+              sequence="20"/>
+</odoo>

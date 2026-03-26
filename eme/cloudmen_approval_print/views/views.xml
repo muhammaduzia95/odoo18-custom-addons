@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="cloudmen_approval_print.list">
+      <field name="name">cloudmen_approval_print list</field>
+      <field name="model">cloudmen_approval_print.cloudmen_approval_print</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="cloudmen_approval_print.action_window">
+      <field name="name">cloudmen_approval_print window</field>
+      <field name="res_model">cloudmen_approval_print.cloudmen_approval_print</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="cloudmen_approval_print.action_server">
+      <field name="name">cloudmen_approval_print server</field>
+      <field name="model_id" ref="model_cloudmen_approval_print_cloudmen_approval_print"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="cloudmen_approval_print" id="cloudmen_approval_print.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="cloudmen_approval_print.menu_1" parent="cloudmen_approval_print.menu_root"/>
+    <menuitem name="Menu 2" id="cloudmen_approval_print.menu_2" parent="cloudmen_approval_print.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="cloudmen_approval_print.menu_1_list" parent="cloudmen_approval_print.menu_1"
+              action="cloudmen_approval_print.action_window"/>
+    <menuitem name="Server to list" id="cloudmen_approval_print" parent="cloudmen_approval_print.menu_2"
+              action="cloudmen_approval_print.action_server"/>
+-->
+  </data>
+</odoo>

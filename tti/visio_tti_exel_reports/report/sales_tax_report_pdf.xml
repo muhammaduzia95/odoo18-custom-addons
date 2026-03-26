@@ -1,0 +1,153 @@
+<!-- custom_addons\tti\visio_tti_exel_reports\report\sales_tax_report_pdf.xml -->
+<odoo>
+    <!--  QWeb Template  -->
+    <template id="report_sales_tax_pdf_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:12px;">
+<!--                        <h3 style="text-align:center; margin:0 0 12px 0;">Sales Tax Report</h3>-->
+                        <t t-if="tax_rate_label">
+                            <h3 style="text-align:center; margin:0 0 12px 0;">
+                                <t t-esc="tax_rate_label"/>
+                            </h3>
+                        </t>
+                        <t t-else="">
+                            <h3 style="text-align:center; margin:0 0 12px 0;">
+                                Sales Tax Report
+                            </h3>
+                        </t>
+
+                        <div style="text-align:center; margin-bottom:16px;">
+                            <span>
+                                <strong>From:</strong>
+                                <t t-esc="from_date_str"/>
+                            </span>
+                            <span style="margin-left:18px;">
+                                <strong>To:</strong>
+                                <t t-esc="to_date_str"/>
+                            </span>
+                        </div>
+                        <table class="table table-sm table-bordered" style="width:100%; text-align:center;">
+                            <thead style="background:#f2f2f2;">
+                                <tr>
+                                    <th style="text-align: center; white-space:nowrap;">Sr #</th>
+                                    <th style="text-align: center; white-space:nowrap;">Manufacturer</th>
+                                    <th style="text-align: center; white-space:nowrap;">NTN</th>
+                                    <th style="text-align: center; white-space:nowrap;">STRN</th>
+                                    <th style="text-align: center; white-space:nowrap;">Invoice No.</th>
+                                    <th style="text-align: center; white-space:nowrap;">Invoice Date</th>
+                                    <th style="text-align: center; white-space:nowrap;">Untaxed Amount</th>
+                                    <th style="text-align: center; white-space:nowrap;">Sales Tax</th>
+                                    <th style="text-align: center; white-space:nowrap;">Total Amount</th>
+                                    <th style="text-align: center; white-space:nowrap;">Exchange Rate</th>
+                                    <th style="text-align: center; white-space:nowrap;">Currency</th>
+                                    <th style="text-align: center; white-space:nowrap;">State</th>
+                                    <th style="text-align: center; white-space:nowrap;">Tax Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="l">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="l['sr']"/>
+                                        </td>
+                                        <td>
+                                            <div style="display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; line-height: 14px; max-height: 28px; word-break: break-word;">
+                                                <t t-esc="l['manufacturer']"/>
+                                            </div>
+                                        </td>
+                                        <td style="white-space:nowrap;">
+                                            <t t-esc="l['ntn']"/>
+                                        </td>
+                                        <td style="white-space:nowrap;">
+                                            <t t-esc="l['strn']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['invoice_no']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['invoice_date']" t-options="{'widget':'date'}"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['untaxed_pkr']"
+                                               t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['tax_pkr']"
+                                               t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['total_pkr']"
+                                               t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['exchange_rate']"
+                                               t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['currency']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l['state']"/>
+                                        </td>
+                                        <td style="white-space:nowrap;">
+                                            <t t-esc="l['tax_rate']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr style="font-weight:bold; background:#eaeaea;">
+                                    <td colspan="6" style="text-align:right;">TOTAL</td>
+                                    <td>
+                                        <t t-esc="totals['untaxed']"
+                                           t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="totals['tax']"
+                                           t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="totals['total']"
+                                           t-options="{'widget':'float','precision':2,'thousand_sep':True}"/>
+                                    </td>
+                                    <td t-att-colspan="right_colspan"/>
+                                    <!--  was fixed to 4  -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!--  Paperformat  -->
+    <!--     <record id="paperformat_sales_tax_report" model="report.paperformat"> -->
+    <!--         <field name="name">Sales Tax Report A4</field> -->
+    <!--         <field name="default" eval="False"/> -->
+    <!--         <field name="format">A4</field> -->
+    <!--         <field name="page_height">0</field> -->
+    <!--         <field name="page_width">0</field> -->
+    <!--         <field name="orientation">Portrait</field> -->
+    <!--         <field name="margin_top">10</field> -->
+    <!--         <field name="margin_bottom">10</field> -->
+    <!--         <field name="margin_left">8</field> -->
+    <!--         <field name="margin_right">8</field> -->
+    <!--         <field name="header_line" eval="False"/> -->
+    <!--         <field name="dpi">90</field> -->
+    <!--     </record> -->
+    <!--  Report Action  -->
+    <record id="action_report_sales_tax_pdf" model="ir.actions.report">
+        <field name="name">Sales Tax Report PDF</field>
+        <field name="model">sales.tax.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_exel_reports.report_sales_tax_pdf_template</field>
+        <field name="report_file">visio_tti_exel_reports.report_sales_tax_pdf_template</field>
+        <!--         <field name="paperformat_id" ref="visio_tti_exel_reports.paperformat_sales_tax_report"/> -->
+        <field name="binding_model_id" ref="visio_tti_exel_reports.model_sales_tax_report_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'sales_tax_report_%s_%s' % ( (object.date_from and
+            object.date_from.strftime("%d-%m-%Y") or ''), (object.date_to and object.date_to.strftime("%d-%m-%Y") or '')
+            )
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Sale Order Form to hide Discount button when invoice is posted -->
+        <record id="view_sale_order_form_inherit_hide_discount_button" model="ir.ui.view">
+            <field name="name">sale.order.form.hide.discount.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Target Discount Button under Order Lines -->
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/div[@name='so_button_below_order_lines']/button[@name='action_open_discount_wizard']"
+                       position="attributes">
+                    <attribute name="invisible">has_posted_invoice</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

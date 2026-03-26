@@ -1,0 +1,57 @@
+<odoo>
+
+    <record id="view_sales_stages_form"
+            model="ir.ui.view">
+        <field name="name">sale.order.stage.form</field>
+        <field name="model">sale.order.stage</field>
+        <field name="arch" type="xml">
+            <form create="1" delete="1" edit="1">
+                <sheet string="Patient">
+                    <group>
+                        <field name="name"/>
+                        <field name="category_id"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"
+                           groups="base.group_no_ne"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_sales_stages_list"
+            model="ir.ui.view">
+        <field name="name">sale.order.stage.list</field>
+        <field name="model">sale.order.stage</field>
+        <field name="arch" type="xml">
+            <list create="1" delete="1" edit="1" export_xlsx="1"
+                  sample="0">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_sale_order_stages"
+            model="ir.actions.act_window">
+        <field name="name">Sales Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order.stage</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                create your first stage !
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_order_stages"
+              name="Stages"
+              parent="sale.sale_menu_root"
+              sequence="500"
+              action="action_sale_order_stages"/>
+
+
+</odoo>

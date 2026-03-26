@@ -1,0 +1,62 @@
+<odoo>
+    <record id="view_employee_form_inherit_custom" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.custom</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='personal_information']/group/group[1]/field[@name='private_phone']"
+                   position="after">
+                <field name="father_name"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='personal_information']/group/group[2]/field[@name='gender']"
+                   position="after">
+                <field name="blood_group"/>
+                <field name="eobi_number"/>
+            </xpath>
+
+            <xpath expr="//page[@name='hr_settings']" position="before">
+                <!-- Page 1: Probation Checklist -->
+                <page string="Probation Checklist" name="prob_checklist">
+                    <group>
+                        <field name="confirmation_letter"/>
+                        <field name="paid_leaves"/>
+                        <field name="health_insurance"/>
+                        <field name="salary_change"/>
+                        <field name="probation_extension"/>
+                    </group>
+                </page>
+
+                <!-- Page 2: Onboarding Checklist -->
+                <page string="Onboarding Checklist" name="onb_checklist">
+                    <group>
+                        <field name="email_to_it"/>
+                        <field name="induction_documents"/>
+                        <field name="photograph"/>
+                        <field name="cnic"/>
+                        <field name="testimonials"/>
+                        <field name="orientation_plan"/>
+                        <field name="training_plan"/>
+                        <field name="jds_handover"/>
+                        <field name="sim"/>
+                        <field name="visiting_cards"/>
+                        <field name="salary_account_requirements"/>
+                    </group>
+                </page>
+
+                <!-- Page 3: Offboarding Checklist -->
+                <page string="Offboarding Checklist" name="offb_checklist">
+                    <group>
+                        <field name="resignation_letter"/>
+                        <field name="handing_over_doc"/>
+                        <field name="return_items"/>
+                        <field name="insurance_removal"/>
+                        <field name="clearance_certificate"/>
+                        <field name="notice_period_status"/>
+                        <field name="final_settlement"/>
+                        <field name="signoff_declaration"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

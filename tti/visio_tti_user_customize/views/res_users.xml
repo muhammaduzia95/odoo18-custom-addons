@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_users_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.users.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='account_security']" position="after">
+                <page name="sale_order_discounts" string="Sale Order Discounts">
+                    <group>
+                        <field name="discount_percent" class="oe_inline" widget="percentage"
+                               style="width: 2rem;"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

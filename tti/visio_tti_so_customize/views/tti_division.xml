@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tti_division_tree" model="ir.ui.view">
+            <field name="name">tti.division.list</field>
+            <field name="model">tti.division</field>
+            <field name="arch" type="xml">
+                <list string="Division" editable="bottom">
+                    <field name="name"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_division_form" model="ir.ui.view">
+            <field name="name">tti.division.form</field>
+            <field name="model">tti.division</field>
+            <field name="arch" type="xml">
+                <form string="Division">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_division_search" model="ir.ui.view">
+            <field name="name">tti.division.search</field>
+            <field name="model">tti.division</field>
+            <field name="arch" type="xml">
+                <search string="Division">
+                    <field name="name"/>
+                    <group string="Group By">
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_division" model="ir.actions.act_window">
+            <field name="name">Division</field>
+            <field name="res_model">tti.division</field>
+            <field name="view_id" ref="view_tti_division_search"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Division
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

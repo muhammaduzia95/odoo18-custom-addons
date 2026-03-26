@@ -1,0 +1,300 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\eme\visio_eme_custom_invoice\report\eme_material_return_note.xml-->
+
+<odoo>
+    <template id="material_return_note_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="is_material_return" t-value="True"/>
+                    <div class="page">
+
+                        <!-- ======= INFO BLOCK ======= -->
+                        <table style="width:100%; border-color:white; margin-top:15px; font-size:13px;">
+                            <tr>
+                                <!-- LEFT SIDE: Address below logo -->
+                                <td style="font-size:14px; width:60%; vertical-align:top; text-align:left; border-color:white;">
+                                    <p style="margin:0px 0;">
+                                        <t t-esc="o.company_id.street or ''"/>
+                                    </p>
+                                    <p style="margin:0px 0;">
+                                        <t t-if="o.company_id.zip">
+                                            P.O. Box
+                                            <t t-esc="o.company_id.zip"/>
+                                        </t>
+                                        <t t-if="o.company_id.city">
+                                            ,
+                                            <t t-esc="o.company_id.city"/>
+                                        </t>
+                                        <t t-if="o.company_id.country_id">
+                                            ,
+                                            <t t-esc="o.company_id.country_id.code"/>
+                                        </t>
+                                    </p>
+                                    <p style="margin:0px 0;">
+                                        <t t-esc="o.company_id.phone or ' '"/>
+                                    </p>
+                                    <p style="margin:0px 0;">
+                                        <t t-esc="o.company_id.email or ' '"/>
+                                    </p>
+                                    <p style="margin:0px 0;">
+                                        <t t-if="o.company_id.website">
+                                            <t t-esc="o.company_id.website"/>
+                                        </t>
+                                    </p>
+                                    <p style="margin:0px 0;" t-if="o.company_id.vat">
+                                        TRN:
+                                        <t t-esc="o.company_id.vat"/>
+                                    </p>
+                                </td>
+
+                                <!-- RIGHT SIDE: Both info tables -->
+                                <td style="width:40%; vertical-align:top; text-align:left; border-color:white;">
+                                    <!-- FIRST TABLE -->
+                                    <table style="width:100%; border-color:white;">
+                                        <tr>
+                                            <td style="width:40%;">M.R.N. No:</td>
+                                            <td style="width:60%;">
+                                                <strong>
+                                                    <t t-if="o.name">
+                                                        <t t-esc="o.name"/>
+                                                    </t>
+                                                    <t t-if="not name"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:40%;">M.R.N. Date:</td>
+                                            <td style="width:60%;">
+                                                <strong>
+                                                    <t t-if="mrn_date">
+                                                        <t t-esc="mrn_date.strftime('%d %b %Y')"/>
+                                                    </t>
+                                                    <t t-if="not mrn_date"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- ======= BILL TO / SHIP TO SECTION ======= -->
+                        <table style="width:100%; border:none; border-collapse:collapse; margin-top:15px; font-size:13px;">
+                            <tr>
+                                <!-- === BILL TO === -->
+                                <td style="width:55%; margin-right:30px; vertical-align:top; border:1px solid black; padding:0;">
+                                    <div style="background-color:#d9d9d9; padding:4px 6px; font-family: Arial, sans-serif;">
+                                        <strong>Bill To:</strong>
+                                    </div>
+                                    <div style="padding:6px;">
+                                        <p style="margin:2px 0; margin-bottom: 10px;">
+                                            <strong>
+                                                <t t-esc="customer_name or '  '"/>
+                                            </strong>
+                                        </p>
+                                        <p style="margin:2px 0;">
+                                            <t t-esc="customer_address or '  '"/>
+                                        </p>
+                                        <p style="margin:2px 0;">Customer Project Name:
+                                            <strong>
+                                                <t t-esc="project_name or '  '"/>
+                                            </strong>
+                                        </p>
+                                        <p style="margin:2px 0;">Customer TRN:
+                                            <strong>
+                                                <t t-esc="customer_trn or '  '"/>
+                                            </strong>
+                                        </p>
+                                        <p style="margin:2px 0;">Customer Phone:
+                                            <strong>
+                                                <t t-esc="customer_phone or '  '"/>
+                                            </strong>
+                                        </p>
+                                        <p style="margin:2px 0;">Customer Email:
+                                            <strong>
+                                                <t t-esc="customer_email or '  '"/>
+                                            </strong>
+                                        </p>
+                                    </div>
+                                </td>
+                                <td style="width:5%; border:0px solid white;">
+                                </td>
+
+                                <!-- === SHIP TO === -->
+                                <td style="width:40%; vertical-align:top; border:1px solid black; padding:0;">
+                                    <div style="background-color:#d9d9d9; padding:4px 6px; font-family: Arial, sans-serif;">
+                                        <strong>Ship To:</strong>
+                                    </div>
+                                    <div style="padding:6px;">
+                                        <p style="margin:2px 0;">
+                                            <t t-esc="customer_address"/>
+                                        </p>
+                                        <p style="margin:2px 0;">Ship Date:
+                                            <strong>
+                                                <t t-esc="ship_date"/>
+                                            </strong>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- ======= MAIN INVOICE LINES TABLE ======= -->
+                        <div style="height:600px;">
+                            <table style="width:100%; border-collapse:collapse; margin-top:30px; font-size:13px;">
+                                <thead>
+                                    <tr style="font-family: Arial, sans-serif; background-color:#d9d9d9; text-align:center; height:28px;">
+                                        <th style="border:1px solid black; padding:2px 3px; text-align:center; text-transform:capitalize; width:25px;">
+                                            <strong>#</strong>
+                                        </th>
+
+                                        <th style="width:10%; border:1px solid black; padding:2px 6px; text-align:center; text-transform:capitalize;">
+                                            <strong>Item code</strong>
+                                        </th>
+
+                                        <th style="width:60%; border:1px solid black; padding:2px 6px; text-align:center; text-transform:capitalize;">
+                                            <strong>Description</strong>
+                                        </th>
+
+                                        <th style="border:1px solid black; padding:2px 6px; text-align:center; text-transform:capitalize;">
+                                            <strong>UOM</strong>
+                                        </th>
+
+                                        <th style="border:1px solid black; padding:2px 6px; text-align:center; text-transform:capitalize;">
+                                            <strong>Qty</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="line_data" t-as="l">
+                                        <tr style="page-break-inside: avoid;">
+                                            <td style="border:1px solid black;  text-align:center; padding:4px;">
+                                                <t t-esc="l.get('line_no')"/>
+                                            </td>
+                                            <td style="border:1px solid black;  padding:4px; text-align:center;">
+                                                <t t-esc="l.get('default_code')"/>
+                                            </td>
+                                            <td style="border:1px solid black; width:30%; padding:4px; text-align:left;">
+                                                <t t-esc="l.get('description')"/>
+                                            </td>
+
+                                            <td style="border:1px solid black;  padding:4px; text-align:center;">
+                                                <t t-esc="l.get('uom')"/>
+                                            </td>
+                                            <td style="border:1px solid black;  padding:4px; text-align:center;">
+                                                <t t-esc="'{:,.0f}'.format(l.get('qty') or 0)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Footer -->
+    <template id="eme_material_return_note_footer">
+        <div t-attf-class="footer o_company_#{company.id}_layout"
+             style="font-size: 16px; padding-top: 10px;">
+            <div class="d-flex justify-content-between" style="margin-top:20px;">
+                <div>
+                    <strong style="font-family: Arial, sans-serif;">Prepared By:</strong>
+                    <p style="white-space: nowrap; margin:0">
+                        <t t-esc="buyer"/>
+                    </p>
+                    <p style="white-space: nowrap; margin:0">
+                        <t t-esc="buyer_dept"/>
+                    </p>
+                    <p style="white-space: nowrap; margin:0">
+                        <t t-esc="buyer_desig"/>
+                    </p>
+                </div>
+
+                <div>
+                    <strong style="font-family: Arial, sans-serif;">Verified By:</strong>
+
+                </div>
+
+                <div>
+                    <strong style="font-family: Arial, sans-serif;">Approved By:</strong>
+                </div>
+            </div>
+            <div style="border-top:1px solid #808080; margin-top:15px; margin-bottom:15px;">
+                <div style="font-size:12px; padding-top:8px; margin-top:10px;">
+                    <table style="width:100%; border-color:white;">
+                        <tr>
+                            <td style="width:40%; color:#808080; vertical-align:top;">
+                                <p style="margin:2px 0;">
+                                    <strong>Beneficiary Name:</strong>
+                                    E M E Aquatic Systems LLC – SPC
+                                </p>
+                                <p style="margin:2px 0;">
+                                    <strong>Bank Name:</strong>
+                                    Abu Dhabi Commercial Bank
+                                </p>
+                                <p style="margin:2px 0;">
+                                    <strong>Branch:</strong>
+                                    Salam St. <strong>Swift Code:</strong> ADCBAEAA
+                                </p>
+                            </td>
+                            <td style="width:60%; color:#808080; vertical-align:top; text-align:right;">
+                                <p style="margin:2px 0;">AED – <strong>A/C#:</strong> 257172020001
+                                    <strong><span></span>IBAN No.:
+                                    </strong>
+                                    AE680030000257172020001
+                                </p>
+                                <p style="margin:2px 0;">USD – <strong>A/C#:</strong> 257172021001
+                                    <strong><span></span>IBAN No.:
+                                    </strong>
+                                    AE340030000257172021001
+                                </p>
+                                <p style="margin:2px 0;">JPY – <strong>A/C#:</strong> 257172323001
+                                    <strong><span></span>IBAN No.:
+                                    </strong>
+                                    AE480030000257172323001
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Paper format (Portrait / Vertical) -->
+    <record id="paperformat_material_return_note" model="report.paperformat">
+        <field name="name">EME Material Return Note Paper Formate</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">60</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">18</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action -->
+    <record id="action_material_return_note" model="ir.actions.report">
+        <field name="name">EME: Material Return Note</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_eme_custom_invoice.material_return_note_pdf</field>
+        <field name="report_file">visio_eme_custom_invoice.material_return_note_pdf</field>
+        <field name="paperformat_id" ref="visio_eme_custom_invoice.paperformat_material_return_note"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Material_Return_Note_%s' % (object.name)</field>
+        <!-- Only show on Receipts -->
+        <field name="domain">[('picking_type_code', '=', 'outgoing'), ('move_ids.origin_returned_move_id', '!=', False)]</field>
+
+
+    </record>
+
+</odoo>

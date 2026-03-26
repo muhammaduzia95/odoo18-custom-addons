@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_sales_dash\views\inherit_target_achieve.xml-->
+<odoo>
+
+    <data noupdate="0">
+        <record id="visio_tti_so_customize.action_target_achieve" model="ir.actions.act_window">
+            <field name="name">Targets Creation</field>
+        </record>
+
+
+        <!-- Inherit Menu -->
+        <record id="visio_tti_so_customize.menu_target_achieve" model="ir.ui.menu">
+            <field name="name">Targets Creation</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,64 @@
+<odoo>
+
+    <!-- Group Root Menu -->
+    <record id="group_tti_hr_attendance_approval_menu" model="res.groups">
+        <field name="name">Attendance / Missed Attendance (HR, HOD)</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Sub Menu -->
+    <record id="group_tti_hr_attendance_approval_request" model="res.groups">
+        <field name="name">Attendance / Missed Attendance / Requests (HR)</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Approve Button Group -->
+    <record id="group_tti_hr_attendance_approval_btn" model="res.groups">
+        <field name="name">Missed Attendance / Requests / Approve Button (HR)</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- List View -->
+    <record id="view_tti_hr_attendance_approval_tree" model="ir.ui.view">
+        <field name="name">tti.hr.attendance.approval.list</field>
+        <field name="model">tti.hr.attendance.approval</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="false">
+                <field name="employee_id" readonly="1"/>
+                <field name="check_in" readonly="1"/>
+                <field name="check_out" readonly="1"/>
+                <field name="reason" readonly="1"/>
+                <field name="state" readonly="1"/>
+
+                <button name="action_approve"
+                        type="object"
+                        string="Approve"
+                        class="btn btn-link text-success"
+                        invisible="state != 'verified'"
+                        groups="visio_tti_attendance_portal.group_tti_hr_attendance_approval_btn"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_tti_hr_attendance_approval" model="ir.actions.act_window">
+        <field name="name">HR Attendance Approval</field>
+        <field name="res_model">tti.hr.attendance.approval</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Root Menu -->
+    <menuitem id="menu_tti_hr_attendance_approval_root"
+              name="Missed Attendance"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="60"
+              groups="visio_tti_attendance_portal.group_tti_hr_attendance_approval_menu"/>
+
+    <!-- Sub Menu -->
+    <menuitem id="menu_tti_hr_attendance_approval_requests"
+              name="Requests"
+              parent="menu_tti_hr_attendance_approval_root"
+              action="action_tti_hr_attendance_approval"
+              groups="visio_tti_attendance_portal.group_tti_hr_attendance_approval_request"/>
+
+</odoo>

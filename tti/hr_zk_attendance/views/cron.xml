@@ -1,0 +1,61 @@
+<odoo>
+    <record id="ir_cron_download_attendance_device_admin" model="ir.cron">
+        <field name="name">Download Attendance - Admin</field>
+        <field name="model_id" ref="model_biometric_device_details"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_download_attendance_for_device_name('admin')</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+
+    <record id="ir_cron_download_attendance_device_faisalabad" model="ir.cron">
+        <field name="name">Download Attendance - Faisalabad</field>
+        <field name="model_id" ref="model_biometric_device_details"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_download_attendance_for_device_name('Faisalabad')</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+
+    <record id="ir_cron_download_attendance_device_karachi" model="ir.cron">
+        <field name="name">Download Attendance - karachi</field>
+        <field name="model_id" ref="model_biometric_device_details"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_download_attendance_for_device_name('karachi')</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+
+    <record id="ir_cron_download_attendance_device_sialkot" model="ir.cron">
+        <field name="name">Download Attendance - Sialkot</field>
+        <field name="model_id" ref="model_biometric_device_details"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_download_attendance_for_device_name('Sialkot')</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+
+    <record id="ir_cron_download_attendance_device_lahore_17d" model="ir.cron">
+        <field name="name">Download Attendance - Lahore 17D</field>
+        <field name="model_id" ref="model_biometric_device_details"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_download_attendance_for_device_name('Lahore 17D')</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+
+    <record id="ir_cron_download_attendance_device_lahore_new" model="ir.cron">
+        <field name="name">Download Attendance - Lahore New</field>
+        <field name="model_id" ref="model_biometric_device_details"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_download_attendance_for_device_name('Lahore New')</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">False</field>
+    </record>
+</odoo>

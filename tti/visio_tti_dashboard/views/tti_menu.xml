@@ -1,0 +1,13 @@
+<odoo>
+  <!-- Top-level Menu -->
+  <menuitem id="menu_tti_dashboard_root"
+            name="TTI Dashboard"
+            sequence="10"/>
+
+  <!-- Submenu that opens the filter wizard (dialog) -->
+  <menuitem id="menu_tti_dashboard_open"
+            name="Open Dashboard"
+            parent="menu_tti_dashboard_root"
+            action="action_tti_dashboard_wizard"
+            sequence="10"/>
+</odoo>

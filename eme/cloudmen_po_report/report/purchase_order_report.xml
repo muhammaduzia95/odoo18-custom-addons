@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="template_po_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="cloudmen_po_report.header_layout_standard_custom">
+                        <div class="page">
+                            <h4 style="text-align: center;font-weight: bold;">Purchase Order</h4>
+                            <div class="row mt-3" style="font-weight: bold;">
+                                <div class="col-8 text-left">
+                                    <p>Vendor Name:
+                                        <span t-esc="doc.partner_id.name or ''"/>
+                                    </p>
+                                    <p>Vendor QTN Ref:
+                                        <span t-esc="doc.partner_id.ref or ''"/>
+                                    </p>
+                                    <p>PO Ref:
+                                        <span t-esc="doc.name"/>
+                                    </p>
+                                    <p>Project:
+                                        <span t-esc="doc.po_project_id.name or ''"/>
+                                    </p>
+                                </div>
+                                <div class="col-4">
+                                    <p>Date:
+                                        <span t-esc="doc.date_order" t-options='{"widget": "date"}'/>
+                                    </p>
+                                    <p>Delivery Contact:
+                                        <span t-esc="doc.delivery_partner_id.name or ''"/>
+                                    </p>
+                                    <p>Site Location:
+                                        <span t-esc="doc.country_id.name or ''"/>, <span t-esc="doc.state_id.name or ''"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Description</th>
+                                                <th>Brand</th>
+                                                <th>Unit</th>
+                                                <th>Qty</th>
+                                                <th>Rate (AED)</th>
+                                                <th>Amount (AED)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            <t t-set="i" t-value="1"/>
+                                            <t t-foreach="doc.order_line" t-as="line">
+                                                <tr>
+                                                    <td t-esc="i"/>
+                                                    <td t-esc="line.name" style="text-align: left;"/>
+                                                    <!--                                    <td t-esc="line.product_id.attribute_value_ids.mapped('name') | join(', ')"/>-->
+                                                    <td><t t-esc="line.product_id.brand" /></td>
+                                                    <td t-esc="line.product_uom.name"/>
+                                                    <td t-esc="line.product_qty"/>
+                                                    <td t-esc="line.price_unit"/>
+                                                    <td t-esc="line.price_subtotal"/>
+                                                    <t t-set="i" t-value="i + 1"/>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-7">
+                                </div>
+                                <div class="col-5" style="text-align: left;">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th>Subtotal</th>
+                                            <th>
+                                                <span t-esc="doc.amount_untaxed"/>
+                                                AED
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>Discount</th>
+                                            <th><!-- <span t-esc="doc.amount_discount or 0.0"/> AED--></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Total After Discount</th>
+                                            <th>
+                                                <!--                                                <span t-esc="doc.amount_untaxed - (doc.amount_discount or 0.0)"/>-->
+                                                <!--                                                AED-->
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>VAT</th>
+                                            <th>
+                                                <span t-esc="doc.amount_tax"/>
+                                                AED
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th>
+                                                <span t-esc="doc.amount_total"/>
+                                                AED
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <p>
+                                        <strong>Payment Terms:</strong>
+                                        <span t-esc="doc.payment_term_id.name"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6">
+                                    <p style="margin-bottom: 5px;">
+                                        <strong>PO Approved By:</strong>
+                                        <!--                                        <span t-esc="doc.payment_term_id.name"/>-->
+                                    </p>
+                                    <p style="margin-bottom: 5px;">GEORGE KASSISSIEH</p>
+                                    <p style="margin-bottom: 5px;">President</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <img t-if="doc.company_id and doc.company_id.po_company_image"
+                                         t-att-src="image_data_uri(doc.company_id.po_company_image)"
+                                          style="height: 150px;width:150px"
+                                         alt="Logo"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <strong>Procurement Department</strong>
+                                    <p>
+                                        <strong>Terms &amp; Conditions:</strong>
+                                        <span t-esc="doc.notes"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+
+

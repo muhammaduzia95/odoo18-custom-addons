@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="copy_order_line.SectionAndNoteTextInherit" t-inherit="account.SectionAndNoteText"
+       t-inherit-mode="extension">
+        <xpath expr="//t[@t-component]" position="after">
+            <div style="float: right; font-size: 1em;" t-ref="copyElement" t-on-click="() => this.copyLines()">
+                <i class="fa fa-copy"/>
+            </div>
+        </xpath>
+    </t>
+
+
+</templates>

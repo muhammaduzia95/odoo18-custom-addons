@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tti_si_uom_tree" model="ir.ui.view">
+            <field name="name">tti.si.uom.list</field>
+            <field name="model">tti.si.uom</field>
+            <field name="arch" type="xml">
+                <list string="UOM" editable="bottom">
+                    <field name="code" optional="hide" readonly="1"/>
+                    <field name="name"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_si_uom_form" model="ir.ui.view">
+            <field name="name">tti.si.uom.form</field>
+            <field name="model">tti.si.uom</field>
+            <field name="arch" type="xml">
+                <form string="UOM">
+                    <sheet>
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="name"/>
+                            <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_si_uom_search" model="ir.ui.view">
+            <field name="name">tti.si.uom.search</field>
+            <field name="model">tti.si.uom</field>
+            <field name="arch" type="xml">
+                <search string="UOM">
+                    <field name="name"/>
+                    <group string="Group By">
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_si_uom" model="ir.actions.act_window">
+            <field name="name">UOM</field>
+            <field name="res_model">tti.si.uom</field>
+            <field name="view_id" ref="view_tti_si_uom_search"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a uom
+                </p>
+                <p> </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

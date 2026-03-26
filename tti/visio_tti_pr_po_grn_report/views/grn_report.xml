@@ -1,0 +1,204 @@
+<odoo>
+    <!-- Report Template -->
+    <template id="grn_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="gin_record" t-value="env['stock.picking'].search([
+                            ('group_id', '=', o.group_id.id),
+                            ('picking_type_id.sequence_code', '=', 'GIN')
+                        ], limit=1)"/>
+                    <t t-if="o.state == 'done'">
+                        <div class="page">
+                            <t t-set="purchase_order"
+                               t-value="env['purchase.order'].search([('group_id', '=', o.group_id.id)], limit=1)"/>
+
+                            <div class="mb-3 d-flex justify-content-between"
+                                 style="margin-bottom:30px; font-size:12px;">
+                                <!-- Supplier Info -->
+                                <div>
+                                    <span>Supplier Information:</span>
+                                    <br/>
+                                    <t t-if="purchase_order.partner_id">
+                                        <t t-esc="purchase_order.partner_id.name"/>
+                                        <br/>
+                                        <t t-if="purchase_order.partner_id.vat">
+                                            <span>NTN:
+                                                <t t-esc="purchase_order.partner_id.vat"/>
+                                            </span>
+                                            <br/>
+                                        </t>
+                                        <t t-if="purchase_order.partner_id.phone">
+                                            <span t-esc="purchase_order.partner_id.phone"/>
+                                            <br/>
+                                        </t>
+                                        <t t-if="purchase_order.applicant_id">
+                                            <span t-esc="purchase_order.applicant_id.name"/>
+                                            <br/>
+                                        </t>
+                                    </t>
+                                </div>
+
+                                <!-- Shipping Address -->
+                                <div style=" text-align: right;">
+                                    <span>Tti/PUR/QR-09, Rev 01 15/05/25</span>
+                                    <br/>
+                                    <span>Shipping address:</span>
+                                    <br/>
+                                    <t t-if="o.company_id">
+                                        <span t-esc="o.company_id.name"/>
+                                        <br/>
+                                        <t t-if="o.company_id.street">
+                                            <span t-esc="o.company_id.street"/>
+                                            <t t-if="o.company_id.street2">
+                                                ,
+                                                <t t-esc="o.company_id.street2"/>
+                                            </t>
+                                            <br/>
+                                        </t>
+                                        <t t-if="o.company_id.city or o.company_id.state_id or o.company_id.zip">
+                                            <span t-if="o.company_id.city" t-esc="o.company_id.city"/>
+                                            <t t-if="o.company_id.state_id">
+                                                <span>,
+                                                    <t t-esc="o.company_id.state_id.name"/>
+                                                </span>
+                                            </t>
+                                            <t t-if="o.company_id.zip">
+                                                <span>
+                                                    <t t-esc="o.company_id.zip"/>
+                                                </span>
+                                            </t>
+                                            <br/>
+                                        </t>
+                                        <t t-if="o.company_id.country_id">
+                                            <span t-esc="o.company_id.country_id.name"/>
+                                            <br/>
+                                        </t>
+                                        <t t-if="o.company_id.phone">
+                                            <span t-esc="o.company_id.phone"/>
+                                            <br/>
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:40px;">
+                                <!-- Title -->
+                                <h2 style="color:#2E619B;">
+                                    Goods Receiving Note #
+                                    <br/>
+                                    <t t-if="o.name">GRN
+                                        <t t-esc="o.name.split('/')[-1]"/>
+                                    </t>
+                                </h2>
+
+                                <!-- GRN Date -->
+                                <div style="margin-top: 10px;">
+                                    <span style="color: #B8A055;">GRN Date:</span>
+                                    <br/>
+                                    <span>
+                                        <t t-esc="o.scheduled_date.strftime('%d/%m/%y') if o.scheduled_date else ''"/>
+                                    </span>
+                                </div>
+
+                                <!-- PO + PO Date + GIN # + GIN Date (Flex Row) -->
+                                <div class="d-flex justify-content-between"
+                                     style="margin-top: 25px; 50px; flex-wrap: wrap;">
+                                    <div class="d-flex" style="width:45%;">
+                                        <div style="margin-right:70px;">
+                                            <span style="color: #B8A055; font-weight: bold;">PO #:</span>
+                                            <br/>
+                                            <span>
+                                                <t t-esc="purchase_order.name if purchase_order else ''"/>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span style="color: #B8A055; font-weight: bold;">PO Date:</span>
+                                            <br/>
+                                            <span>
+                                                <t t-esc="purchase_order.date_order.strftime('%d/%m/%y') if purchase_order and purchase_order.date_order else ''"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex " style="width:45%;">
+                                        <div style="margin-right:70px;">
+                                            <span style="color: #B8A055; font-weight: bold;">GIN #:</span>
+                                            <br/>
+                                            <span>
+                                                <t t-esc="gin_record.name.split('/')[-1] or ''"/>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span style="color: #B8A055; font-weight: bold;">GIN Date:</span>
+                                            <br/>
+                                            <span>
+                                                <t t-esc="gin_record.scheduled_date.strftime('%d/%m/%y') if gin_record.scheduled_date else ''"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-sm"
+                                   style="width: 100%; font-size: 12px; border-collapse: collapse;">
+                                <thead class="bg-secondary">
+                                    <tr>
+                                        <th style="border: 1px solid black; text-align: center;">Sr No.</th>
+                                        <th style="border: 1px solid black; text-align: center;">ITEM CODE</th>
+                                        <th style="border: 1px solid black; text-align: center;">DESCRIPTION</th>
+                                        <th style="border: 1px solid black; text-align: center;">UoM</th>
+                                        <th style="border: 1px solid black; text-align: center;">ORDERED QTY</th>
+                                        <th style="border: 1px solid black; text-align: center;">RECEIVED QTY</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-foreach="o.move_ids_without_package" t-as="line">
+                                        <tr>
+                                            <td style="border: 1px solid black; text-align: center;">
+                                                <t t-esc="index"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: left;">
+                                                <t t-esc="line.product_id.default_code or line.product_id.barcode or ''"/>
+                                            </td>
+                                            <td style="border: 1px solid black;">
+                                                <t t-esc="line.name"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center;">
+                                                <t t-esc="line.product_uom.name"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center;">
+                                                <t t-esc="line.product_uom_qty"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: center;">
+                                                <t t-esc="line.quantity"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="page"></div> <!-- Completely empty page -->
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_grn" model="ir.actions.report">
+        <field name="name">GRN Report</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_pr_po_grn_report.grn_report_template</field>
+        <field name="report_file">visio_tti_pr_po_grn_report.grn_report_template</field>
+        <field name="print_report_name">'Picking Report - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="visio_tti_pr_po_grn_report.paperformat_custom_purchaseorder"/>
+    </record>
+
+</odoo>

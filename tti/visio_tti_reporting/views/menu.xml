@@ -1,0 +1,7 @@
+<odoo>
+
+    <menuitem id="menu_tti_reports"
+              name="TTI Reports"
+              parent="sale.menu_sale_report"
+              sequence="100"/>
+</odoo>

@@ -1,0 +1,118 @@
+<odoo>
+    <record id="group_category_accounting_access_rights" model="ir.module.category">
+        <field name="name">Accounting Access Rights</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="group_hide_make_customer" model="res.groups">
+        <field name="name">Display Make in Customer Payments</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_customer" model="res.groups">
+        <field name="name">Display Check in Customer Payments</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_make_vendor" model="res.groups">
+        <field name="name">Display Make in Vendor Payments</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_vendor" model="res.groups">
+        <field name="name">Display Check in Vendor Payments</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_customer" model="res.groups">
+        <field name="name">Display Confirm in Customer Payments</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_vendor" model="res.groups">
+        <field name="name">Display Confirm in Vendor Payments</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+
+    <!--INVOICE-->
+    <record id="group_hide_make_invoice" model="res.groups">
+        <field name="name">Display make in Customer Invoice</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_invoice" model="res.groups">
+        <field name="name">Display Check in Customer Invoice</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_invoice" model="res.groups">
+        <field name="name">Display Confirm in Customer Invoice</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <!--VENDOR BILL-->
+    <record id="group_hide_make_vendor_bill" model="res.groups">
+        <field name="name">Display make in Vendor Bill</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_vendor_bill" model="res.groups">
+        <field name="name">Display Check in Vendor Bill</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_vendor_bill" model="res.groups">
+        <field name="name">Display Confirm in Vendor Bill</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <!--JOURNAL ENTRY-->
+    <record id="group_hide_make_entry" model="res.groups">
+        <field name="name">Display make in Journal Entry</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_entry" model="res.groups">
+        <field name="name">Display Check in Journal Entry</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_entry" model="res.groups">
+        <field name="name">Display Confirm in Journal Entry</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <!--Credit Note-->
+    <record id="group_hide_make_credit_note" model="res.groups">
+        <field name="name">Display make in Credit Note</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_credit_note" model="res.groups">
+        <field name="name">Display Check in Credit Note</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_credit_note" model="res.groups">
+        <field name="name">Display Confirm in Credit Note</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <!--Vendor Refund-->
+    <record id="group_hide_make_vendor_refund" model="res.groups">
+        <field name="name">Display make in Vendor Refund</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_check_vendor_refund" model="res.groups">
+        <field name="name">Display Check in Vendor Refund</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+    <record id="group_hide_confirm_vendor_refund" model="res.groups">
+        <field name="name">Display Confirm in Vendor Refund</field>
+        <field name="category_id" ref="visio_tti_customer_payments.group_category_accounting_access_rights"/>
+    </record>
+
+</odoo>

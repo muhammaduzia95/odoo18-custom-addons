@@ -1,0 +1,75 @@
+<!--tti\ohrms_loan\views\view_res_config_settings.xml-->
+<!--Zia file-->
+
+<odoo>
+    <!-- Settings Form View -->
+    <record id="view_hr_loan_res_config_settings" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr.loan</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+
+                <app string="Loan &amp; Advances" name="hr_loan" groups="base.group_system">
+                    <block title="Loan Configuration">
+                        <setting help="Default journal to be used for loan payments.">
+                            <field name="loan_journal_id"/>
+                        </setting>
+                        <setting help="Default account to be credited during loan processing.">
+                            <field name="loan_credit_account_id"/>
+                        </setting>
+                        <setting help="Default account to be debited during loan processing.">
+                            <field name="loan_debit_account_id"/>
+                        </setting>
+                    </block>
+
+                    <block title="Car Loan Configuration">
+                        <setting help="Default journal to be used for Car loan payments.">
+                            <field name="car_loan_journal_id"/>
+                        </setting>
+                        <setting help="Default account to be credited during car loan processing.">
+                            <field name="car_loan_credit_account_id"/>
+                        </setting>
+                        <setting help="Default account to be debited during car loan processing.">
+                            <field name="car_loan_debit_account_id"/>
+                        </setting>
+                    </block>
+
+                    <block title="Advance Configuration">
+                        <setting help="Default journal to be used for loan advances.">
+                            <field name="adv_journal_id"/>
+                        </setting>
+                        <setting help="Default account to be credited during loan advance.">
+                            <field name="adv_credit_account_id"/>
+                        </setting>
+                        <setting help="Default account to be debited during loan advance.">
+                            <field name="adv_debit_account_id"/>
+                        </setting>
+                    </block>
+
+                </app>
+            </xpath>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="action_hr_loan_settings" model="ir.actions.act_window">
+        <field name="name">Loan Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_loan_res_config_settings"/>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'hr_loan'}</field>
+    </record>
+
+    <menuitem id="hr_advance_menu_conf"
+              name="Configuration"
+              parent="ohrms_loan.hr_loan_menu_root"
+              sequence="30"/>
+
+    <menuitem id="hr_advance_menu_setting"
+              name="Settings"
+              parent="ohrms_loan.hr_advance_menu_conf"
+              action="action_hr_loan_settings"
+              sequence="10"/>
+
+</odoo>

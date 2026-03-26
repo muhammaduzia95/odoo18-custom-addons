@@ -1,0 +1,92 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_so_invoice_report\views\custom_header.xml-->
+<odoo>
+    <template id="tti_custom_header">
+        <div t-attf-class="header o_company_#{company.id}_layout"
+             style="border-bottom: 1px solid #000; padding-bottom: 10px;"
+             class="border-top-0">
+            <div class="d-flex justify-content-between"
+                 style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="d-flex align-items-center" style="text-align: right; align-items: center;">
+<!--                    <div style="font-size: 12px; vertical-align: middle; margin-right:10px;">Leave-->
+<!--                        your doubt-->
+<!--                        behind.-->
+<!--                    </div>-->
+<!--                    <separator orientation="vertical"/>-->
+                    <img t-if="company.logo" class="o_company_logo_small" t-att-src="image_data_uri(company.logo)"
+                         alt="Logo"/>
+                </div>
+
+
+                <div style="font-size: 12px; line-height: 1.6;">
+                    <strong>
+                        <t t-esc="company.name"/>
+                    </strong>
+                    <br/>
+                    NTN :
+                    <t t-esc="company.vat"/>
+                    STRN:
+                    <t t-esc="company.strn"/>
+                    <br/>
+                    <t t-esc="company.street"/>
+                    ,
+                    <t t-esc="company.street2"/>
+                    <br/>
+                    Tel :
+                    <t t-esc="company.phone"/>
+                    ,
+                    <a href="https://ttilabs.net/" target="new">www.ttilabs.net</a>
+                    <br/>
+                    <t t-esc="company.city"/>
+                    <t t-esc="company.state_id.name"/>
+                    <t t-esc="company.zip"/>
+                    <br/>
+                    <t t-esc="company.country_id.name"/>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+    <template id="tti_external_layout_standard" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+    <template id="tti_external_layout_boxed" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+    <template id="tti_external_layout_bold" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+    <template id="tti_external_layout_striped" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+    <template id="tti_external_layout_bubble" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+    <template id="tti_external_layout_wave" inherit_id="web.external_layout_wave">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+    <template id="tti_external_layout_folder" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[contains(@t-attf-class,'header')]" position="replace">
+            <t t-call="visio_tti_so_invoice_report.tti_custom_header"/>
+        </xpath>
+    </template>
+
+</odoo>

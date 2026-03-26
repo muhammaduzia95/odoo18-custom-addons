@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_report_sending\data\mail_template_send_report.xml-->
+<odoo>
+
+    <!-- SYSTEM-GENERATED (with link placeholder removed for now) -->
+    <record id="mail_template_report_system" model="mail.template">
+        <field name="name">TTI | System Test Report (Link)</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">Test Report No. {{ object.name }}</field>
+        <field name="email_from">{{ user.email or '' }}</field>
+        <field name="email_to">{{ object.partner_id.email or '' }}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div>
+                <p>Dear {{ object.partner_id.name }},</p>
+                <p>
+                    We are pleased to inform you that your <strong>test report</strong> for
+                    <strong>Sale Order No. {{ object.name }}</strong>
+                    is now available. Please use the link below to access the complete Test report.
+                    You may download or print it directly from the system:
+                <br/>
+                    <strong>Report No. {{ object.name }}</strong> - {{ object.report_link_main }}
+                <p>
+                    For authentication, this report is hosted live on our system.
+                    Kindly <strong>scan the QR code</strong> to view and verify the original document.
+                </p>
+                Thank you for choosing our services. We value your business and look forward to serving you again.
+                </p>
+                <p>This is a system-generated email. For any assistance regarding this report,
+                    please contact your <strong>Customer Service representative</strong> (in CC). For all other inquiries,
+                    you may reach us at
+                    <strong><a href="mailto:marketing@ttilabs.net">marketing@ttilabs.net</a></strong>
+                    or <strong><a href="mailto:info@ttilabs.net">info@ttilabs.net</a>.</strong>
+                </p>
+                <p>Best regards,<br/><strong>TTI Testing Laboratories</strong>
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <!-- MANUAL (PDF attached) -->
+    <record id="mail_template_report_manual" model="mail.template">
+        <field name="name">TTI | Manual Test Report (PDF)</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">Test Report No. {{ object.name }}</field>
+        <field name="email_from">{{ user.email or '' }}</field>
+        <field name="email_to">{{ object.partner_id.email or '' }}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div>
+                <p>Dear {{ object.partner_id.name }},</p>
+                <p>
+                    We are pleased to inform you that your <strong>test report</strong> for
+                    <strong>Sale Order No. {{ object.name }}</strong>
+                    is now available.
+                    Please find the <strong>PDF Test report attached</strong> for your reference.
+                </p>
+                <p>For verification purposes, this report is live on our system.
+                    Kindly <strong>scan the QR code</strong> on the report to view and authenticate the original document.
+                </p>
+                <p>Thank you for choosing our services. We value your business and look forward to serving you again.
+                </p>
+                <p>This is a system-generated email. For any assistance regarding this report,
+                    please contact your <strong>Customer Service representative</strong> (in CC). For all other inquiries,
+                    you may reach us at
+                    <strong><a href="mailto:marketing@ttilabs.net">marketing@ttilabs.net</a></strong>
+                    or <strong><a href="mailto:info@ttilabs.net">info@ttilabs.net</a>.</strong>
+                </p>
+                <p>Best regards,<br/><strong>TTI Testing Laboratories</strong>
+                </p>
+            </div>
+        </field>
+    </record>
+
+</odoo>

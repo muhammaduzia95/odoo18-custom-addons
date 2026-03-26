@@ -1,0 +1,741 @@
+{
+  "version": 12,
+  "sheets": [
+    {
+      "id": "sheet1",
+      "name": "Dashboard",
+      "colNumber": 20,
+      "rowNumber": 60,
+      "cells": {
+        "A2": {
+          "content": "=TEXT(ODOO.PIVOT(1, \"total_sales\")/1000000, \"0.0\") & \" M\"",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "bold": true,
+            "fontSize": 16
+          }
+        },
+        "A3": {
+          "content": "Total Sales",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "fontSize": 11
+          }
+        },
+        "E2": {
+          "content": "=TEXT(ODOO.LIST(1, 1, \"total_recovery\")/1000000, \"0.0\") & \" M\"",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "bold": true,
+            "fontSize": 16
+          }
+        },
+        "E3": {
+          "content": "Total Recovery",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "fontSize": 11
+          }
+        },
+        "I2": {
+          "content": "=TEXT(ODOO.LIST(1, 1, \"recovered_pct\")/100, \"0%\")",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "bold": true,
+            "fontSize": 16
+          }
+        },
+        "I3": {
+          "content": "Recovered percentage",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "fontSize": 11
+          }
+        },
+        "A6": {
+          "content": "MoM Growth",
+          "style": {
+            "border": true,
+            "align": "left",
+            "fontSize": 11
+          }
+        },
+        "B6": {
+          "content": "19%",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "A7": {
+          "content": "PoP Growth",
+          "style": {
+            "border": true,
+            "align": "left",
+            "fontSize": 11
+          }
+        },
+        "B7": {
+          "content": "23%",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "A8": {
+          "content": "YoY Growth",
+          "style": {
+            "border": true,
+            "align": "left",
+            "fontSize": 11
+          }
+        },
+        "B8": {
+          "content": "46%",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "E6": {
+          "content": "1.2 M",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "bold": true,
+            "fontSize": 16
+          }
+        },
+        "E7": {
+          "content": "Pending Sale Orders",
+          "style": {
+            "border": true,
+            "align": "center",
+            "fontSize": 11
+          }
+        },
+        "I6": {
+          "content": "300 K",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "bold": true,
+            "fontSize": 16
+          }
+        },
+        "I7": {
+          "content": "Open Quotations",
+          "style": {
+            "border": true,
+            "align": "center",
+            "fontSize": 11
+          }
+        },
+        "A11": {
+          "content": "Operations",
+          "style": {
+            "bold": true,
+            "fontSize": 12
+          }
+        },
+        "A13": {
+          "content": "Samples Run",
+          "style": {
+            "border": true,
+            "align": "left"
+          }
+        },
+        "C13": {
+          "content": "76",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "E13": {
+          "content": "Pending Reports",
+          "style": {
+            "border": true,
+            "align": "left"
+          }
+        },
+        "G13": {
+          "content": "65",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "I13": {
+          "content": "Reports Sent",
+          "style": {
+            "border": true,
+            "align": "left"
+          }
+        },
+        "K13": {
+          "content": "35",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "A18": {
+          "content": "[Line Chart Placeholder — Sales Trend (2025, 2024, 2023)]",
+          "style": {
+            "border": true,
+            "align": "center",
+            "valign": "middle",
+            "italic": true
+          }
+        },
+        "H18": {
+          "content": "Sales Trend",
+          "style": {
+            "align": "right",
+            "bold": true
+          }
+        },
+        "F28": {
+          "content": "2025 — Blue   |   2024 — Orange   |   2023 — Grey",
+          "style": {
+            "align": "center",
+            "italic": true
+          }
+        },
+        "M2": {
+          "content": "Targets Achieved",
+          "style": {
+            "border": true,
+            "bold": true,
+            "align": "center"
+          }
+        },
+        "M3": {
+          "content": "Faisalabad",
+          "style": {
+            "border": true
+          }
+        },
+        "N3": {
+          "content": "35%",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M4": {
+          "content": "Karachi",
+          "style": {
+            "border": true
+          }
+        },
+        "N4": {
+          "content": "123%",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M5": {
+          "content": "Lahore",
+          "style": {
+            "border": true
+          }
+        },
+        "N5": {
+          "content": "111%",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M6": {
+          "content": "Sialkot",
+          "style": {
+            "border": true
+          }
+        },
+        "N6": {
+          "content": "98%",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M7": {
+          "content": "Inspections",
+          "style": {
+            "border": true
+          }
+        },
+        "N7": {
+          "content": "34%",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M8": {
+          "content": "Environment",
+          "style": {
+            "border": true
+          }
+        },
+        "N8": {
+          "content": "65%",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M9": {
+          "content": "Total",
+          "style": {
+            "border": true,
+            "bold": true
+          }
+        },
+        "N9": {
+          "content": "93%",
+          "style": {
+            "border": true,
+            "bold": true,
+            "align": "right"
+          }
+        },
+        "M12": {
+          "content": "Total Invoices",
+          "style": {
+            "border": true,
+            "bold": true
+          }
+        },
+        "N12": {
+          "content": "214",
+          "style": {
+            "border": true,
+            "bold": true,
+            "align": "right"
+          }
+        },
+        "M13": {
+          "content": "Paid",
+          "style": {
+            "border": true
+          }
+        },
+        "N13": {
+          "content": "43",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M14": {
+          "content": "Not Paid",
+          "style": {
+            "border": true
+          }
+        },
+        "N14": {
+          "content": "77",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M15": {
+          "content": "Partially Paid",
+          "style": {
+            "border": true
+          }
+        },
+        "N15": {
+          "content": "94",
+          "style": {
+            "border": true,
+            "align": "right"
+          }
+        },
+        "M18": {
+          "content": "[Pie Chart Placeholder — References Split (Self Reference 84%, Eurofins 13%, TTI Nomination 3%)]",
+          "style": {
+            "border": true,
+            "align": "center",
+            "italic": true
+          }
+        },
+        "Q2": {
+          "content": "Top 10 Clients",
+          "style": {
+            "bold": true
+          }
+        },
+        "Q3": {
+          "content": "Multan Fabrics"
+        },
+        "R3": {
+          "content": "95.2 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q4": {
+          "content": "Bedouin"
+        },
+        "R4": {
+          "content": "62.3 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q5": {
+          "content": "Combined Fabrics"
+        },
+        "R5": {
+          "content": "45.3 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q6": {
+          "content": "Shah G Enterprises"
+        },
+        "R6": {
+          "content": "33.0 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q7": {
+          "content": "Kamal Ltd"
+        },
+        "R7": {
+          "content": "24.4 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q8": {
+          "content": "Azgard 9"
+        },
+        "R8": {
+          "content": "20.0 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q9": {
+          "content": "Dhamaka Industries"
+        },
+        "R9": {
+          "content": "15.1 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q10": {
+          "content": "Tannery Zone"
+        },
+        "R10": {
+          "content": "9.9 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q11": {
+          "content": "Sadaqat Ltd"
+        },
+        "R11": {
+          "content": "5.6 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q12": {
+          "content": "Asfandyar Corp"
+        },
+        "R12": {
+          "content": "5.0 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q15": {
+          "content": "Top 10 Buyers",
+          "style": {
+            "bold": true
+          }
+        },
+        "Q16": {
+          "content": "Levis"
+        },
+        "R16": {
+          "content": "95.2 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q17": {
+          "content": "H&M"
+        },
+        "R17": {
+          "content": "62.3 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q18": {
+          "content": "Next"
+        },
+        "R18": {
+          "content": "45.3 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q19": {
+          "content": "Tape a Loeil"
+        },
+        "R19": {
+          "content": "33.0 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q20": {
+          "content": "ISA TRAESKO"
+        },
+        "R20": {
+          "content": "24.4 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q21": {
+          "content": "Jainco"
+        },
+        "R21": {
+          "content": "20.0 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q22": {
+          "content": "Splash"
+        },
+        "R22": {
+          "content": "15.1 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q23": {
+          "content": "Denizen"
+        },
+        "R23": {
+          "content": "9.9 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q24": {
+          "content": "Debenhams"
+        },
+        "R24": {
+          "content": "5.6 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "Q25": {
+          "content": "Carrefour"
+        },
+        "R25": {
+          "content": "5.0 M",
+          "style": {
+            "align": "right"
+          }
+        },
+        "A32": {
+          "content": "[Bar Chart Placeholder — Division-wise Contribution]",
+          "style": {
+            "border": true,
+            "align": "center",
+            "italic": true
+          }
+        },
+        "F31": {
+          "content": "Division-wise Contribution",
+          "style": {
+            "align": "center",
+            "bold": true
+          }
+        },
+        "Q32": {
+          "content": "New Clients",
+          "style": {
+            "border": true,
+            "bold": true
+          }
+        },
+        "R32": {
+          "content": "35",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "Q34": {
+          "content": "New Brands",
+          "style": {
+            "border": true,
+            "bold": true
+          }
+        },
+        "R34": {
+          "content": "3",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "Q36": {
+          "content": "Lost Clients",
+          "style": {
+            "border": true,
+            "bold": true
+          }
+        },
+        "R36": {
+          "content": "15",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        },
+        "Q38": {
+          "content": "Lost Brands",
+          "style": {
+            "border": true,
+            "bold": true
+          }
+        },
+        "R38": {
+          "content": "1",
+          "style": {
+            "border": true,
+            "align": "right",
+            "bold": true
+          }
+        }
+      }
+    }
+  ],
+  "pivots": {
+    "1": {
+      "id": "1",
+      "model": "visio.tti.dashboard.report",
+      "rowGroupBys": [],
+      "colGroupBys": [],
+      "measures": [
+        {
+          "field": "total_sales"
+        }
+      ],
+      "name": "TTI Total Sales",
+      "domain": [],
+      "context": {}
+    }
+  },
+  "globalFilters": [
+    {
+      "id": "months",
+      "label": "Months",
+      "type": "date",
+      "rangeType": "month",
+      "defaultValue": "this_year",
+      "pivotFields": {
+        "1": {
+          "field": "date",
+          "type": "date",
+          "offset": 0
+        }
+      }
+    },
+    {
+      "id": "years",
+      "label": "Years",
+      "type": "date",
+      "rangeType": "year",
+      "defaultValue": "this_year",
+      "pivotFields": {
+        "1": {
+          "field": "date",
+          "type": "date",
+          "offset": 0
+        }
+      }
+    },
+    {
+      "id": "category",
+      "label": "Category",
+      "type": "relation",
+      "modelName": "tti.si.category",
+      "pivotFields": {
+        "1": {
+          "field": "category_id",
+          "type": "many2one"
+        }
+      }
+    },
+    {
+      "id": "subcategory",
+      "label": "Subcategory",
+      "type": "relation",
+      "modelName": "tti.si.sub.category",
+      "pivotFields": {
+        "1": {
+          "field": "subcategory_id",
+          "type": "many2one"
+        }
+      }
+    },
+    {
+      "id": "zone",
+      "label": "Zone",
+      "type": "relation",
+      "modelName": "tti.city.zone",
+      "pivotFields": {
+        "1": {
+          "field": "zone_id",
+          "type": "many2one"
+        }
+      }
+    }
+  ]
+}

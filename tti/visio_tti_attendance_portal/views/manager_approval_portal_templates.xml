@@ -1,0 +1,97 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_attendance_portal\views\manager_approval_portal_templates.xml-->
+
+<odoo>
+
+    <!-- Add "Manager Approval" link in portal dropdown -->
+    <template id="manager_approval_link" inherit_id="portal.user_dropdown">
+        <xpath expr="//*[@id='o_logout_divider']" position="before">
+            <!-- show to admins OR users having an employee (managers will use it) -->
+            <t t-if="request.env.user.has_group('base.group_system') or request.env.user.has_group('visio_tti_attendance_portal.group_manager_approval_portal')">
+                <a href="/my/manager-approval" role="menuitem" class="dropdown-item ps-3">
+                    <i class="fa fa-fw fa-check-square-o me-1 small text-primary"></i>
+                    Manager Approval
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- List Page -->
+    <template id="portal_manager_approval_list" name="Portal Manager Approval List">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+
+                <h3>Manager Approval</h3>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Date</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Reason</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="requests">
+                            <t t-foreach="requests" t-as="req">
+                                <tr>
+                                    <td>
+                                        <t t-esc="req.employee_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="req.date"/>
+                                    </td>
+
+                                    <td>
+                                        <t t-set="req_tz"
+                                           t-value="req.with_context(tz=request.env.user.tz or 'Asia/Karachi')"/>
+                                        <t t-if="req_tz.check_in">
+                                            <span t-field="req_tz.check_in" t-options="{'widget': 'datetime'}"/>
+                                        </t>
+                                    </td>
+
+                                    <td>
+                                        <t t-if="req_tz.check_out">
+                                            <span t-field="req_tz.check_out" t-options="{'widget': 'datetime'}"/>
+                                        </t>
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="req.reason or ''"/>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <t t-if="req.state == 'draft'">
+                                            <form t-att-action="'/my/manager-approval/verify/%s' % req.id" method="post"
+                                                  style="display:inline;">
+                                                <input type="hidden" name="csrf_token"
+                                                       t-att-value="request.csrf_token()"/>
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    Verify
+                                                </button>
+                                            </form>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge bg-secondary">Verified</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">
+                                    No pending requests found.
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

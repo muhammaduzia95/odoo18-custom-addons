@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_eurofins_sales_report_wizard" model="ir.ui.view">
+        <field name="name">eurofins.sales.report.wizard.form</field>
+        <field name="model">eurofins.sales.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Eurofins Sales Report">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_download_excel" type="object" string="Download Excel" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_eurofins_sales_report_wizard" model="ir.actions.act_window">
+        <field name="name">Eurofins Sales Report</field>
+        <field name="res_model">eurofins.sales.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu in Sale App-->
+    <!-- <menuitem id="menu_tti_eurofins_reports" name="TTI Eurofins Reports" parent="sale.menu_sale_report" sequence="60"/> -->
+
+    <menuitem id="menu_tti_eurofins_reports"
+              name="TTI Eurofins Reports"
+              parent="account.menu_finance_reports"
+              sequence="60"/>
+
+    <menuitem id="menu_eurofins_sales_report"
+              name="Eurofins Sales Report"
+              parent="menu_tti_eurofins_reports"
+              action="action_eurofins_sales_report_wizard"
+              sequence="10"/>
+
+</odoo>

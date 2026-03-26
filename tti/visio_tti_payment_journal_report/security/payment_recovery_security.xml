@@ -1,0 +1,10 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_payment_journal_report\security\payment_recovery_security.xml-->
+<odoo>
+
+    <!--  Hide Report Menu Payment Recovery  -->
+    <record id="group_payment_recovery" model="res.groups">
+        <field name="name">Payment Recovery Report Access</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+</odoo>

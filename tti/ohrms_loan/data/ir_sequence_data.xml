@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="loan_sequence" model="ir.sequence">
+        <field name="name">Loan Request</field>
+        <field name="code">loan.seq</field>
+        <field name="prefix">LO/</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next_actual">1</field>
+        <field name="implementation">standard</field>
+    </record>
+
+    <record id="advance_sequence" model="ir.sequence">
+        <field name="name">Advance Request</field>
+        <field name="code">advance.seq</field>
+        <field name="prefix">AD/</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next_actual">1</field>
+        <field name="implementation">standard</field>
+    </record>
+</odoo>

@@ -1,0 +1,163 @@
+<odoo>
+    <record id="view_move_form_inherit_sale_tax_due" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.sale.tax.due</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <!--for invoice-->
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_make_invoice"
+                        invisible="state != 'draft' or move_type != 'out_invoice'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_check_invoice"
+                        invisible="state != 'make' or move_type != 'out_invoice'"/>
+                <!--for vendor bill-->
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_make_vendor_bill"
+                        invisible="state != 'draft' or move_type != 'in_invoice'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_check_vendor_bill"
+                        invisible="state != 'make' or move_type != 'in_invoice'"/>
+                <button name="action_post" string="Confirm" class="oe_highlight" type="object"
+                        groups="visio_tti_customer_payments.group_hide_confirm_vendor_bill" data-hotkey="q"
+                        context="{'validate_analytic': True, 'disable_abnormal_invoice_detection': False}"
+                        invisible="state != 'check' or move_type != 'in_invoice' or display_inactive_currency_warning"/>
+                <!--for credit note-->
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_make_credit_note"
+                        invisible="state != 'draft' or move_type != 'out_refund'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        groups="visio_tti_customer_payments.group_hide_check_credit_note"
+                        class="btn-primary"
+                        invisible="state != 'make' or move_type != 'out_refund'"/>
+                <button name="action_post" string="Confirm" class="oe_highlight" type="object"
+                        groups="visio_tti_customer_payments.group_hide_confirm_credit_note" data-hotkey="q"
+                        context="{'validate_analytic': True, 'disable_abnormal_invoice_detection': False}"
+                        invisible="state != 'check' or move_type != 'out_refund' or display_inactive_currency_warning"/>
+                <!--for vendor credit note-->
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_make_vendor_refund"
+                        invisible="state != 'draft' or move_type != 'in_refund'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_check_vendor_refund"
+                        invisible="state != 'make' or move_type != 'in_refund'"/>
+                <button name="action_post" string="Confirm" class="oe_highlight" type="object"
+                        groups="visio_tti_customer_payments.group_hide_confirm_vendor_refund" data-hotkey="q"
+                        context="{'validate_analytic': True, 'disable_abnormal_invoice_detection': False}"
+                        invisible="state != 'check' or move_type != 'in_refund'"/>
+                <!--for journal entry-->
+                <button name="action_make"
+                        string="Make"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_make_entry"
+                        invisible="state != 'draft' or move_type != 'entry'"/>
+                <button name="action_check"
+                        string="Check"
+                        type="object"
+                        class="btn-primary"
+                        groups="visio_tti_customer_payments.group_hide_check_entry"
+                        invisible="state != 'make' or move_type != 'entry'"/>
+            </header>
+            <xpath expr="//header/button[@name='action_post'][1]" position="attributes">
+                <attribute name="invisible">state != 'check' or move_type != 'entry'</attribute>
+                <attribute name="groups">visio_tti_customer_payments.group_hide_confirm_entry</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_post'][2]" position="attributes">
+                <attribute name="invisible">state != 'check' or move_type != 'out_invoice'</attribute>
+                <attribute name="groups">visio_tti_customer_payments.group_hide_confirm_invoice</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[@name='invoice_tab']/group/group/group/field[@name='amount_residual']"
+                   position="after">
+                <field name="sale_tax_due" invisible="state == 'draft'"/>
+            </xpath>
+            <xpath expr="//sheet/group/group[@id='header_right_group']/div[@name='journal_div']" position="after">
+                <field name="multi_payment_ids" widget="many2many_tags" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_multi_payments"
+                        string="Multi Payments"
+                        invisible="not multi_payment_ids or move_type not in ['out_invoice', 'in_invoice', 'entry']"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exchange">
+                </button>
+            </xpath>
+            <xpath expr="//header/button[@name='button_draft']" position="attributes">
+                <attribute name="invisible">state in ['draft', 'cancel', 'make', 'check'] and move_type in ['out_invoice',
+                    'out_refund']
+                </attribute>
+                <attribute name="groups">visio_tti_invoice_customize.group_account_reset_invoice</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group[@id='header_right_group']/field[@name='invoice_date'][2]" position="attributes">
+                <attribute name="readonly">state not in ['draft' ,'make', 'check']</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_group_form_inherit_analytic_required" model="ir.ui.view">
+        <field name="name">account.group.form.inherit.analytic.required</field>
+        <field name="model">account.group</field>
+        <field name="inherit_id" ref="account.view_account_group_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="before">
+                <field name="analytic_required"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_invoice_tree_inherit_zone_category" model="ir.ui.view">
+        <field name="name">account.move.tree.inherit.zone.category</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='invoice_date_due']" position="after">
+                <field name="city_zone"/>
+                <field name="tti_si_category_ids" widget="many2many_tags"/>
+                <field name="tti_si_sub_category_ids" widget="many2many_tags"/>
+                <field name="invoice_user_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter_inherit_zone_category" model="ir.ui.view">
+        <field name="name">account.move.search.inherit.zone.category</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='partner_id']" position="after">
+                <field name="city_zone"/>
+                <field name="tti_si_category_ids" string="Category"/>
+                <field name="tti_si_sub_category_ids" string="Sub Category"/>
+            </xpath>
+            <xpath expr="//search/group/filter[@name='salesperson']" position="after">
+                <filter string="Category" name="category" context="{'group_by':'tti_si_category_ids'}"/>
+                <filter string="Sub Category" name="sub_category" context="{'group_by':'tti_si_sub_category_ids'}"/>
+                <filter string="City Zone" name="city_zone" context="{'group_by':'city_zone'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

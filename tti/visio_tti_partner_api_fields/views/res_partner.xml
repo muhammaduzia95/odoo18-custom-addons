@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_partner_form_inherit_buyer_lims" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.buyer.lims</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="tti_is_kik_report" widget="boolean_toggle"/>
+                <field name="tti_is_photo_lims" widget="boolean_toggle"/>
+                <field name="tti_lims_logo_report_name" invisible="1"/>
+                <field name="tti_lims_logo_report" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

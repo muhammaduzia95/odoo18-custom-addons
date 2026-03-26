@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="group_device_attendance_user" model="res.groups">
+            <field name="name">AMT Device Attendance Manage</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+</odoo>

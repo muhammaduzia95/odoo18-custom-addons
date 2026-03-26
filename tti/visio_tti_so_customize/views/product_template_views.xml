@@ -1,0 +1,194 @@
+<odoo>
+    <data>
+        <record id="product_template_only_form_view_tti_test_type" model="ir.ui.view">
+            <field name="name">product.template.tti.test.type</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[hasclass('oe_title')]" position="before">
+                    <span class="d-inline-flex">
+                        <field name="test_type" required="1" widget="radio" options="{'horizontal': true}"/>
+                    </span>
+                </xpath>
+
+                <xpath expr="//div[hasclass('oe_title')]" position="after">
+                    <div class="oe_title">
+                        <h2>
+                            <field name="tti_test_method" placeholder="Test Method Name"/>
+                        </h2>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='product_tooltip']" position="after">
+                    <field name="tti_department_id" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="tti_test_group_id" options="{'no_create': True, 'no_open': True}" domain="[('company_id', '=', company_id)]"/>
+                </xpath>
+
+                <xpath expr="//page[@name='general_information']" position="after">
+                    <page string="Test Reports" name="test_report" invisible="test_type != 'test_package'">
+                        <field name="test_report_ids" >
+                            <list string="Test Reports" editable="bottom">
+                                <field name="product_id" column_invisible="1"/>
+                                <field name="test_report" required="1"/>
+                                <field name="qty"/>
+                                <field name="uom_id"/>
+                                <field name="total_cost"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+
+                <xpath expr="//sheet" position="inside">
+                    <field name="usd_currency_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='general_information']/group/group[@name='group_standard_price']/div[@name='list_price_uom']"
+                       position="after">
+                    <label for="list_price_usd"/>
+                    <div>
+                        <field name="list_price_usd" options="{'currency_field': 'usd_currency_id'}"/>
+                    </div>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record id="product_template_kanban_view_tti_display_name" model="ir.ui.view">
+            <field name="name">Product.template.product.kanban.tti.display_name</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="display_name"/>
+                </xpath>
+                <xpath expr="//t[@t-name='card']/main/span" position="after">
+                    <field name="usd_currency_id" invisible="1"/>
+                    <span>
+                        Price USD :
+                        <field name="list_price_usd"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_currency_form_inherit_custom" model="ir.ui.view">
+            <field name="name">res.currency.list.form.inherit.custom</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <sheet position="inside">
+                    <div name="button_box" class="oe_button_box">
+                        <button name="update_product_usd_to_list_price" class="oe_stat_button" icon="fa-bars" type="object" invisible="name != 'USD'">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Update Service Products Price</span>
+                            </div>
+                        </button>
+                    </div>
+                </sheet>
+            </field>
+        </record>
+
+        <record id="view_product_template_tree_inherit_custom" model="ir.ui.view">
+            <field name="name">product.template.tree.inherit.custom</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='list_price']" position="after">
+                    <field name="usd_currency_id" column_invisible="1"/>
+                    <field name="list_price_usd"/>
+                </xpath>
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="tti_test_method"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_search_view_tti_test_type" model="ir.ui.view">
+            <field name="name">product.template.search.tti.test.type</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="default_code" filter_domain="[('default_code', '=', self)]" string="Code"/>
+                    <field name="test_type"/>
+                    <field name="tti_test_method"/>
+                    <field name="tti_department_id"/>
+                    <field name="tti_test_group_id"/>
+                </xpath>
+                <xpath expr="//filter[@name='filter_to_sell']" position="before">
+                    <separator/>
+                    <filter string="Test Reports" name="test_report_filter"
+                            domain="[('test_type', '=', 'test_report')]"/>
+                    <filter string="Test Packages" name="test_package_filter"
+                            domain="[('test_type', '=', 'test_package')]"/>
+                    <separator/>
+                </xpath>
+                <xpath expr="//group" position="inside">
+                    <filter string="Test Type" name="test_type_group" context="{'group_by':'test_type'}"/>
+                    <filter string="Department" name="department_id_group" context="{'group_by':'tti_department_id'}"/>
+                    <filter string="Test Group" name="test_group_id_group" context="{'group_by':'tti_test_group_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="test_report_product_template_action" model="ir.actions.act_window">
+            <field name="name">Tests</field>
+            <field name="res_model">product.template</field>
+            <field name="path">test_reports</field>
+            <field name="view_mode">kanban,list,form,activity</field>
+            <field name="view_id" ref="product.product_template_kanban_view"/>
+            <field name="search_view_id" ref="visio_tti_so_customize.product_template_search_view_tti_test_type"/>
+            <field name="domain">[('test_type', '=', 'test_report')]</field>
+            <field name="context">{"search_default_filter_to_sell":1, "sale_multi_pricelist_product_template": 1,
+                "search_default_test_report_filter": 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new test report
+                </p>
+                <p>
+                    You must define a test report for everything you sell or purchase,
+                    whether it's a storable test report, a consumable or a service.
+                </p>
+            </field>
+        </record>
+
+        <record id="test_package_product_template_action" model="ir.actions.act_window">
+            <field name="name">Packages</field>
+            <field name="res_model">product.template</field>
+            <field name="path">test_packages</field>
+            <field name="view_mode">kanban,list,form,activity</field>
+            <field name="view_id" ref="product.product_template_kanban_view"/>
+            <field name="search_view_id" ref="visio_tti_so_customize.product_template_search_view_tti_test_type"/>
+            <field name="domain">[('test_type', '=', 'test_package')]</field>
+            <field name="context">{"search_default_filter_to_sell":1, "sale_multi_pricelist_product_template": 1,
+                "search_default_test_package_filter": 1, 'default_test_type': 'test_package',}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new test package
+                </p>
+                <p>
+                    You must define a test package for everything you sell or purchase,
+                    whether it's a storable test package, a consumable or a service.
+                </p>
+            </field>
+        </record>
+
+<!--        <menuitem id="test_reports_menu_catalog" name="Tests" parent="sale.sale_menu_root" sequence="11">-->
+<!--            <menuitem id="menu_test_report_product_template_action"-->
+<!--                      action="visio_tti_so_customize.test_report_product_template_action"-->
+<!--                      name="Tests"-->
+<!--                      sequence="10"/>-->
+<!--            <menuitem id="menu_test_package_product_template_action" name="Packages"-->
+<!--                      action="visio_tti_so_customize.test_package_product_template_action"-->
+<!--                      sequence="20"/>-->
+<!--        </menuitem>-->
+
+    </data>
+
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_country_form_inherit_lims_code" model="ir.ui.view">
+        <field name="name">res.country.form.inherit.lims.code</field>
+        <field name="model">res.country</field>
+        <field name="inherit_id" ref="base.view_country_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[@name='main_group']/group[@name='country_details']/field[@name='code']" position="after">
+                <field name="lims_code" seting="LIMS Code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

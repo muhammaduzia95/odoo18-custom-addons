@@ -1,0 +1,47 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_payment_journal_report\wizard\payment_recovery_wizard_view.xml-->
+<odoo>
+
+    <!--  View  -->
+    <record id="view_payment_recovery_wizard_form" model="ir.ui.view">
+        <field name="name">payment.recovery.wizard.form</field>
+        <field name="model">payment.recovery.wizard</field>
+        <field name="arch" type="xml">
+
+            <form string="Payment Recovery Report">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_print_excel" type="object" string="Excel Report" class="btn-primary"/>
+                    <button name="%(visio_tti_payment_journal_report.action_payment_recovery_pdf)d" type="action"
+                            class="btn btn-primary" string="PDF Report"/>
+                    <button string="Cancel" class="btn-link" special="cancel"/>
+                </footer>
+            </form>
+
+        </field>
+    </record>
+
+    <!--  Action  -->
+    <record id="action_payment_recovery_wizard" model="ir.actions.act_window">
+        <field name="name">Payment Recovery Report</field>
+        <field name="res_model">payment.recovery.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!--  Menu  -->
+    <menuitem id="menu_payment_recovery_report"
+              name="Payment Recovery Report"
+              parent="visio_tti_exel_reports.menu_tti_eurofins_reports"
+              action="action_payment_recovery_wizard"
+              groups="visio_tti_payment_journal_report.group_payment_recovery"
+              sequence="40"/>
+
+</odoo>

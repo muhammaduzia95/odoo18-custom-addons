@@ -1,0 +1,137 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\eme\visio_eme_custom_invoice\report\cover.xml-->
+
+<odoo>
+
+    <!-- ================= QUOTATION COVER PAGE ================= -->
+    <template id="eme_quotation_cover_page">
+        <t t-set="is_cover_page" t-value="True"/>
+
+        <div class="page" style="padding-top:0; margin-top:0; padding:0; margin:0;">
+            <div style="height:30mm;"></div>
+            <div style="height:500px;">
+
+
+                <!-- Title + Logo Row -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:40px;">
+
+
+                    <!-- LEFT: Company Logo -->
+                    <!--                    <div style="flex:1; text-align:left;">-->
+                    <!--                        <t t-if="o.company_id.logo">-->
+                    <!--                            <img t-att-src="image_data_uri(o.company_id.logo)"-->
+                    <!--                                 alt="Company Logo"-->
+                    <!--                                 style="height:80px; width:auto; object-fit:contain;"/>-->
+                    <!--                        </t>-->
+                    <!--                    </div>-->
+
+                    <!-- Right Side: Title -->
+                    <div style="flex:1; text-align:right; margin-top:0px; padding-left:13mm; padding-right:13mm;">
+                        <h2 style="margin:0; font-size:30px; font-family: Arial, sans-serif; color:black; white-space:nowrap;">
+                            <strong>QUOTATION</strong>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Cover Image -->
+                <!--                <div style="text-align:center; margin-top:20px;">-->
+
+                <!--                    <img t-att-src="'/visio_eme_custom_invoice/static/src/img/quotation_cover.jpg'"-->
+                <!--                         style="width:100%; max-height:600px; object-fit:cover; "-->
+                <!--                         alt="Quotation Cover"/>-->
+                <!--                </div>-->
+                <!--                -->
+                <!-- Cover Image (full width / edge-to-edge) -->
+                <div style="margin-top:20px; margin-left:-10mm; margin-right:-10mm;">
+                    <img t-att-src="'/visio_eme_custom_invoice/static/src/img/quotation_cover.jpg'"
+                         style="display:block; width:100%; height:150mm; object-fit:cover;"
+                         alt="Quotation Cover"/>
+                </div>
+
+                <!-- Cover Info -->
+                <div style="margin-top:45px; padding-left:13mm; padding-right:13mm;">
+                    <table style="width:100%; font-family: Arial, sans-serif; font-size:18px; border-color:white;">
+                        <tr>
+                            <td style="width:25%; padding:6px 0;">
+                                <strong>Project:</strong>
+                            </td>
+                            <td style="width:75%; padding:6px 0;">
+                                <t t-esc="project_name or ''"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 0;">
+                                <strong>Subject:</strong>
+                            </td>
+                            <td style="padding:6px 0;">
+                                <t t-esc="subject or ''"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 0;">
+                                <strong>Customer Name:</strong>
+                            </td>
+                            <td style="padding:6px 0;">
+                                <t t-esc="customer_name or ''"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 0;">
+                                <strong>Quotation No.:</strong>
+                            </td>
+                            <td style="padding:6px 0;">
+                                <t t-esc="o.name or ''"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 0;">
+                                <strong>Date:</strong>
+                            </td>
+                            <td style="padding:6px 0;">
+                                <t t-esc="o.date_order.strftime('%d %b %Y') if o.date_order else ''"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </template>
+
+
+    <!--    <template id="eme_quotation_cover_report">-->
+    <!--        <t t-call="web.html_container">-->
+    <!--            <t t-foreach="docs" t-as="o">-->
+    <!--                <t t-call="web.basic_layout">-->
+    <!--                    <t t-call="visio_eme_custom_invoice.eme_quotation_cover_page"/>-->
+    <!--                </t>-->
+    <!--            </t>-->
+    <!--        </t>-->
+    <!--    </template>-->
+
+    <!--    <record id="paperformat_eme_quotation_cover" model="report.paperformat">-->
+    <!--        <field name="name">EME: Quotation Cover</field>-->
+    <!--        <field name="default" eval="False"/>-->
+    <!--        <field name="format">A4</field>-->
+    <!--        <field name="orientation">Portrait</field>-->
+    <!--        <field name="margin_top">0</field>-->
+    <!--        <field name="margin_bottom">0</field>-->
+    <!--        <field name="margin_left">10</field>-->
+    <!--        <field name="margin_right">10</field>-->
+    <!--        <field name="header_line" eval="False"/>-->
+    <!--        <field name="header_spacing">0</field>-->
+    <!--        <field name="dpi">90</field>-->
+    <!--    </record>-->
+
+    <!--    <record id="action_report_eme_quotation_cover" model="ir.actions.report">-->
+    <!--        <field name="name">EME: Quotation Cover</field>-->
+    <!--        <field name="model">sale.order</field>-->
+    <!--        <field name="report_type">qweb-pdf</field>-->
+    <!--        <field name="report_name">visio_eme_custom_invoice.eme_quotation_cover_report</field>-->
+    <!--        <field name="report_file">visio_eme_custom_invoice.eme_quotation_cover_report</field>-->
+    <!--        <field name="paperformat_id" ref="visio_eme_custom_invoice.paperformat_eme_quotation_cover"/>-->
+    <!--        <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+    <!--        <field name="binding_type">report</field>-->
+    <!--    </record>-->
+
+
+</odoo>

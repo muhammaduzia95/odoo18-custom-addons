@@ -1,0 +1,155 @@
+<odoo>
+    <data>
+
+        <record id="view_tti_parcels_list" model="ir.ui.view">
+            <field name="name">tti.parcels.list</field>
+            <field name="model">tti.parcels</field>
+            <field name="arch" type="xml">
+                <list
+                        string="Parcels List"
+                        decoration-info="state == 'draft'"
+                        decoration-success="state == 'posted'"
+                        decoration-muted="state == 'cancel'"
+                >
+
+                    <field name="tti_date"/>
+                    <field name="name"/>
+                    <!--                    <field name="tti_partner_id"/>-->
+                    <field name="tti_company"/>
+                    <field name="tti_awb_number" string="AWB #"/>
+                    <field name="tti_category_name"/>
+                    <field name="tti_courier_id"/>
+                    <!--                    <field name="tti_deliver_to"/>-->
+                    <field name="deliver_to_tti"/>
+                    <field name="tti_city_id" domain="[('company_id', '=', company_id)]"/>
+                    <field name="tti_time" widget="float_time" sum="expected duration"/>
+                    <field name="tti_description" widget="text" optional="hide"/>
+                    <field name="company_id" optional="hide"/>
+                    <field name="state" widget="badge"
+                           decoration-info="state == 'draft'"
+                           decoration-success="state == 'posted'"
+                           decoration-muted="state == 'cancel'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_parcels_form" model="ir.ui.view">
+            <field name="name">tti.parcels.form</field>
+            <field name="model">tti.parcels</field>
+            <field name="arch" type="xml">
+                <form string="Parcels Form">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"
+                                invisible="state != 'draft'" data-hotkey="q"/>
+                        <button name="button_cancel" string="Cancel" type="object" data-hotkey="x"
+                                invisible="not id or state != 'draft'"/>
+                        <button name="button_draft" string="Reset to Draft" type="object"
+                                invisible="not id or state == 'draft'" data-hotkey="r"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header>
+                    <sheet readonly="state != 'draft'">
+                        <widget name="web_ribbon" title="Posted" bg_color="text-bg-success"
+                                invisible="state != 'posted'"/>
+                        <widget name="web_ribbon" title="Canceled" bg_color="text-bg-secondary"
+                                invisible="state != 'cancel'"/>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Parcel ID" required="0"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <!--                                <field name="tti_partner_id" widget="res_partner_many2one"-->
+                                <!--                                       options="{'no_edit': True, 'no_open': True, 'no_create': True,}"-->
+                                <!--                                       readonly="state != 'draft'" required="1"/>-->
+                                <field name="tti_date" readonly="state != 'draft'" required="1"/>
+                                <field name="tti_courier_id"
+                                       options="{'no_edit': True, 'no_open': True, 'no_create': True}"
+                                       domain="[('company_id', '=', company_id)]"
+                                       readonly="state != 'draft'" required="1"/>
+                                <field name="tti_awb_number" readonly="state != 'draft'" string="AWB #"/>
+                                <field name="tti_city_id" readonly="state != 'draft'"
+                                       domain="[('company_id', '=', company_id)]"
+                                       options="{'no_edit': True, 'no_open': True, 'no_create': True,}"/>
+                                <field name="tti_company"
+                                       readonly="state != 'draft'" required="1"/>
+                                <field name="deliver_to_tti" readonly="state != 'draft'" widget="res_partner_many2one"
+                                       options="{'no_edit': True, 'no_open': True, 'no_create': True,}"
+                                />
+                                <field name="tti_category_name" readonly="state != 'draft'"/>
+                                <field name="tti_time" widget="float_time" readonly="state != 'draft'"/>
+                                <field name="tti_description" readonly="state != 'draft'" widget="text"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tti Parcels Search View -->
+        <record id="view_tti_parcels_search" model="ir.ui.view">
+            <field name="name">tti.parcels.search</field>
+            <field name="model">tti.parcels</field>
+            <field name="arch" type="xml">
+                <search string="Tti Parcels">
+
+                    <field name="name"/>
+                    <field name="tti_date"/>
+                    <field name="tti_courier_id"/>
+                    <field name="tti_awb_number"/>
+                    <field name="tti_city_id"/>
+                    <field name="tti_company"/>
+                    <field name="deliver_to_tti"/>
+                    <!--                    <field name="tti_partner_id"/>-->
+                    <!--                    <field name="tti_deliver_to"/>-->
+                    <field name="tti_category_name"/>
+                    <field name="tti_time"/>
+                    <field name="state"/>
+                    <field name="company_id"/>
+
+                    <separator/>
+                    <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Posted" name="filter_posted" domain="[('state', '=', 'posted')]"/>
+                    <filter string="Canceled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                    <separator/>
+                    <filter string="Date" name="filter_tti_date" date="tti_date"/>
+
+                    <group string="Group By">
+                        <filter name="groupby_state" string="Status" context="{'group_by': 'state'}"/>
+                        <filter name="groupby_tti_courier_id" string="Courier"
+                                context="{'group_by': 'tti_courier_id'}"/>
+                        <filter name="groupby_tti_company" string="Company Name"
+                                context="{'group_by': 'tti_company'}"/>
+                        <filter name="groupby_tti_city_id" string="City" context="{'group_by': 'tti_city_id'}"/>
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+        <!-- Tti Parcels Action -->
+        <record id="action_tti_parcels" model="ir.actions.act_window">
+            <field name="name">Parcels</field>
+            <field name="res_model">tti.parcels</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="search_view_id" ref="visio_tti_so_customize.view_tti_parcels_search"/>
+        </record>
+
+        <!-- Tti Parcels Parent Menu -->
+        <menuitem id="menu_tti_parcels_root" name="Parcels" sequence="30"
+                  groups="visio_tti_so_customize.group_tti_so_customize_parcel_user"
+                  web_icon="visio_tti_so_customize,static/description/assets/parcel.png"/>
+
+        <!-- Tti Parcels Menu -->
+        <menuitem id="menu_tti_parcels" parent="visio_tti_so_customize.menu_tti_parcels_root" name="Parcels"
+                  sequence="10" groups="visio_tti_so_customize.group_tti_so_customize_parcel_user"
+                  action="visio_tti_so_customize.action_tti_parcels"/>
+
+    </data>
+</odoo>

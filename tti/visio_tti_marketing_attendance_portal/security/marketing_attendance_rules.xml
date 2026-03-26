@@ -1,0 +1,19 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_marketing_attendance_portal\security\marketing_attendance_rules.xml-->
+<odoo>
+
+    <record id="rule_marketing_attendance_own_and_team" model="ir.rule">
+        <field name="name">Marketing Attendance: Own + Team</field>
+        <field name="model_id" ref="visio_tti_marketing_attendance_portal.model_marketing_attendance_request"/>
+        <field name="domain_force">
+            [
+                '|',
+                    ('employee_id', '=', user.employee_id.id),
+                    '&amp;',
+                        ('employee_id.parent_id', '=', user.employee_id.id),
+                        ('employee_id.parent_id', '!=', False)
+            ]
+        </field>
+        <field name="groups" eval="[(4, ref('visio_tti_marketing_attendance_portal.group_marketing_attendance_menu'))]"/>
+    </record>
+
+</odoo>

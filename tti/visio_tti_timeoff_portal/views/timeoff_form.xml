@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="timeoff_request_form" name="Request Time Off">
+        <t t-call="website.layout">
+            <link rel="stylesheet" href="/visio_tti_timeoff_portal/static/src/css/timeoff_portal.css"/>
+
+            <div id="wrap" class="timeoff-form-container">
+                <div>
+                    <div class="mb-4">
+                        <a href="/my/timeoffs" class="btn-back">
+                            <i class="fa fa-arrow-left me-2"></i>Back to My Time Offs
+                        </a>
+                    </div>
+                    <div class="timeoff-card">
+                        <div class="card-header-blue">
+                            <h2 class="h5 mb-0">New Time Off</h2>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- Show error alert if present -->
+                            <t t-if="error">
+                                <div class="alert alert-danger" role="alert">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>
+                                    <span t-out="error" style="white-space: pre-line;"/>
+                                </div>
+                            </t>
+
+                            <!-- Show success message and hide the form -->
+                            <t t-if="success">
+                                <div class="alert alert-success" role="alert">
+                                    <i class="fa fa-check-circle me-2"></i>Your time off request has been submitted
+                                    successfully!
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="/my/timeoffs" class="btn-return">
+                                        Return to My Time Offs
+                                    </a>
+                                </div>
+                            </t>
+
+                            <!-- Show the form only if not success -->
+                            <t t-if="not success">
+                                <form method="post" action="/my/timeoff/submit" enctype="multipart/form-data"
+                                      style="padding:20px;">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="leave_type" class="form-label fw-bold">Time Off Type</label>
+                                            <select name="leave_type_id" id="leave_type" class="form-select"
+                                                    required="required">
+                                                <option value="">Select a leave type</option>
+                                                <t t-foreach="leave_types" t-as="leave_type">
+                                                    <option t-att-value="leave_type.id"
+                                                            t-att-selected="'selected' if form_data and str(leave_type.id) == str(form_data.get('leave_type_id', '')) else None">
+                                                        <t t-esc="leave_type.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+
+                                        <!-- File Attachments Section - moved to second column -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="attachments" class="form-label fw-bold">Attachments (Optional)
+                                            </label>
+                                            <div class="file-upload-container">
+                                                <input type="file" class="form-control" id="attachments"
+                                                       name="attachments"
+                                                       multiple="multiple" accept="*/*"/>
+                                                <div class="form-text">
+                                                    <i class="fa fa-info-circle me-1"></i>
+                                                    You can upload multiple files. Maximum size per file: 10MB
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- File preview area - separate row for better layout -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div id="file-preview" class="mt-2" style="display: none;">
+                                                    <div class="card">
+                                                        <div class="card-header bg-light">
+                                                            <h6 class="mb-0">
+                                                                <i class="fa fa-paperclip me-2"></i>
+                                                                Selected
+                                                                Files
+                                                            </h6>
+                                                        </div>
+                                                        <div class="card-body" id="file-list">
+                                                            <!-- Files will be listed here -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="date_from" class="form-label fw-bold">Start Date</label>
+                                            <input type="date" class="form-control" id="date_from" name="date_from"
+                                                   t-att-value="form_data.get('date_from', '') if form_data else ''"
+                                                   required="required"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="date_to" class="form-label fw-bold">End Date</label>
+                                            <input type="date" class="form-control" id="date_to" name="date_to"
+                                                   t-att-value="form_data.get('date_to', '') if form_data else ''"
+                                                   required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3" id="half-day-container" style="display: none;">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="is_half_day"
+                                                       name="is_half_day"
+                                                       t-att-checked="'checked' if form_data and form_data.get('is_half_day') else None"/>
+                                                <label class="form-check-label fw-bold" for="is_half_day">
+                                                    <i class="fa fa-clock me-2"></i>Half Day Leave
+                                                </label>
+                                                <div class="form-text">
+                                                    <i class="fa fa-info-circle me-1"></i>
+                                                    Check this option if you want to take half day leave (0.5 days)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3" id="half-day-period" style="display: none;">
+                                        <div class="col-md-6">
+                                            <label for="request_date_from_period" class="form-label fw-bold">Half-day period</label>
+                                            <select id="request_date_from_period" name="request_date_from_period" class="form-select">
+                                                <option value="">Select</option>
+                                                <option value="am"
+                                                    t-att-selected="'selected' if form_data and form_data.get('request_date_from_period') == 'am' else None">
+                                                    Morning (AM)
+                                                </option>
+                                                <option value="pm"
+                                                    t-att-selected="'selected' if form_data and form_data.get('request_date_from_period') == 'pm' else None">
+                                                    Afternoon (PM)
+                                                </option>
+                                            </select>
+                                            <div class="form-text">
+                                                <i class="fa fa-info-circle me-1"></i>
+                                                AM = 09:00–13:00, PM = 14:00–18:00
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label fw-bold">Description (Optional)
+                                        </label>
+                                        <textarea autocomplete="off" class="form-control" id="description"
+                                                  name="description" rows="3">
+                                            <t t-if="form_data" t-out="form_data.get('description', '')"/>
+                                        </textarea>
+                                    </div>
+
+
+                                    <div class="text-end">
+                                        <button type="submit" class="btn-submit" id="submit-btn">
+                                            <i class="fa fa-paper-plane me-2"></i>Submit Request
+                                        </button>
+                                    </div>
+                                </form>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                <![CDATA[
+                document.addEventListener('DOMContentLoaded', function() {
+                    const leaveTypeSelect     = document.getElementById('leave_type');
+                    const halfDayContainer    = document.getElementById('half-day-container');
+                    const halfDayCheckbox     = document.getElementById('is_half_day');
+                    const halfDayPeriodRow    = document.getElementById('half-day-period');
+                    const periodSelect        = document.getElementById('request_date_from_period');
+                    const dateFromInput       = document.getElementById('date_from');
+                    const dateToInput         = document.getElementById('date_to');
+
+                    // Leave types that support half day (adjust names if needed)
+                    const halfDayLeaveTypes = ['sick leaves', 'casual leaves', 'annual leaves'];
+
+                    function toggleHalfDayOption() {
+                        const selectedOption = leaveTypeSelect.options[leaveTypeSelect.selectedIndex];
+                        const leaveTypeName = (selectedOption && selectedOption.text || '').toLowerCase();
+
+                        const supportsHalfDay = halfDayLeaveTypes.some(type => leaveTypeName.includes(type.replace(' leaves', '')));
+                        halfDayContainer.style.display = supportsHalfDay ? 'block' : 'none';
+
+                        if (!supportsHalfDay) {
+                            halfDayCheckbox.checked = false;
+                            togglePeriod();
+                            syncDates();
+                        }
+                    }
+
+                    function togglePeriod() {
+                        const show = !!halfDayCheckbox.checked;
+                        halfDayPeriodRow.style.display = show ? 'block' : 'none';
+                        periodSelect.required = show;
+                        if (show && !periodSelect.value) {
+                            periodSelect.value = 'am'; // default
+                        }
+                        syncDates();
+                    }
+
+                    function syncDates() {
+                        if (halfDayCheckbox.checked && dateFromInput.value) {
+                            dateToInput.value = dateFromInput.value;
+                        }
+                    }
+
+                    leaveTypeSelect.addEventListener('change', toggleHalfDayOption);
+                    halfDayCheckbox.addEventListener('change', togglePeriod);
+                    dateFromInput.addEventListener('change', syncDates);
+
+                    // Initialize on load
+                    toggleHalfDayOption();
+                    togglePeriod();
+                });
+                ]]>
+            </script>
+        </t>
+    </template>
+</odoo>

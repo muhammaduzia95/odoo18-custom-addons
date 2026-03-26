@@ -1,0 +1,1 @@
+from . import party_invoice_detail

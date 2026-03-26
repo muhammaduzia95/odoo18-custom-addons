@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tti_pi_brand_tree" model="ir.ui.view">
+            <field name="name">tti.pi.brand.list</field>
+            <field name="model">tti.pi.brand</field>
+            <field name="arch" type="xml">
+                <list string="Brand" editable="bottom">
+                    <field name="name"/>
+                    <field name="email" />
+                    <field name="test_packages" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_pi_brand_form" model="ir.ui.view">
+            <field name="name">tti.pi.brand.form</field>
+            <field name="model">tti.pi.brand</field>
+            <field name="arch" type="xml">
+                <form string="Brand">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="email" widget="email"/>
+                            <field name="test_packages" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_pi_brand_search" model="ir.ui.view">
+            <field name="name">tti.pi.brand.search</field>
+            <field name="model">tti.pi.brand</field>
+            <field name="arch" type="xml">
+                <search string="Brand">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <group string="Group By">
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_pi_brand" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="res_model">tti.pi.brand</field>
+            <field name="view_id" ref="view_tti_pi_brand_tree"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Brand
+                </p>
+                <p></p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

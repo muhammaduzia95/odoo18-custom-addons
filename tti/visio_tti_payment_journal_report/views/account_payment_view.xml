@@ -1,0 +1,37 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_payment_journal_report\views\account_payment_view.xml-->
+<odoo>
+
+    <record id="view_account_payment_form_hide_cheque_no" model="ir.ui.view">
+        <field name="name">account.payment.form.hide.cheque.no</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="visio_tti_customer_payments.view_account_payment_form_inherit"/>
+        <field name="arch" type="xml">
+
+            <!-- Modify the existing cheque_no field to Invisible -->
+            <xpath expr="//field[@name='cheque_no']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.category</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+
+            <!-- New fields -->
+            <xpath expr="//group[@name='group1']/field[@name='memo']" position="after">
+
+                <field name="payment_category"  required="1"/>
+
+                <field name="cash_reference" invisible="payment_category != 'cash'"/>
+                <field name="cheque_number" invisible="payment_category != 'cheque'"/>
+                <field name="online_transaction_id" invisible="payment_category != 'online'"/>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

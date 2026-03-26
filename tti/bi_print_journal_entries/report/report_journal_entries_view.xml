@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="journal_entry_template_report_view">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page">
+                    <!-- Company and Title -->
+                    <div class="text-center">
+                        <h2>
+                            <span>Tti Testing Laboratories</span>
+                        </h2>
+                        <h4 style="display:inline-block; padding:2px 10px;">
+                            <span>
+                                <t t-if="o.name and o.name.startswith('JV/')">Journal Voucher</t>
+                                <t t-elif="o.name and o.name.startswith('BPV/')">Bank Payment Voucher</t>
+                                <t t-elif="o.name and o.name.startswith('RV/')">Receipt Voucher</t>
+                                <t t-else=""></t>
+                            </span>
+                        </h4>
+                    </div>
+
+                    <!-- Printed Info -->
+                    <div class="d-flex justify-content-between" style="margin-top: 20px; font-size:12px;">
+                        <div>
+                            <span>Print By:</span>
+                            <span t-esc="user.name"/>
+                        </div>
+                        <div>
+                            <span>Printed at :</span>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %I:%M:%S %p')"/>
+                        </div>
+                    </div>
+
+                    <!-- Voucher Details -->
+                    <table class="table table-sm table-borderless" style="width:100%; margin-top:15px; font-size:13px;">
+                        <tr>
+                            <td width="20%">
+                                <span>Voucher No :</span>
+                            </td>
+                            <td width="30%">
+                                <span t-esc="o.name"/>
+                            </td>
+                            <td style="text-align: right;" width="20%">
+                                <span>Voucher Date :</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span t-esc="o.voucher_date.strftime('%d/%m/%Y')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Instr # :</span>
+                            </td>
+                            <td>
+                                <span t-esc="o.instr_no"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <span>Trans Date :</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span t-esc="o.date.strftime('%d/%m/%Y')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Status :</span>
+                            </td>
+                            <td>
+                                <span t-esc="o.state"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <span>Paid To :</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span t-esc="o.paid_to"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Voucher Type :</span>
+                            </td>
+                            <td>
+                                <span t-esc="o.journal_id.name"/>
+                            </td>
+                            <!--                            <td style="text-align: right;">-->
+                            <!--                                <span>Cheque No :</span>-->
+                            <!--                            </td>-->
+                            <!--                            <td style="text-align: right;">-->
+                            <!--                                <span t-esc="o.cheque_no"/>-->
+                            <!--                            </td>-->
+                        </tr>
+                        <t t-if="o.bill_no">
+                            <tr>
+                                <td width="20%">
+                                    <span>Bill No :</span>
+                                </td>
+                                <td width="30%">
+                                    <span t-esc="o.bill_no"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td>
+                                <span>Remarks :</span>
+                            </td>
+                            <td colspan="3">
+                                <span t-esc="o.ref"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table style="width:100%; border:1px solid black; border-collapse: collapse; font-size:12px; margin-top:30px;">
+                        <thead>
+                            <tr style="background-color:#d3d3d3;">
+                                <th style="border:1px solid black; padding:5px;">SR#</th>
+                                <th style="border:1px solid black; padding:5px;">Account No.</th>
+                                <th style="border:1px solid black; padding:5px;">SL Name</th>
+                                <th style="border:1px solid black; padding:5px;">Analysis Name</th>
+                                <th style="border:1px solid black; padding:5px;">Remarks</th>
+                                <th style="border:1px solid black; padding:5px;">Analytic Account</th>
+                                <th style="border:1px solid black; padding:5px;">Debit Amount</th>
+                                <th style="border:1px solid black; padding:5px;">Credit Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="sr" t-value="1"/>
+                            <t t-foreach="o.line_ids" t-as="line">
+                                <tr>
+                                    <!-- SR# -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-esc="sr"/>
+                                    </td>
+
+                                    <!-- Account No. -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.account_id and line.account_id.code">
+                                            <t t-esc="line.account_id.code"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- SL Name -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.account_id and line.account_id.name">
+                                            <t t-esc="line.account_id.name"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- Partner Name -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.partner_id and line.partner_id.name">
+                                            <t t-esc="line.partner_id.name"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- Narration -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <t t-if="line.name">
+                                            <span t-esc="line.name"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- Analytic Distribution -->
+                                    <td style="border:1px solid black; padding:5px;">
+                                        <span>
+                                            <div t-foreach="line.analytic_distribution" t-as="distribution">
+                                                <t t-set="distributions" t-value="distribution.split(',')"/>
+                                                <t t-foreach="distributions" t-as="dist">
+                                                    <t t-if="line.env['account.analytic.account'].browse(int(dist))[0].partner_id">
+                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].name"/>
+                                                        -
+                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].partner_id.name"/>
+                                                        ,
+                                                        <t t-esc="line.analytic_distribution.get(dist)"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].name"/>
+                                                        ,
+                                                        <t t-esc="line.analytic_distribution.get(dist)"/>
+                                                    </t>
+                                                    <br/>
+                                                </t>
+                                            </div>
+                                        </span>
+                                    </td>
+
+                                    <!-- Debit Amount -->
+                                    <td style="border:1px solid black; padding:5px; text-align:right;">
+                                        <t t-if="line.debit">
+                                            <t t-esc="'{:,.2f}'.format(line.debit)"/>
+                                        </t>
+                                        <t t-if="not line.debit">-</t>
+                                    </td>
+
+                                    <!-- Credit Amount -->
+                                    <td style="border:1px solid black; padding:5px; text-align:right;">
+                                        <t t-if="line.credit">
+                                            <t t-esc="'{:,.2f}'.format(line.credit)"/>
+                                        </t>
+                                        <t t-if="not line.credit">-</t>
+                                    </td>
+                                </tr>
+                                <t t-set="sr" t-value="sr + 1"/>
+                            </t>
+
+                            <!-- Total in Words Row -->
+                            <tr>
+                                <td colspan="6" style="border:1px solid black; padding:5px;">
+                                    <strong>Amount In Words :</strong>
+                                    <span t-esc="o.currency_id.amount_to_text(sum(line.debit for line in o.line_ids))"/>
+                                </td>
+                                <td style="border:1px solid black; padding:5px; text-align:right;">
+                                    <strong>
+                                        <t t-esc="'{:,.2f}'.format(sum(line.debit for line in o.line_ids))"/>
+                                    </strong>
+                                </td>
+                                <td style="border:1px solid black; padding:5px; text-align:right;">
+                                    <strong>
+                                        <t t-esc="'{:,.2f}'.format(sum(line.credit for line in o.line_ids))"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between" style="margin-top: 80px; text-align: center;">
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Prepared By</strong>
+                            </div>
+                        </div>
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Checked By</strong>
+                            </div>
+                        </div>
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Approved By</strong>
+                            </div>
+                        </div>
+                        <div style="width: 18%;">
+                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">
+                                <strong>Received By</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </template>
+
+
+        <template id="journal_entry_report_template_id">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="bi_print_journal_entries.journal_entry_template_report_view" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+<!--        <template id="receipt_voucher_report_template_id">-->
+<!--            <t t-call="web.html_container">-->
+<!--                <t t-foreach="docs" t-as="o">-->
+<!--                    <t t-call="bi_print_journal_entries.receipt_voucher_report_template" t-lang="o.partner_id.lang"/>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </template>-->
+
+
+<!--        <template id="receipt_voucher_report_template">-->
+<!--            <t t-call="web.external_layout">-->
+<!--                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>-->
+<!--                <div class="page">-->
+<!--                    &lt;!&ndash; Company and Title &ndash;&gt;-->
+<!--                    <div class="text-center">-->
+<!--                        <h2>-->
+<!--                            <span>Tti Testing Laboratories</span>-->
+<!--                        </h2>-->
+<!--                        <h4 style="display:inline-block; padding:2px 10px;">-->
+<!--                            <span>-->
+<!--                                <t t-if="o.name and o.name.startswith('JV/')">Journal Voucher</t>-->
+<!--                                <t t-elif="o.name and o.name.startswith('BPV/')">Bank Payment Voucher</t>-->
+<!--                                <t t-elif="o.name and o.name.startswith('RV/')">Receipt Voucher</t>-->
+<!--                                <t t-else=""></t>-->
+<!--                            </span>-->
+<!--                        </h4>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Printed Info &ndash;&gt;-->
+<!--                    <div class="d-flex justify-content-between" style="margin-top: 20px; font-size:12px;">-->
+<!--                        <div>-->
+<!--                            <span>Print By:</span>-->
+<!--                            <span t-esc="user.name"/>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <span>Printed at :</span>-->
+<!--                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %I:%M:%S %p')"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Voucher Details &ndash;&gt;-->
+<!--                    <table class="table table-sm table-borderless" style="width:100%; margin-top:15px; font-size:13px;">-->
+<!--                        <tr>-->
+<!--                            <td width="20%">-->
+<!--                                <span>Voucher No :</span>-->
+<!--                            </td>-->
+<!--                            <td width="30%">-->
+<!--                                <span t-esc="o.name"/>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right;" width="20%">-->
+<!--                                <span>Voucher Date :</span>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right;">-->
+<!--                                <span t-esc="o.voucher_date.strftime('%d/%m/%Y')"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <span>Instr # :</span>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span t-esc="o.instr_no"/>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right;">-->
+<!--                                <span>Trans Date :</span>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right;">-->
+<!--                                <span t-esc="o.date.strftime('%d/%m/%Y')"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <span>Status :</span>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span t-esc="o.state"/>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right;">-->
+<!--                                <span>Customer :</span>-->
+<!--                            </td>-->
+<!--                            <td style="text-align: right;">-->
+<!--                                <span t-if="len(o.line_ids) > 0 and o.line_ids[0].partner_id" t-esc="o.line_ids[0].partner_id.name"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <span>Voucher Type :</span>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <span t-esc="o.journal_id.name"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <t t-if="o.bill_no">-->
+<!--                            <tr>-->
+<!--                                <td width="20%">-->
+<!--                                    <span>Bill No :</span>-->
+<!--                                </td>-->
+<!--                                <td width="30%">-->
+<!--                                    <span t-esc="o.bill_no"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </t>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <span>Remarks :</span>-->
+<!--                            </td>-->
+<!--                            <td colspan="3">-->
+<!--                                <span t-esc="o.ref"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+
+<!--                    <table style="width:100%; border:1px solid black; border-collapse: collapse; font-size:12px; margin-top:30px;">-->
+<!--                        <thead>-->
+<!--                            <tr style="background-color:#d3d3d3;">-->
+<!--                                <th style="border:1px solid black; padding:5px;">SR#</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">Account No.</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">SL Name</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">Analysis Name</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">Remarks</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">Analytic Account</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">Debit Amount</th>-->
+<!--                                <th style="border:1px solid black; padding:5px;">Credit Amount</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                            <t t-set="sr" t-value="1"/>-->
+<!--                            <t t-foreach="o.line_ids" t-as="line">-->
+<!--                                <tr>-->
+<!--                                    &lt;!&ndash; SR# &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px;">-->
+<!--                                        <t t-esc="sr"/>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; Account No. &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px;">-->
+<!--                                        <t t-if="line.account_id and line.account_id.code">-->
+<!--                                            <t t-esc="line.account_id.code"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; SL Name &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px;">-->
+<!--                                        <t t-if="line.account_id and line.account_id.name">-->
+<!--                                            <t t-esc="line.account_id.name"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; Partner Name &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px;">-->
+<!--                                        <t t-if="line.partner_id and line.partner_id.name">-->
+<!--                                            <t t-esc="line.partner_id.name"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; Narration &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px;">-->
+<!--                                        <t t-if="line.name">-->
+<!--                                            <span t-esc="line.name"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; Analytic Distribution &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px;">-->
+<!--                                        <span>-->
+<!--                                            <div t-foreach="line.analytic_distribution" t-as="distribution">-->
+<!--                                                <t t-set="distributions" t-value="distribution.split(',')"/>-->
+<!--                                                <t t-foreach="distributions" t-as="dist">-->
+<!--                                                    <t t-if="line.env['account.analytic.account'].browse(int(dist))[0].partner_id">-->
+<!--                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].name"/>-->
+<!--                                                        - -->
+<!--                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].partner_id.name"/>-->
+<!--                                                        ,-->
+<!--                                                        <t t-esc="line.analytic_distribution.get(dist)"/>-->
+<!--                                                    </t>-->
+<!--                                                    <t t-else="">-->
+<!--                                                        <t t-esc="line.env['account.analytic.account'].browse(int(dist))[0].name"/>-->
+<!--                                                        ,-->
+<!--                                                        <t t-esc="line.analytic_distribution.get(dist)"/>-->
+<!--                                                    </t>-->
+<!--                                                    <br/>-->
+<!--                                                </t>-->
+<!--                                            </div>-->
+<!--                                        </span>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; Debit Amount &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px; text-align:right;">-->
+<!--                                        <t t-if="line.debit">-->
+<!--                                            <t t-esc="'{:,.2f}'.format(line.debit)"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-if="not line.debit">-</t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash; Credit Amount &ndash;&gt;-->
+<!--                                    <td style="border:1px solid black; padding:5px; text-align:right;">-->
+<!--                                        <t t-if="line.credit">-->
+<!--                                            <t t-esc="'{:,.2f}'.format(line.credit)"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-if="not line.credit">-</t>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <t t-set="sr" t-value="sr + 1"/>-->
+<!--                            </t>-->
+
+<!--                            &lt;!&ndash; Total in Words Row &ndash;&gt;-->
+<!--                            <tr>-->
+<!--                                <td colspan="6" style="border:1px solid black; padding:5px;">-->
+<!--                                    <strong>Amount In Words :</strong>-->
+<!--                                    <span t-esc="o.currency_id.amount_to_text(sum(line.debit for line in o.line_ids))"/>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid black; padding:5px; text-align:right;">-->
+<!--                                    <strong>-->
+<!--                                        <t t-esc="'{:,.2f}'.format(sum(line.debit for line in o.line_ids))"/>-->
+<!--                                    </strong>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid black; padding:5px; text-align:right;">-->
+<!--                                    <strong>-->
+<!--                                        <t t-esc="'{:,.2f}'.format(sum(line.credit for line in o.line_ids))"/>-->
+<!--                                    </strong>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+
+<!--                    <div class="d-flex justify-content-between" style="margin-top: 80px; text-align: center;">-->
+<!--                        <div style="width: 18%;">-->
+<!--                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">-->
+<!--                                <strong>Prepared By</strong>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div style="width: 18%;">-->
+<!--                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">-->
+<!--                                <strong>Checked By</strong>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div style="width: 18%;">-->
+<!--                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">-->
+<!--                                <strong>Approved By</strong>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div style="width: 18%;">-->
+<!--                            <div style="border-top: 1px solid black; padding-top: 5px; text-align:center;">-->
+<!--                                <strong>Received By</strong>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </t>-->
+<!--        </template>-->
+
+    </data>
+</odoo>

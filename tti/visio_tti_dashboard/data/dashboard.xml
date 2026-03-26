@@ -1,0 +1,17 @@
+<!--\tti\visio_tti_dashboard\data\dashboard.xml-->
+<odoo>
+  <data>
+    <record id="spreadsheet_tti_dashboard" model="spreadsheet.dashboard">
+      <field name="name">TTI</field>
+      <!-- use spreadsheet_binary_data instead of data -->
+      <field name="spreadsheet_binary_data" type="base64"
+             file="visio_tti_dashboard/data/files/dashboard.json"/>
+      <field name="dashboard_group_id" ref="spreadsheet_dashboard.spreadsheet_dashboard_group_project"/>
+      <field name="group_ids" eval="[Command.link(ref('project.group_project_user'))]"/>
+      <field name="sequence">210</field>
+    </record>
+  </data>
+</odoo>
+
+
+

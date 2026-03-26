@@ -1,0 +1,13 @@
+<odoo>
+    <menuitem id="menu_device_attendance_root"
+              name="AMT Device Logs"
+              sequence="10"
+              groups="visio_amt_attendance_integration.group_device_attendance_user"/>
+
+    <menuitem id="menu_device_attendance_logs"
+              name="AMT Device Attendance Logs"
+              parent="menu_device_attendance_root"
+              action="visio_amt_attendance_integration.action_device_attendance"
+              sequence="1"
+              groups="visio_amt_attendance_integration.group_device_attendance_user"/>
+</odoo>

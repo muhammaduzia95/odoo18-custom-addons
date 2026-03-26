@@ -1,0 +1,25 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_out_sourced\views\sale_order_view.xml-->
+<odoo>
+
+    <record id="view_sale_order_form_inherit_out_sourced_sample" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.out.sourced.sample</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="visio_tti_so_customize.view_sale_order_form_tti_inherit"/>
+        <field name="arch" type="xml">
+
+            <!-- Add after tti_si_select_partner field -->
+            <xpath expr="//notebook/page[@name='tti_client_sample_info']//field[@name='tti_si_select_partner']"
+                   position="after">
+
+                <field name="out_sourced_sample_id"
+                       string="Out Sourced Sample"
+                       invisible="category_type in ['inspection']"
+                       required="1" force_save="1"
+                       readonly="locked or state not in ['draft','sent','quotation_done','quotation_approved']"/>
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+

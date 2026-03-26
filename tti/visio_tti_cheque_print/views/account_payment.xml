@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_account_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_download_blank_pdf"
+                        string="Download Cheque"
+                        type="object"
+                        class="btn-primary"
+                        invisible="payment_type != 'outbound'"
+                        icon="fa-download"/>
+            </header>
+            <xpath expr="//sheet/group[@name='main_group']/group[@name='group1']/field[@name='memo']"
+                   position="after">
+                <field name="is_cross" readonly="state != 'draft'" invisible="payment_type != 'outbound'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

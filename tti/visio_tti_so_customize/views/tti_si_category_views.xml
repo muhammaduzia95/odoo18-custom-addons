@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tti_si_category_tree" model="ir.ui.view">
+            <field name="name">tti.si.category.list</field>
+            <field name="model">tti.si.category</field>
+            <field name="arch" type="xml">
+                <list string="Category">
+                    <field name="code" optional="hide" readonly="1"/>
+                    <field name="name"/>
+                    <field name="category_type"/>
+                    <field name="division_id"/>
+                    <field name="company_id" options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tti_si_category_form" model="ir.ui.view">
+            <field name="name">tti.si.category.form</field>
+            <field name="model">tti.si.category</field>
+            <field name="arch" type="xml">
+                <form string="Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="code" invisible="0" readonly="1"/>
+                                <field name="name"/>
+                                <field name="category_type"/>
+                                <field name="division_id"/>
+                            </group>
+                            <group>
+                                <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Sub Categories">
+                                <field name="sub_category_ids" widget="one2many"
+                                       domain="[('company_id', '=', company_id)]"
+                                       context="{'sub_category_ids': sub_category_ids, 'company_id': company_id}">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <!--                                        <field name="company_id" options="{'no_create': True, 'no_open': True}"/>-->
+                                    </list>
+                                </field>
+                            </page>
+                            <!--                            <page string="Product Types">-->
+                            <!--                                <field name="product_type_ids" widget="one2many"-->
+                            <!--                                       context="{'product_type_ids': product_type_ids, 'company_id': company_id}">-->
+                            <!--                                    <list editable="bottom">-->
+                            <!--                                        <field name="name"/>-->
+                            <!--&lt;!&ndash;                                        <field name="company_id" options="{'no_create': True, 'no_open': True}"/>&ndash;&gt;-->
+                            <!--                                    </list>-->
+                            <!--                                </field>-->
+                            <!--                            </page>-->
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tti_si_category_search" model="ir.ui.view">
+            <field name="name">tti.si.category.search</field>
+            <field name="model">tti.si.category</field>
+            <field name="arch" type="xml">
+                <search string="Category">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category_type"/>
+                    <group string="Group By">
+                        <filter name="groupby_category_type" string="Category Type"
+                                context="{'group_by': 'category_type'}"/>
+                        <filter name="groupby_company_id" string="Company" context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_tti_si_category" model="ir.actions.act_window">
+            <field name="name">Category</field>
+            <field name="res_model">tti.si.category</field>
+            <field name="view_id" ref="view_tti_si_category_search"/>
+            <field name="domain">['|', ('company_id', '=', False), ('company_id', 'in', allowed_company_ids)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a category
+                </p>
+                <p></p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

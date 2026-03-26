@@ -1,0 +1,139 @@
+<odoo>
+    <template id="party_receivable_report_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2 style="text-align:center; margin-bottom:20px;">Party Receivable Report</h2>
+
+                    <table class="table table-sm table-bordered" style="width: 100%; font-size:12px; text-align: center;">
+                        <thead style="background-color: #f2f2f2;">
+                            <tr>
+                                <th style="text-align: center;">Zone</th>
+                                <th style="text-align: center;">Category</th>
+                                <th style="text-align: center;">Code</th>
+                                <th style="text-align: center;">Partner Name</th>
+                                <th style="text-align: center;">Opening</th>
+                                <th style="text-align: center;">Receivable</th>
+                                <th style="text-align: center;">Sales</th>
+                                <th style="text-align: center;">Recovery</th>
+                                <t t-if="wizard.tax_filter == 'with_tax'">
+                                    <th style="text-align: center;">Sale Tax</th>
+                                    <th style="text-align: center;">Income Tax</th>
+                                </t>
+                                <th style="text-align: center;">Closing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_receivable" t-value="0.0"/>
+                            <t t-set="total_sale_tax_wh" t-value="0.0"/>
+                            <t t-set="total_income_tax_wh" t-value="0.0"/>
+                            <t t-set="total_opening" t-value="0.0"/>
+                            <t t-set="total_sales" t-value="0.0"/>
+                            <t t-set="total_recovery" t-value="0.0"/>
+                            <t t-set="total_closing" t-value="0.0"/>
+
+                            <t t-foreach="data_map.values()" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line['partner'].tti_city_zone_id.name or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.get('categories', '')"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['partner'].code or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['partner'].name or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['opening']"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['receivable']"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['sales']"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['recovery']"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <t t-if="wizard.tax_filter == 'with_tax'">
+                                        <td>
+                                            <t t-esc="line['sale_tax_wh']"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['income_tax_wh']"
+                                               t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                        </td>
+                                    </t>
+                                    <td>
+                                        <t t-esc="line['closing']"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                </tr>
+
+                                <!-- Update totals -->
+                                <!-- Update totals -->
+                                <t t-set="total_receivable" t-value="total_receivable + line['receivable']"/>
+                                <t t-set="total_sale_tax_wh"
+                                   t-value="total_sale_tax_wh + line.get('sale_tax_wh', 0.0)"/>
+                                <t t-set="total_income_tax_wh"
+                                   t-value="total_income_tax_wh + line.get('income_tax_wh', 0.0)"/>
+                                <t t-set="total_opening" t-value="total_opening + line['opening']"/>
+                                <t t-set="total_sales" t-value="total_sales + line['sales']"/>
+                                <t t-set="total_recovery" t-value="total_recovery + line['recovery']"/>
+                                <t t-set="total_closing" t-value="total_closing + line['closing']"/>
+                            </t>
+
+                            <!-- Totals Row -->
+                            <tr style="font-weight: bold; background-color: #eaeaea;">
+                                <td colspan="4">TOTAL</td>
+                                <td>
+                                    <t t-esc="total_opening"
+                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                                <td>
+                                    <t t-esc="total_receivable"
+                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                                <td>
+                                    <t t-esc="total_sales"
+                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                                <td>
+                                    <t t-esc="total_recovery"
+                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                                <t t-if="wizard.tax_filter == 'with_tax'">
+                                    <td>
+                                        <t t-esc="total_sale_tax_wh"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="total_income_tax_wh"
+                                           t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                    </td>
+                                </t>
+                                <td>
+                                    <t t-esc="total_closing"
+                                       t-options="{'widget': 'float', 'precision': 2, 'thousand_sep': true}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_templates" name="PDF Reports">
+        <t t-call-assets="web.assets_frontend" t-js="false"/>
+        <t t-call="visio_tti_exel_reports.party_receivable_report_pdf"/>
+    </template>
+</odoo>

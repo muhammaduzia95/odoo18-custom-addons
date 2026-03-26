@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_sale_order_pricing_show"
+            model="ir.ui.view">
+        <field name="name">sale.pricing.show</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']"
+                   position="after">
+                <field name="show_pricing_in_report" widget="boolean_toggle"/>
+                <field name="stage_from" invisible="1"/>
+                <field name="stage_to" invisible="1"/>
+                <field name="stage_categ_ids" widget="many2many_tags"/>
+                <field name="order_stage_ids" readonly="0" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Stages">
+                    <list>
+                        <field name = "description"/>
+                    </list>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

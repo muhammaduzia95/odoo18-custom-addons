@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_sales_dash\static\src\xml\tti_dashboard_templates.xml-->
+
+<templates xml:space="preserve">
+  <t t-name="TTIDashboardMain">
+
+    <!-- Hover effect (cannot be inline on elements) -->
+    <style>
+      .card:hover { transform: translateY(-5px); box-shadow: 6px 6px 20px rgba(0,0,0,.35); cursor: pointer; }
+    </style>
+
+  <div class="o_action">
+    <div class="o_content">
+      <div class="container-fluid p-3">
+
+        <!-- Filters -->
+<div class="row g-2 align-items-end">
+  <div class="col-md">
+    <label>From</label>
+    <select class="form-select" t-model="state.from_period" t-on-change="onFilterChange">
+      <t t-foreach="state.periods" t-as="p" t-key="p.id">
+        <option t-att-value="p.id"><t t-esc="p.name"/></option>
+      </t>
+    </select>
+  </div>
+
+  <div class="col-md">
+    <label>To</label>
+    <select class="form-select" t-model="state.to_period" t-on-change="onFilterChange">
+      <t t-foreach="state.periods" t-as="p" t-key="p.id">
+        <option t-att-value="p.id"><t t-esc="p.name"/></option>
+      </t>
+    </select>
+  </div>
+
+    <div class="col-md">
+    <label>From</label>
+    <select class="form-select" t-model="state.from_year" t-on-change="onFilterChange">
+      <t t-foreach="state.years" t-as="y" t-key="y">
+        <option t-att-value="y"><t t-esc="y"/></option>
+      </t>
+    </select>
+  </div>
+
+  <div class="col-md">
+    <label>To</label>
+    <select class="form-select" t-model="state.to_year" t-on-change="onFilterChange">
+      <t t-foreach="state.years" t-as="y" t-key="y">
+        <option t-att-value="y"><t t-esc="y"/></option>
+      </t>
+    </select>
+  </div>
+  <div class="col-md">
+    <label>Category</label>
+    <select class="form-select" t-model="state.category" t-on-change="onFilterChange">
+      <option value="null">All</option>
+      <t t-foreach="state.categories" t-as="c" t-key="c.id">
+        <option t-att-value="c.id"><t t-esc="c.name"/></option>
+      </t>
+    </select>
+  </div>
+  <div class="col-md">
+    <label>Subcategory</label>
+    <select class="form-select" t-model="state.subcategory" t-on-change="onFilterChange">
+      <option value="null">All</option>
+      <t t-foreach="state.subcategories" t-as="s" t-key="s.id">
+        <option t-att-value="s.id"><t t-esc="s.name"/></option>
+      </t>
+    </select>
+  </div>
+  <div class="col-md">
+    <label>City Zone</label>
+    <select class="form-select" t-model="state.zone" t-on-change="onFilterChange">
+      <option value="null">All</option>
+      <t t-foreach="state.zones" t-as="z" t-key="z.id">
+        <option t-att-value="z.id"><t t-esc="z.name"/></option>
+      </t>
+    </select>
+  </div>
+</div>
+
+
+          <!-- MAIN GRID -->
+          <div class="row g-3 mt-4">
+
+            <!-- ======================================
+                 LEFT SIDE (col-9)
+                 Order:
+                 1) First 6 cards (compact widths)
+                    - Total Sales, Total Recovery, Recovered Percentage
+                    - Growth (MoM/PoP/YoY), Pending SO, Open Quotations
+                 2) Operations
+                 3) Sales Trends
+                 4) Division-wise Contribution
+                 5) Targets Achieved
+                 6) Invoices
+                 7) Pie Chart
+                 ====================================== -->
+              <!-- LEFT SIDE (col-9) -->
+              <!-- LEFT SIDE (col-9) -->
+              <!-- LEFT MAIN DIV (col-9) -->
+              <!-- LEFT MAIN DIV (replace this whole block) -->
+              <div class="col-lg-9">
+  <div class="row g-3">
+
+    <!-- ===== INNER LEFT (global col-6 ⇒ col-lg-8 inside col-9) ===== -->
+      <div class="col-12 col-lg-8">
+
+      <!-- First 6 cards (exact old style: 3 + 3 in col-md-4) -->
+          <div class="row g-3">
+        <!-- Total Sales -->
+              <div class="col-md-4">
+          <div class="card text-center p-3" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+<p><t t-esc="formatM(state.kpis.total_sales)"/></p>
+              <h5>Total Sales</h5>
+          </div>
+        </div>
+              <!-- Total Recovery -->
+              <div class="col-md-4">
+          <div class="card text-center p-3" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+<p><t t-esc="formatM(state.kpis.total_recovery)"/></p>
+              <h5>Total Recovery</h5>
+          </div>
+        </div>
+              <!-- Recovered Percentage -->
+              <div class="col-md-4">
+          <div class="card text-center p-3" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+            <p><t t-esc="state.kpis.recovered_pct"/>%</p>
+              <h5>Recovered Percentage</h5>
+          </div>
+        </div>
+      </div>
+
+          <!-- KPIs row 2 -->
+          <div class="row g-3 mt-1">
+        <!-- Growth (MoM / PoP / YoY) -->
+              <div class="col-md-4">
+          <div class="card p-2" style="height: 120px; background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+            <table class="table table-sm table-borderless mb-0" style="font-size: 13px; margin-bottom: 0;">
+              <tbody>
+                <tr>
+                  <td>MoM Growth</td>
+                    <td class="text-end"><t t-esc="state.kpis.mom_growth"/>%</td>
+                </tr>
+                  <tr>
+                  <td>PoP Growth</td>
+                      <td class="text-end"><t t-esc="state.kpis.pop_growth"/>%</td>
+                </tr>
+                  <tr>
+                  <td>YoY Growth</td>
+                      <td class="text-end"><t t-esc="state.kpis.yoy_growth"/>%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+              <!-- Pending Sale Orders -->
+              <div class="col-md-4">
+          <div class="card text-center p-3" style="height: 120px; background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+<t t-esc="formatM(state.kpis.pending_so)"/>
+              <br/>
+              <br/>
+              <h5 class="mb-0">Pending Sale Orders</h5>
+          </div>
+        </div>
+
+              <!-- Open Quotations -->
+              <div class="col-md-4">
+          <div class="card text-center p-3" style="height: 120px; background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+<t t-esc="formatM(state.kpis.open_quotations)"/>
+              <br/>
+              <br/>
+              <h5 class="mb-0">Open Quotations</h5>
+          </div>
+        </div>
+      </div>
+
+          <!-- Operations -->
+          <h5 class="mt-4 mb-2">Operations</h5>
+          <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card p-3 d-flex justify-content-between flex-row" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+            <span>Samples Run</span>
+              <span><t t-esc="state.kpis.samples_run"/></span>
+          </div>
+        </div>
+              <div class="col-md-4">
+          <div class="card p-3 d-flex justify-content-between flex-row" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+            <span>Pending Reports</span>
+              <span><t t-esc="state.kpis.pending_reports"/></span>
+          </div>
+        </div>
+              <div class="col-md-4">
+          <div class="card p-3 d-flex justify-content-between flex-row" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+            <span>Reports Sent</span>
+              <span><t t-esc="state.kpis.reports_sent"/></span>
+          </div>
+        </div>
+      </div>
+
+          <!-- Sales Trends -->
+          <h5 class="mb-2 mt-2">Sales Trends</h5>
+          <div class="card p-3 mb-2" style="height:395px; background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+        <canvas id="sales_line_chart" style="width:100%; height:100%;"></canvas>
+      </div>
+
+    </div>
+      <!-- ===== /INNER LEFT ===== -->
+
+      <!-- ===== INNER RIGHT (global col-3 ⇒ col-lg-4 inside col-9) ===== -->
+      <div class="col-12 col-lg-4">
+
+      <!-- Targets Achieved -->
+          <h5 class="mb-2 mt-0">Targets Achieved</h5>
+<div class="card p-0 mb-0" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+  <table class="table table-sm mb-0">
+    <tbody>
+      <!-- Show detailed rows only when NO filters are applied -->
+      <t t-if="!state.kpis.targets_filters_applied">
+        <t t-set="targets" t-value="(state.kpis &amp;&amp; state.kpis.targets_achieved) ? state.kpis.targets_achieved : []"/>
+        <t t-if="targets.length">
+          <t t-foreach="targets" t-as="tg" t-key="tg.name">
+            <tr>
+              <td><t t-esc="tg.name"/></td>
+              <td class="text-end"><t t-esc="tg.percentage"/>%</td>
+            </tr>
+          </t>
+        </t>
+        <t t-else="">
+          <tr>
+            <td colspan="2" class="text-center text-muted">No targets found</td>
+          </tr>
+        </t>
+      </t>
+
+      <!-- Always show TOTAL row -->
+      <tr class="table-active">
+        <td><strong>Total</strong></td>
+        <td class="text-end">
+          <strong><t t-esc="state.kpis.targets_total_pct"/>%</strong>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+          <!-- Invoices -->
+          <h5 class="mb-2 mt-2">Invoices</h5>
+          <div class="card p-0 mb-2" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+        <table class="table table-sm mb-0">
+          <tbody>
+            <tr>
+              <td>Total Invoices</td>
+                <td class="text-end"><t t-esc="state.kpis.total_invoices"/></td>
+            </tr>
+              <tr>
+              <td>Paid</td>
+                  <td class="text-end"><t t-esc="state.kpis.paid_invoices"/></td>
+            </tr>
+              <tr>
+              <td>Not Paid</td>
+                  <td class="text-end"><t t-esc="state.kpis.not_paid_invoices"/></td>
+            </tr>
+              <tr>
+              <td>Partially Paid</td>
+                  <td class="text-end"><t t-esc="state.kpis.partial_invoices"/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+          <!-- Pie Chart -->
+          <div class="card p-3 mb-2" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+        <canvas id="partner_pie_chart" style="width:100%; height:250px;"></canvas>
+      </div>
+
+    </div>
+      <!-- ===== /INNER RIGHT ===== -->
+
+
+      <!-- Division-wise Contribution (Right Half Width) -->
+      <div class="col-12">
+      <h5 class="mb-2 mt-2">Division-wise Contribution</h5>
+          <div class="card p-3 mb-2" style="height:350px; background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+        <canvas id="sales_bar_chart_right" style="width:100%; height:100%;"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+              <!-- ======================================
+                   RIGHT SIDE (col-3)
+                   Order:
+                   Top 10 Clients, Top 10 Buyers,
+                   New Clients, New Brands, Lost Clients, Lost Brands
+                   ====================================== -->
+              <div class="col-lg-3">
+
+              <!-- Top 10 Clients -->
+                  <h5 class="mb-2 mt-0">Top 10 Clients</h5>
+                  <div class="card p-0 mb-0" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+                <table class="table table-sm mb-0">
+                  <tbody>
+<t t-set="clients" t-value="(state.kpis &amp;&amp; state.kpis.top_clients) ? state.kpis.top_clients : []"/>
+                      <t t-if="clients.length">
+                      <t t-foreach="clients" t-as="c" t-key="c.name">
+                        <tr>
+                          <td><t t-esc="c.name"/></td>
+                            <td class="text-end"><t t-esc="formatM(c.total)"/></td>
+                        </tr>
+                      </t>
+                    </t>
+                      <t t-else="">
+                      <tr>
+                        <td colspan="2" class="text-center text-muted">No data</td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+              </div>
+
+                  <!-- Top 10 Buyers (static demo kept) -->
+                  <!--              <h5 class="mb-2 mt-2">Top 10 Buyers</h5>-->
+                  <!--              <div class="card p-0 mb-0">-->
+                  <!--                <table class="table table-sm mb-0">-->
+                  <!--                  <tbody>-->
+                  <!--                    <tr><td>Buyer A</td><td class="text-end">12000</td></tr>-->
+                  <!--                    <tr><td>Buyer B</td><td class="text-end">10500</td></tr>-->
+                  <!--                    <tr><td>Buyer C</td><td class="text-end">9800</td></tr>-->
+                  <!--                    <tr><td>Buyer D</td><td class="text-end">8700</td></tr>-->
+                  <!--                    <tr><td>Buyer E</td><td class="text-end">7500</td></tr>-->
+                  <!--                    <tr><td>Buyer F</td><td class="text-end">6900</td></tr>-->
+                  <!--                    <tr><td>Buyer G</td><td class="text-end">6200</td></tr>-->
+                  <!--                    <tr><td>Buyer H</td><td class="text-end">5900</td></tr>-->
+                  <!--                    <tr><td>Buyer I</td><td class="text-end">5300</td></tr>-->
+                  <!--                    <tr><td>Buyer J</td><td class="text-end">4800</td></tr>-->
+                  <!--                  </tbody>-->
+                  <!--                </table>-->
+                  <!--              </div>-->
+
+                  <!-- Top 10 Buyers -->
+                  <h5 class="mb-2 mt-2">Top 10 Buyers</h5>
+                  <div class="card p-0 mb-0" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+                  <table class="table table-sm mb-0">
+                    <tbody>
+<t t-set="buyers" t-value="(state.kpis &amp;&amp; state.kpis.top_buyers) ? state.kpis.top_buyers : []"/>
+                        <t t-if="buyers.length">
+                        <t t-foreach="buyers" t-as="b" t-key="b.id">
+                          <tr>
+                            <td><t t-esc="b.name"/></td>
+                              <td class="text-end"><t t-esc="formatM(b.total)"/></td>
+                          </tr>
+                        </t>
+                      </t>
+                        <t t-else="">
+                        <tr>
+                          <td colspan="2" class="text-center text-muted">No data</td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+
+                  <!-- Clients / Brands (stacked cards) -->
+                  <div class="mt-3">
+                <!-- New Clients -->
+                      <div class="card p-3 mb-2 text-center" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+                  <h6 class="mb-1">New Clients</h6>
+                          <p class="fs-4 mb-0"><t t-esc="state.kpis.new_clients"/></p>
+                </div>
+
+                      <!-- New Brands -->
+                      <div class="card p-3 mb-2 text-center" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+                  <h6 class="mb-1">New Brands</h6>
+                          <p class="fs-4 mb-0"><t t-esc="state.kpis.new_brands"/></p>
+                </div>
+
+                      <!-- Lost Clients -->
+                      <div class="card p-3 mb-2 text-center" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+                  <h6 class="mb-1">Lost Clients</h6>
+                          <p class="fs-4 mb-0"><t t-esc="state.kpis.lost_clients"/></p>
+                </div>
+
+                      <!-- Lost Brands -->
+                      <div class="card p-3 text-center" style="background:#fff;border:none;border-radius:6px;box-shadow:2px 2px 15px rgba(0,0,0,.25);transition:all .3s ease-in-out;margin-bottom:10px;">
+                  <h6 class="mb-1">Lost Brands</h6>
+                          <p class="fs-4 mb-0"><t t-esc="state.kpis.lost_brands"/></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- /MAIN GRID -->
+
+        </div>
+      </div>
+    </div>
+  </t>
+</templates>

@@ -1,0 +1,218 @@
+<odoo>
+    <template id="report_multi_payment_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <h2 style="text-align:center;">Tti Testing Laboratories</h2>
+                        <h4 style="text-align:center;">Voucher List</h4>
+
+                        <div class="d-flex justify-content-between" style="font-size:12px;">
+                            <p>Print By :
+                                <t t-esc="user.name"/>
+                            </p>
+
+                            <p>Printed at :</p>
+                        </div>
+
+                        <table class="table table-borderless" style="width: 100%; font-size:12px;">
+                            <tr>
+                                <td>
+                                    <span>Voucher Type</span>
+                                    :
+                                </td>
+                                <td>
+                                    <t t-esc="o.payment_mode"/>
+                                </td>
+
+                                <td >
+                                    <span>Voucher Date</span>
+                                    :
+                                </td>
+                                <td>
+                                    <t t-esc="o.date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span>Voucher No</span>
+                                    :
+                                </td>
+                                <td>
+                                    <t t-esc="o.name"/>
+                                </td>
+
+                                <td>
+                                    <span>Trans Date</span>
+                                    :
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span>Instr #</span>
+                                    :
+                                </td>
+                                <td></td>
+
+                                <td>
+                                    <span>Status</span>
+                                    :
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span>Remarks</span>
+                                    :
+                                </td>
+                                <td width="50%">
+                                    <t t-if="o.journal_id.name">
+                                        <t t-esc="o.journal_id.name"/>
+                                        /
+                                    </t>
+                                    <t t-if="o.partner_id.name">
+                                        Party Name:
+                                        <t t-esc="o.partner_id.name"/>
+                                        /
+                                    </t>
+                                    <t t-if="o.name">
+                                        <t t-if="o.payment_type == 'inbound'">Invoice No:</t>
+                                        <t t-if="o.payment_type == 'outbound'">Bill No:</t>
+                                        <t t-esc="o.name"/>
+                                        /
+                                    </t>
+                                    <t t-if="o.memo">
+                                        Comments:
+                                        <t t-esc="o.memo"/>
+                                    </t>
+                                </td>
+
+                                <td>
+                                    <span>Paid To</span>
+                                    :
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm" style="width: 100%; border: 1px solid black; font-size:12px;"
+                               t-if="o.account_multi_payment_line_ids">
+                            <thead class="bg-secondary">
+                                <tr>
+                                    <th style="padding: 5px; text-align: center;">SR#</th>
+                                    <th style="padding: 5px; text-align: center;">Account No.</th>
+                                    <th style="padding: 5px; text-align: left;">SL Name</th>
+                                    <th style="padding: 5px; text-align: left;">Narration/Branch/Department/Analysis
+                                        Code/Analysis Sub Code
+                                    </th>
+                                    <th style="padding: 5px; text-align: left;">Debit Amount</th>
+                                    <th style="padding: 5px; text-align: left;">Credit Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="1"/>
+                                <t t-foreach="o.account_multi_payment_line_ids.filtered('selected')" t-as="line">
+                                    <t t-foreach="line.payment_ids" t-as="payment">
+                                        <t t-foreach="payment.move_id.line_ids" t-as="move_line">
+                                            <tr>
+                                                <td style="padding: 5px; text-align: center;">
+                                                    <t t-esc="counter"/>
+                                                </td>
+                                                <td style="padding: 5px; text-align: center;">
+                                                    <t t-esc="move_line.account_id.code or ''"/>
+                                                </td>
+                                                <td style="padding: 5px; text-align: left;">
+                                                    <t t-esc="move_line.account_id.name or ''"/>
+                                                </td>
+                                                <td style="padding: 5px; text-align: left;">
+                                                    <t t-if="move_line.name">
+                                                        <t t-esc="move_line.name"/>
+                                                        /
+                                                    </t>
+                                                    <t t-if="line.invoice_id.partner_id">Party Name:
+                                                        <t t-esc="line.invoice_id.partner_id.name"/>
+                                                    </t>
+                                                    <t t-if="line.invoice_id.name">
+                                                        /
+                                                        <t t-if="o.payment_type == 'inbound'">Invoice No:</t>
+                                                        <t t-if="o.payment_type == 'outbound'">Bill No:</t>
+                                                        <t t-esc="line.invoice_id.name"/>
+                                                    </t>
+                                                    <t t-if="payment.memo">
+                                                        / Comments:
+                                                        <t t-esc="payment.memo"/>
+                                                    </t>
+                                                </td>
+                                                <td style="padding: 5px; text-align: left;">
+                                                    <t t-esc="move_line.debit != 0 and '%.2f' % move_line.debit or ''"/>
+                                                </td>
+                                                <td style="padding: 5px; text-align: left;">
+                                                    <t t-esc="move_line.credit != 0 and '%.2f' % move_line.credit or ''"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </t>
+                                    </t>
+                                </t>
+                            </tbody>
+                            <t t-set="total_debit"
+                               t-value="sum(o.account_multi_payment_line_ids.filtered('selected').mapped('payment_ids').mapped('move_id.line_ids').mapped('debit'))"/>
+                            <t t-set="total_credit"
+                               t-value="sum(o.account_multi_payment_line_ids.filtered('selected').mapped('payment_ids').mapped('move_id.line_ids').mapped('credit'))"/>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" style="padding: 5px; text-align: left;">
+                                        <div class="d-flex justify-content-between">
+                                            <p>Amount In Words :
+                                                <t t-esc="o.currency_id.amount_to_text(total_debit or 0.0)"/>
+                                            </p>
+                                            <p>Total :</p>
+                                        </div>
+                                    </td>
+                                    <!--                                    <td style="padding: 5px; text-align: center;">-->
+                                    <!--                                        <strong>Total :</strong>-->
+                                    <!--                                    </td>-->
+                                    <td style="padding: 5px; text-align: center;">
+                                        <t t-esc="'%.2f' % total_debit"/>
+                                    </td>
+                                    <td style="padding: 5px; text-align: center;">
+                                        <t t-esc="'%.2f' % total_credit"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="d-flex justify-content-between" style="margin-top: 90px; text-align: center;">
+                            <div class="justify-content-center" style="width: 15%;">
+                                <p style="border-top: 1px solid #000; padding-top: 5px;">Prepared By</p>
+                            </div>
+                            <div class="justify-content-center" style="width: 15%;">
+                                <p style="border-top: 1px solid #000; padding-top: 5px;">Checked By</p>
+                            </div>
+                            <div class="justify-content-center" style="width: 15%;">
+                                <p style="border-top: 1px solid #000; padding-top: 5px;">Approved By</p>
+                            </div>
+                            <div class="justify-content-center" style="width: 15%;">
+                                <p style="border-top: 1px solid #000; padding-top: 5px;">Received By</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_multi_payments_report" model="ir.actions.report">
+        <field name="name">Multi Payment Report</field>
+        <field name="model">account.multi.payments</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">visio_tti_so_invoice_report.report_multi_payment_document</field>
+        <field name="report_file">visio_tti_so_invoice_report.report_multi_payment_document</field>
+        <field name="binding_model_id" ref="visio_tti_invoice_customize.model_account_multi_payments"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="visio_tti_so_invoice_report.paperformat_custom_saleorder"/>
+    </record>
+</odoo>

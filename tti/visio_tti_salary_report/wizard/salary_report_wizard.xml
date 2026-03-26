@@ -1,0 +1,38 @@
+<!--D:\Visiomate\Odoo\odoo18\custom_addons\tti\visio_tti_salary_report\wizard\salary_report_wizard.xml-->
+<odoo>
+    <record id="view_tti_salary_report_wizard" model="ir.ui.view">
+        <field name="name">tti.salary.report.wizard.form</field>
+        <field name="model">tti.salary.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Salary Report">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_excel" string="Generate Excel" type="object" class="btn-primary"/>
+                    <button name="action_generate_pdf" string="Generate PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tti_salary_report_wizard" model="ir.actions.act_window">
+        <field name="name">Salary Report</field>
+        <field name="res_model">tti.salary.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_tti_salary_report"
+              name="Salary Report"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_tti_salary_report_wizard"
+              sequence="60"
+    />
+</odoo>
