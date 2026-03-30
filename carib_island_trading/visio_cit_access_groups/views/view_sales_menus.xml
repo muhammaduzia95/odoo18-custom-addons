@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+        <record id="account.menu_finance_receivables" model="ir.ui.menu">
+            <field name="name">Customers</field>
+            <field name="parent_id" ref="sale.sale_menu_root"/>
+            <field name="sequence">20</field>
+            <field name="groups_id" eval="[(6, 0, [ref('group_sales_team_customer_access')])]"/>
+        </record>
+
+        <record id="account.menu_finance_payables" model="ir.ui.menu">
+            <field name="name">Vendors</field>
+            <field name="parent_id" ref="purchase.menu_purchase_root"/>
+            <field name="sequence">15</field>
+            <field name="groups_id" eval="[(6, 0, [ref('group_purchase_team_vendor_access')])]"/>
+        </record>
+
+    </data>
+</odoo>

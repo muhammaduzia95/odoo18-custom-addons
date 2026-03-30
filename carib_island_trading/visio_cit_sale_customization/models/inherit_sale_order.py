@@ -462,7 +462,18 @@ class SaleOrderLine(models.Model):
         """Return YOUR selling unit price (before discount)."""
         self.ensure_one()
 
-        base = self.price_unit or 0.0  # CS Price (must remain unchanged)
+        # base = self.price_unit or 0.0  # CS Price (must remain unchanged)
+        # mk_pct = self.markup_percent_line or 0.0
+        # mg_pct = self.margin_percent_line or 0.0
+
+        case_qty = float(self.product_id.cit_case_qty or 0.0)
+
+        # If case qty exists, use case price from price_unit
+        # If case qty is 0, use per_unit_price directly
+        base = (self.price_unit or 0.0) if case_qty else (
+                self.per_unit_price or self.product_id.list_price or 0.0
+        )
+
         mk_pct = self.markup_percent_line or 0.0
         mg_pct = self.margin_percent_line or 0.0
 
